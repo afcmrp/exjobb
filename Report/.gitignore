@@ -1,0 +1,24 @@
+# Gitignore file for MSc Report
+# Ignore Vim swap files
+*.swp
+
+# Latex files
+*.aux
+*.log
+*.out
+*.fls
+*.dvi
+*.toc
+*.idx
+*.bbl
+*.blg
+
+# Latexmk files
+*.gz
+*.fbd_latexmk
+
+# To avoid merge crashes
+*.pdf
+
+#ignoring ignoring appendices ;)
+!Latex/appendices/*.pdf
