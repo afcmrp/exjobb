@@ -12,6 +12,8 @@
 *.idx
 *.bbl
 *.blg
+*.lof
+*.lot
 
 # Latexmk files
 *.gz
