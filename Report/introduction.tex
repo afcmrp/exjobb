@@ -1,0 +1,50 @@
+\chapter{Introduction}
+\label{sec:introduction}
+This chapter will introduce the subject of mixed criticality embedded systems and the project EMC2 to the reader.
+
+\section{Background}
+Today, modern automotive systems contain a large number of Electronic Control Units (ECU)s \cite{}, each controlling a specific system of a specific criticality level such as safety-critical distance keeping system \ref{sec:platooning} or non-critical entertainment systems \cite{}. This approach provides isolation for the numerous critical and non-critical applications in the collective system, and a simple mechanism to qualify an individual ECU. However, it yields an inefficient use of system resources \cite{} and expensive system implementation \cite{}. In order to lower the cost of the system and increase system efficiency, mixed-criticality applications can be integrated into a single multicore platform. However, this approach increases system complexity, and hinders the certification of safety-critical systems \cite{}. In order to facilitate the design, test, and certification of such systems, spatial and temporal partitioning can be used in the architecture of the system as described by \cite{zaki2016}.
+
+\subsection{Definition of safety-critical systems}
+A safety critical system is, according to \cite{}, defined as a system whose failure may cause injury or death to human beings.
+\subsection{Platooning}
+\label{sec:platooning}
+Describe platooning.
+
+\subsection{EMC2 Mixed criticality embedded system}
+\label{sec:mces}
+Explain basic architecture of the embedded system. For detailed information, see the entire report by \cite{zaki2016}.
+
+\section{Problem statement}
+%Implement safety-critical controller on the embedded system. 
+A distance keeping control algorithm for platooning will be implemented on the embedded system described in \ref{sec:mces}. A demonstrator will be constructed in the form of a RC car capable of following a vehicle in front of it at a certain distance. It should be verified that no matter the computational load and eventual crashes of the Linux based non-critical system, the distance keeping algorithm never crashes. The performance of the control system should be measured and compared with the same controller without any non-critical computational load.\\
+
+This problem leads to the research question: 
+\begin{itemize}
+\item How well can a safety-critical control system perform when implemented on a mixed criticality system using virtualization?
+\end{itemize}
+alternatively:
+\begin{itemize}
+\item How, in a disciplined way, to reconcile the conflicting requirements of partitioning for safety assurance and sharing for efficient resource usage?
+\end{itemize}
+
+\section{Purpose}
+There are many economical benefits to reducing the amount of computers in automotive systems. Manufacturing costs would decrease and with fewer physical components maintenance costs would also decrease. However the system complexity would increase and thereby increasing time and cost to design the system. Also,
+
+In order to reduce the amount of ECUs in mechatronic systems, it must be verified that non safety critical applications do not interfere with safety critical applications.
+
+\section{Goals}
+In this project there are both team goals and individual goals that do not necessarily align with each other. 
+
+\subsection{Team goal}
+Team demonstrator, a vehicle capable of following a vehicle ahead of it and keeping inside the road markers.
+
+\subsection{Individual goal}
+Verify quantitatively the performance of safety-critical distance keeping controller.
+
+\subsection{Scope}
+The work of this thesis and the implementation on the demonstrator will build upon the work of \cite{zaki2016}. The embedded computer is constrained to the Xilinx Zynq-7000 \footnote{\url{https://www.xilinx.com/products/silicon-devices/soc/zynq-7000.html}}.
+The thesis is produced at Alten AB.
+
+\subsection{Method}
+Implement safety-critical controller on the embedded system. Measure performance of controller. Missed deadlines? CPU usage? Compare with no non safety-critical load.
