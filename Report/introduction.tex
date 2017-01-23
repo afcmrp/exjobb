@@ -1,19 +1,23 @@
 \chapter{Introduction}
 \label{sec:introduction}
-This chapter will introduce the subject of mixed criticality embedded systems and the project EMC2 to the reader.
+This chapter will introduce the subject of mixed criticality embedded systems and the project to the reader.
 
 \section{Background}
-Today, modern automotive systems contain a large number of Electronic Control Units (ECU)s \cite{}, each controlling a specific system of a specific criticality level such as safety-critical distance keeping system \ref{sec:platooning} or non-critical entertainment systems \cite{}. This approach provides isolation for the numerous critical and non-critical applications in the collective system, and a simple mechanism to qualify an individual ECU. However, it yields an inefficient use of system resources \cite{} and expensive system implementation \cite{}. In order to lower the cost of the system and increase system efficiency, mixed-criticality applications can be integrated into a single multicore platform. However, this approach increases system complexity, and hinders the certification of safety-critical systems \cite{}. In order to facilitate the design, test, and certification of such systems, spatial and temporal partitioning can be used in the architecture of the system as described by \cite{zaki2016}.
+Today, modern automotive systems contain a large number of Electronic Control Units (ECU)s \cite{}, each controlling a specific system of a specific criticality level such as safety-critical distance keeping system (\ref{sec:platooning}) or non-critical entertainment systems \cite{}. This approach provides isolation for the numerous critical and non-critical applications in the collective system, and a simple mechanism to qualify an individual ECU. However, it yields an inefficient use of system resources \cite{} and expensive system implementation \cite{}. In order to lower the cost of the system and increase system efficiency, applications of different criticality levels can be integrated into a single multicore platform, leading to a Mixed Criticality System (MCS). However, this approach increases system complexity, and hinders the certification of safety-critical systems \cite{}. In order to facilitate the design, test, and certification of such systems, spatial and temporal partitioning can be used in the architecture of the system as described by \cite{zaki2016}.
 
 \subsection{Definition of safety-critical systems}
-A safety critical system is, according to \cite{}, defined as a system whose failure may cause injury or death to human beings.
-\subsection{Platooning}
-\label{sec:platooning}
-Describe platooning.
+A safety-critical system is, according to \cite{}, defined as a system whose failure may cause injury or death to human beings.
 
 \subsection{EMC2 Mixed criticality embedded system}
 \label{sec:mces}
-Explain basic architecture of the embedded system. For detailed information, see the entire report by \cite{zaki2016}.
+%Explain basic architecture of the embedded system. 
+The current MCS in place uses virtualization
+
+For detailed information, see the entire report by \cite{zaki2016}.
+
+\subsection{Platooning}
+\label{sec:platooning}
+Describe platooning.
 
 \section{Problem statement}
 %Implement safety-critical controller on the embedded system. 
@@ -29,7 +33,7 @@ alternatively:
 \end{itemize}
 
 \section{Purpose}
-There are many economical benefits to reducing the amount of computers in automotive systems. Manufacturing costs would decrease and with fewer physical components maintenance costs would also decrease. However the system complexity would increase and thereby increasing time and cost to design the system. Also,
+There are many economical benefits to reducing the amount of computers in automotive systems. Manufacturing costs would decrease and with fewer physical components maintenance costs would also decrease. However, the system complexity would increase and thereby increasing time and cost to design the system. Also,
 
 In order to reduce the amount of ECUs in mechatronic systems, it must be verified that non safety critical applications do not interfere with safety critical applications.
 
