@@ -20,7 +20,7 @@
 *.fbd_latexmk
 
 # To avoid merge crashes
-*.pdf
+#*.pdf #Commented out until pdf image is removed
 
 #ignoring ignoring appendices ;)
 !Latex/appendices/*.pdf
