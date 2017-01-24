@@ -35,6 +35,7 @@ For more detailed information, see the entire report by \cite{zaki2016}.
 Describe platooning.
 
 \section{Problem statement}
+\label{sec:problem}
 %Implement safety-critical controller on the embedded system. 
 A distance keeping control algorithm for platooning will be implemented on the embedded system described in \ref{sec:mces}. A demonstrator will be constructed in the form of a RC car capable of following a vehicle in front of it at a certain distance. It should be verified that no matter the computational load and eventual crashes of the Linux based non-critical system, the distance keeping algorithm on the RTOS never crashes. The performance of the control system should be measured and compared with the same controller without any non-critical computational load. Missed deadlines? CPU usage? Evaluate different scheduling methods.\\
 
@@ -65,7 +66,7 @@ In this project there are both team goals and individual goals that do not neces
 The team consists of five master thesis students. The students areas of work are: control theory and system modeling, data aggregation, safety-critical communication in MCS, line following and system testing and finally safety-critical control in MCS. Together the team will build a vehicle capable of following a vehicle ahead of it while keeping inside road markers.
 
 \subsection{Individual goal}
-Verify quantitatively the performance of safety-critical distance keeping controller. Evaluate different task scheduling methods in the specific system.
+Verify quantitatively the performance of safety-critical distance keeping controller. Evaluate different task scheduling methods in the specific system. Solve the problems described in \ref{sec:problem}.
 
 \subsection{Scope}
 The work of this thesis and the implementation on the demonstrator will build upon the work of \cite{zaki2016}.
