@@ -26,7 +26,8 @@
 \usepackage{paralist}
 
 \usepackage{cite}
-\usepackage[numbers]{natbib}
+%\usepackage[numbers]{natbib}
+\bibliographystyle{plain}
 
 \setlength\parindent{0pt}
 
@@ -57,12 +58,12 @@ Emil Hjelm\\
 \pagenumbering{arabic}
 \include{introduction}
 \include{literature}
+\include{design}
 \include{implementation}
 \include{results}
 \include{discussion}
 \include{futurework}
-\bibliographystyle{plain}
 \bibliography{bib}
-\appendix
+%\appendix
 \include{appendix}
 \end{document}
