@@ -87,7 +87,7 @@ In this project there are both team goals and individual goals that do not alway
 The team consists of five master thesis students. The students areas of work are: control theory and system modeling, data aggregation, safety-critical communication in MCS, line following and system testing and finally safety-critical control in MCS. Together the team will build a vehicle capable of following a vehicle ahead of it while keeping inside road markers.
 
 \subsection{Individual goal}
-Verify quantitatively the performance of safety-critical distance keeping controller. Evaluate different task scheduling methods in the specific system. Solve the problems described in \ref{sec:problem}.
+Verify quantitatively the performance of safety-critical distance keeping controller, see \ref{sec:research} Solve the problems described in \ref{sec:problem}.
 
 \subsection{Scope}
 \label{sec:scope}
@@ -98,13 +98,16 @@ The embedded computer is constrained to the Xilinx Zynq-7000 \footnote{\url{http
 
 The thesis is produced at Alten AB. %TODO: Remove?
 
+%Control algorithm will be designed by Daniel Roshanghias
+
 %\section{Method}
 \section{Research design}
+\label{sec:research}
 %TODO: verify source
 The plan is to make an confirmatory investigation using qualitative data/operations. This is a mixed methods approach where the data is gathered using simulations of the environment \cite{creswell}.\\
 
 %TODO: Kanske bättre i en annan del?
-The position of the demonstrator will be read by a separate sensor of the same type as the one on the demonstrator. The performance of the control system and the embedded controller will be measured and compared with the same system without any non-critical computational load. This will be done for several scheduling methods, as well as for a simulation of the same system. The measures regarding control system performance will consist of 
+The position of the demonstrator will be read by a separate sensor of the same type as the one on the demonstrator. The performance of the control system and the embedded controller will be measured and compared with the same system without any non-critical computational load. This will also be done for a simulation of the system. The measures regarding control system performance will consist of 
 \begin{itemize}
 \item Response time
 \item Overshoot
