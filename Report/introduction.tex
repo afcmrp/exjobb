@@ -11,7 +11,7 @@ In order to facilitate the design, test, and certification of such systems, spat
 Protecting the integrity of a component from the faults of another is desired in all systems hosting multiple applications. However, it is of higher significance if the different applications have different criticality levels. Without such protection all components on the same system would need to be engineered to the standards of the highest criticality level, potentially massively increasing development costs \cite{burns2016}.\\
 
 %TODO: wording
-The EU project "Embedded Multi-Core systems for Mixed Criticality applications in dynamic and changeable real-time environments" (EMC\textsuperscript{2}) was created in order to "find solutions for dynamic adaptability in open systems, provide handling of mixed criticality applications under real-time conditions, scalability and utmost flexibility, full scale deployment and management of integrated tool chains, through the entire lifecycle" \cite{website:emc2}. 
+The EU project "Embedded Multi-Core systems for Mixed Criticality applications in dynamic and changeable real-time environments" (EMC\textsuperscript{2}) was founded in order to "find solutions for dynamic adaptability in open systems, provide handling of mixed criticality applications under real-time conditions, scalability and utmost flexibility, full scale deployment and management of integrated tool chains, through the entire lifecycle" \cite{website:emc2}. 
 
 \subsection{Definition of safety-critical systems}
 The term "safety-critical system" has many definitions, most quite similar. Most definitions relate to systems with the potential to harm humans if the system malfunctions. According to \cite{website:encyclopedia} it is defined as "A system in which any failure or design error has the potential to lead to loss of life." Further, \cite{website:dictionary} defines safety-critical systems as "A computer, electronic or electromechanical system whose failure may cause injury or death to human beings." A Wikipedia article, \cite{website:wikipedia}, defines a safety-critical system (or "life-critical system") as a system whose failure or malfunction may result in one (or more) of the following outcomes:
@@ -28,31 +28,31 @@ Different names of levels of criticality are typically Safety Integrity Level (S
 
 In this report the number of criticality levels will be restricted to two: "safety-critical" and "non-critical". This is due to the constraints presented in section \ref{sec:mces} and \ref{sec:scope}.
 
-\subsection{EMC\textsuperscript{2} Mixed criticality embedded system}
+\subsection{EMC\textsuperscript{2} development board}
 \label{sec:mces}
-The current MCS is implemented on a Xilinx Zynq-7000. It employs two operating systems to handle applications of different criticality. A Linux General Purpose Operating System (GPOS) for non-safety critical applications and a Real-Time Operating System (RTOS) for safety-critical applications. 
+The MCS developed at Alten is implemented on a Xilinx Zynq-7000. The development board is called EMC\textsuperscript{2} Development Board, or EMC\textsuperscript{2}DB. It employs two operating systems to handle applications of different criticality. A General Purpose Operating System (GPOS) for non-critical applications and a Real-Time Operating System (RTOS) for safety-critical applications. The Virtual Machine Monitor (VMM) SafeG \cite{website:safeg} is used to alternate between the two. %TODO: unfinished
 
-%Hypervisor, FPGA, peripherals, virtualization
+Peripherals connected to the board are separated between safety-critical and non-critical via ARM TrustZone \cite{website:ARM}.
 
-An overview of the system can be seen in Figure~\ref{fig:introduction_overview}.
+The board also has a Field Programmable Gate Array (FPGA).
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth]{./img/introduction_overview.png}
-\caption{System overview of the MCS in place.\cite{zaki2016}}\label{fig:introduction_overview}
-\end{figure}
+%An overview of the system can be seen in Figure~\ref{fig:introduction_overview}.
 
 For more detailed information, see the report by \cite{zaki2016}.
 
 \subsection{Platooning}
 \label{sec:platooning}
-%Wording
+%TODO: Wording
 "The platooning concept can be defined as a collection of  vehicles that travel together, actively coordinated in formation. Some expected advantages of platooning include increased fuel and traffic  efficiency, safety and driver  comfort" \cite{bergenhem}.
 
 \section{Problem statement}
 \label{sec:problem}
 %Implement safety-critical controller on the embedded system. 
-A distance keeping control algorithm for platooning will be implemented on the embedded system described in \ref{sec:mces}. A demonstrator will be constructed in the form of a RC car capable of following a vehicle in front of it at a certain distance. It should be verified that no matter the computational load and eventual crashes of the Linux based non-critical system, the distance keeping algorithm on the RTOS never crashes.\\
+An ideal MCS ensures partitioning between different criticality levels while still sharing resources efficiently. %TODO: Expand?
+
+The MCS developed at Alten (EMC\textsuperscript{2}DB) switches Operative System (OS) to enable partitioning between safety-critical and non-critical applications, which takes about 2$\mu$s. This means that safety-critical tasks that require very high frequencies would not be suited for this system. Moreover, it is of interest to see at what point the effects of OS switching are "too much". %TODO: wording
+
+To evaluate this, a distance keeping control algorithm for platooning will be implemented on the embedded system described in \ref{sec:mces}. A demonstrator will be constructed in the form of a RC car capable of following a vehicle in front of it at a certain distance. It should be verified that no matter the computational load and eventual crashes of the Linux based non-critical system, the distance keeping algorithm on the RTOS never crashes. It should also be investigated at how high frequencies the control algorithm can operate while still maintaining functionality on the GPOS.\\
 
 This problem leads to the research question: 
 \begin{itemize}
@@ -98,7 +98,9 @@ The embedded computer is constrained to the Xilinx Zynq-7000 \footnote{\url{http
 
 The thesis is produced at Alten AB. %TODO: Remove?
 
-%Control algorithm will be designed by Daniel Roshanghias
+%TODO: Control algorithm will be designed by Daniel Roshanghias
+
+Scheduling on the processor will be restricted to Rate Monotonic (RM).
 
 %\section{Method}
 \section{Research design}
@@ -111,9 +113,10 @@ The position of the demonstrator will be read by a separate sensor of the same t
 \begin{itemize}
 \item Response time
 \item Overshoot
-\item Settling time %Fel ord?
+\item Settling time %TODO: Fel ord?
 \end{itemize}
-and the measures regarding embedded controller performance will consist of
+
+Datapoints for the performance of the embedded controller will be extracted from the RTOS FMP, and the measures will consist of
 \begin{itemize}
 \item Missed deadlines
 \item CPU utilization
