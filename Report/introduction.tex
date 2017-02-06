@@ -29,7 +29,7 @@ In this report the number of criticality levels will be restricted to two: "safe
 
 \subsection{EMC\textsuperscript{2} development board}
 \label{sec:mces}
-The MCS developed at Alten is implemented on a Xilinx Zynq-7000. The development board is called EMC\textsuperscript{2} Development Board, or EMC\textsuperscript{2}DB. It employs two operating systems to handle applications of different criticality. A General Purpose Operating System (GPOS) for non-critical applications and a Real-Time Operating System (RTOS) for safety-critical applications. The Virtual Machine Monitor (VMM) SafeG \cite{website:safeg} is used to alternate between the two. %TODO: unfinished
+As a part of the EMC\textsuperscript{2} project, Alten has developed a system for handling applications of mixed criticality on the same piece of hardware. The MCS developed at Alten is implemented on a Xilinx Zynq-7000. The development board is called EMC\textsuperscript{2} Development Board, or EMC\textsuperscript{2}DB. It employs two operating systems to handle applications of different criticality. A General Purpose Operating System (GPOS) for non-critical applications and a Real-Time Operating System (RTOS) for safety-critical applications. A Virtual Machine Monitor (VMM) is used to alternate between the two. %TODO: unfinished
 
 Peripherals connected to the board are separated between safety-critical and non-critical via ARM TrustZone \cite{website:ARM}.
 
