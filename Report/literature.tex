@@ -1,21 +1,26 @@
 \chapter{State of the art}
-This chapter will go through relevant articles and already known knowledge on the subject.
+This chapter will go through relevant articles and already known knowledge on the subject of mixed criticality systems. It will also explain the EMC2DP.
 
 \section{Mixed criticality systems}
 %SotA regarding MCS.
 A MCS is achieved by letting applications of different criticality share resources. These resources could be computational power in the CPU, memory, peripherals, input/output ports. The most explored area is sharing the CPU between multiple criticality levels \cite{burns2016}.
 
-\subsection{Sharing processor}
-Vestal, 
+\subsection{Economical benefits}
+%Lower production cost, higher design cost?
 
-\subsubsection{Schedulers}
-Schedulers, (audsley), EDF-VDL
+\subsection{Sharing processor}
+Vestal, Burns.
+
+%Schedulers
+1. (audsley) 2. EDF-VDL
+
+For a more complete view of work done on MCS with a shared processor, see the paper by~\cite{burns2016}.
 
 \subsection{Different criticality on different processors}
 
 
 \subsection{Sharing memory}
-
+%http://pertsserver.cs.uiuc.edu/~mcaccamo/papers/euromicro12.pdf
 
 \section{Current system}
 \label{sec:lit_emc2mcs}
@@ -30,14 +35,17 @@ An overview of the system can be seen in Figure~\ref{fig:introduction_overview}.
 \caption{System overview of the MCS in place.\cite{zaki2016}}\label{fig:introduction_overview}
 \end{figure}
 
-Root File System
-Device Tree
-Kernel
+%Linux:
+%Root File System
+%Device Tree
+%Kernel
 
-uboot
+%Boot SD:
+%uboot
 
-compiled RTOS
+%FMP:
+%compiled RTOS
 
-\section{TrustZone}
+\subsection{TrustZone}
 \label{sec:trustzone}
 "TrustZone is a security extension available in modern ARM processors that creates a security infrastructure designers can use to protect critical system assets. This infrastructure is achieved by enabling the partition of system components, both hardware and software, into either a Secure and a Normal world (or zone). Resources that are marked as normal are not permitted to access Secure zone components. This mechanism is enforced by the AMBA3 (Advanced Microcontroller Bus Architecture) AXI (Advanced eXtensible Interface) bus system. It contains an extra control signal for each of the read and write channels (Non-secure or NS bits) that dictate the access rights Non-secure bus masters to the Secure slaves. Each processor with an enabled TrustZone security extension can be partitioned into a Normal and a Secure virtual CPU. The virtual processors execute in a time-multiplexed fashion, and use the ”Monitor Mode” state to create an efficiently switching mechanism between Normal and Secure zones. The NS-bit, bit[0] of the Secure Configuration Register (SCR) in the System Control Coprocessor (CP15), controls the activation of secure state of the processor. Whenever the NS-bit set high, the processor state immediately switches to the Normal world. However, if the processor is in Monitor Mode, it remains in the Secure world regardless of the state of the SCR NS-bit. The processor state can nter monitor mode by either issuing a special instruction, SMC (Secure Monitor Call), in software or by hardware exception mechanisms such as IRQ, FIQ, external Data Abort, or external Prefetch Abort. In general, the software running in monitor mode serves the purpose of saving the state of the current world, and loading the state the other."~\cite{website:ARM} \\ %TODO: Wording
