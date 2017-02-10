@@ -49,7 +49,7 @@ For more detailed information, see the report by \cite{zaki2016}.
 %Implement safety-critical controller on the embedded system. 
 An ideal MCS ensures partitioning between different criticality levels while still sharing resources efficiently.\\ %TODO: Expand?
 
-The MCS developed at Alten (EMC\textsuperscript{2}DB)~\ref{sec:mces} switches Operative System (OS) to enable partitioning between safety-critical and non-critical applications, which takes about 2$\mu s$. This mode switch introduces additional deadlines which makes processor scheduling more difficult.\\ %means that safety-critical tasks that require very high frequencies would not be suited for this system. Moreover, it is of interest to see at what point the effects of OS switching are "too much". %TODO: wording
+The MCS developed at Alten (EMC\textsuperscript{2}DP)~\ref{sec:mces} switches Operative System (OS) to enable partitioning between safety-critical and non-critical applications, which takes about 2$\mu s$. This mode switch introduces additional deadlines which makes processor scheduling more difficult.\\ %means that safety-critical tasks that require very high frequencies would not be suited for this system. Moreover, it is of interest to see at what point the effects of OS switching are "too much". %TODO: wording
 
 To evaluate the performance of the system, a distance keeping control algorithm for platooning will be implemented on it. A demonstrator will be constructed in the form of a RC car capable of following a vehicle in front of it at a certain distance. It should be verified that no matter the computational load and eventual crashes of the Linux based non-critical system, the distance keeping algorithm on the RTOS never crashes. It should also be investigated at how high frequencies the control algorithm can operate while still maintaining functionality on the GPOS. \\
 %This should be compared with performance of the system without the GPOS altogether.\\%TODO: Wording
@@ -116,8 +116,11 @@ The position of the demonstrator will be read by a separate sensor of the same t
 \item Settling time %TODO: Fel ord?
 \end{itemize}
 
-Datapoints for the performance of the embedded controller will be extracted from the RTOS FMP, and the measures will consist of
+Datapoints for the performance of the embedded controller will be extracted from the RTOS, and the measures will consist of
 \begin{itemize}
 \item Missed deadlines
 \item CPU utilization
 \end{itemize}
+
+\section{Ethical considerations}
+When designing a MCS it is crucial that errors made by a lower criticality application cannot multiply and have an effect on higher criticality applications. This could have catastrophic consequences.
