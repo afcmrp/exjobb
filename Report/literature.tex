@@ -16,7 +16,7 @@ Vestal, Burns.
 %Schedulers
 1. (audsley) 2. EDF-VDL
 
-For a more complete review of work done on MCS with a shared processor, see the paper by~\cite{burns2016}.
+For a more complete review of work done on MCSs with a shared processor, see the paper by~\cite{burns2016}.
 
 \subsection{Different criticality on different processors}
 
@@ -66,3 +66,26 @@ An overview of the system can be seen in Figure~\ref{fig:introduction_overview}.
 \subsection{AUTOSAR}
 
 \subsection{ASIL}
+
+\begin{table}[h]
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\multirow{2}{*}{Severity class} &\multirow{2}{*}{Probability} &\multicolumn{3}{|c|}{Controllability class} \\ \cline{3-5}
+& &C1 &C2 &C3 \\ \hline
+\multirow{4}{*}{S1} & E1 & QM & QM & QM \\ \cline{2-5}
+ & E2 & QM & QM & QM \\ \cline{2-5}
+ & E3 & QM & QM & A \\ \cline{2-5}
+ & E4 & QM & A & B \\ \hline
+\multirow{4}{*}{S2} & E1 & QM & QM & QM \\ \cline{2-5}
+ & E2 & QM & QM & A \\ \cline{2-5}
+ & E3 & QM & A & B \\ \cline{2-5}
+ & E4 & A & B & C \\ \hline
+\multirow{4}{*}{S3} & E1 & QM & QM & A \\ \cline{2-5}
+ & E2 & QM & A & B \\ \cline{2-5}
+ & E3 & A & B & C \\ \cline{2-5}
+ & E4 & B & C & D \\
+\hline
+\end{tabular}
+\caption{ASILs as a function of severity, probability and controllability.}
+\label{table:ASIL}
+\end{table}
