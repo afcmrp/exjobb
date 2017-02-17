@@ -11,6 +11,16 @@ Potential benefits with pursuing MCS as opposed to distributed systems are reduc
 
 Potential downsides are increased complexity which could lead to higher system design costs. Building applications on the same platform to share resources could require engineering teams to work more closely together, potentially leading to administrative difficulties and costs. This needs to be investigated and could vary from industry to industry.
 
+To combat the potential downsides, the EMC\textsuperscript{2} project aims at creating platforms for easier development of MCS. %TODO: källa eller ändra wording
+
+The EMC\textsuperscript{2} project lists several goals \cite{website:emc2goals}:
+\begin{itemize}
+\item Reduce the cost of the system design by 15\%
+\item Reduce the effort and time required for re-validation and re-certification of systems after making changes by 15\%
+\item Manage a complexity increase of 25\% with 10\% effort reduction
+\item Achieve cross-sectorial reusability of Embedded Systems devices and architecture platforms that will be developed using the ARTEMIS JU results.
+\end{itemize}
+
 \subsection{Sharing processor}
 Vestal, Burns.
 
@@ -63,11 +73,19 @@ An overview of the system can be seen in Figure~\ref{fig:introduction_overview}.
 "TrustZone is a security extension available in modern ARM processors that creates a security infrastructure designers can use to protect critical system assets. This infrastructure is achieved by enabling the partition of system components, both hardware and software, into either a Secure and a Normal world (or zone). Resources that are marked as normal are not permitted to access Secure zone components. This mechanism is enforced by the AMBA3 (Advanced Microcontroller Bus Architecture) AXI (Advanced eXtensible Interface) bus system. It contains an extra control signal for each of the read and write channels (Non-secure or NS bits) that dictate the access rights Non-secure bus masters to the Secure slaves. Each processor with an enabled TrustZone security extension can be partitioned into a Normal and a Secure virtual CPU. The virtual processors execute in a time-multiplexed fashion, and use the ”Monitor Mode” state to create an efficiently switching mechanism between Normal and Secure zones. The NS-bit, bit[0] of the Secure Configuration Register (SCR) in the System Control Coprocessor (CP15), controls the activation of secure state of the processor. Whenever the NS-bit set high, the processor state immediately switches to the Normal world. However, if the processor is in Monitor Mode, it remains in the Secure world regardless of the state of the SCR NS-bit. The processor state can nter monitor mode by either issuing a special instruction, SMC (Secure Monitor Call), in software or by hardware exception mechanisms such as IRQ, FIQ, external Data Abort, or external Prefetch Abort. In general, the software running in monitor mode serves the purpose of saving the state of the current world, and loading the state the other."~\cite{website:ARM} \\ %TODO: Wording
 
 \section{Standards}
+Different standards to regulate and ensure safety.
 
 \subsection{AUTOSAR}
-AUTOSAR (AUTomotive Open System ARchitecture) is a worldwide development partnership of automotive interested parties founded in 2003. It pursues the objective of creating and establishing an open and standardized software architecture for automotive electronic control units (ECUs) excluding infotainment. Goals include the scalability to different vehicle and platform variants, transferability of software, the consideration of availability and safety requirements, a collaboration between various partners, sustainable utilization of natural resources, maintainability throughout the whole "Product Life Cycle".[1][2]
+"AUTOSAR (AUTomotive Open System ARchitecture) is a worldwide development partnership of automotive interested parties founded in 2003. It pursues the objective of creating and establishing an open and standardized software architecture for automotive electronic control units (ECUs) excluding infotainment. Goals include the scalability to different vehicle and platform variants, transferability of software, the consideration of availability and safety requirements, a collaboration between various partners, sustainable utilization of natural resources, maintainability throughout the whole "Product Life Cycle"."~\cite{website:autosar}
 
 \subsection{ISO26262}
+New automotive standard.
+
+\subsubsection{Freedom from interference}
+
+
+\subsubsection{ASILs}
+Different levels relating to hazard and risk.
 
 \begin{table}[h]
 \centering

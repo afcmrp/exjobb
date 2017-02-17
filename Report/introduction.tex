@@ -70,15 +70,7 @@ alternatively:
 
 \section{Purpose}
 %TODO: Wording
-Reducing the amount of computers in automotive systems would have many effects. Manufacturing costs would decrease and with fewer physical components maintenance costs would also decrease. However, the system complexity would increase and thereby increasing time and cost to design the system. To combat this the EMC\textsuperscript{2} project aims at creating platforms for easier development of MCS. %TODO: källa eller ändra wording
-
-The EMC\textsuperscript{2} project lists several goals \cite{website:emc2goals}:
-\begin{itemize}
-\item Reduce the cost of the system design by 15\%
-\item Reduce the effort and time required for re-validation and re-certification of systems after making changes by 15\%
-\item Manage a complexity increase of 25\% with 10\% effort reduction
-\item Achieve cross-sectorial reusability of Embedded Systems devices and architecture platforms that will be developed using the ARTEMIS JU results.
-\end{itemize}
+Reducing the amount of computers in automotive systems would have many effects. Manufacturing costs would decrease and with fewer physical components maintenance costs would also decrease. However, the system complexity would increase and thereby increasing time and cost to design the system. 
 
 SafeCOP (Safe Cooperating Cyber-Physical Systems) is an European project that targets cyberphysical systems-of-systems whose safe cooperation relies on wireless communication~\cite{safecop2016}. SafeCOPs Use Case 3 (UC3) regarding "Vehicle control loss warning" together with the EMC2 goals tie well in with the problem statement and use case described in~\ref{sec:problem}. %TODO: wording
 %"We will develop a Control Loss Warning system where, when a vehicle in a platoon loses some functionality affecting its platooning ability, all vehicles downstream and the road infrastructure concessionaire are notified in order to assess if further actions are required. (e.g. full auto braking, emergency services assistance)."
@@ -111,7 +103,8 @@ Scheduling on the processor will be restricted to Rate Monotonic (RM).
 \section{Research design}
 \label{sec:research}
 %TODO: verify source
-The plan is to make an confirmatory investigation using qualitative data/operations. This is a mixed methods approach where qualitative data is gathered during experiments and from simulations of the environment \cite{creswell}. Gather data from simulations and from real tests, iterated many times.
+%Deductive approach
+The plan is to make an confirmatory investigation using quantitative data/operations with a deductive approach. This is a quantitative research method where data is gathered during experiments and from simulations of the environment \cite{hakansson2013}. %Gather data from simulations and from real tests, iterated many times.
 
 %TODO: Kanske bättre i en annan del?
 The position of the demonstrator will be read by a separate sensor of the same type as the one on the demonstrator. The performance of the control system and the embedded controller will be measured and compared with the same system without any non-critical computational load. This will also be done for a simulation of the system. The measures regarding control system performance will consist of 
@@ -121,7 +114,7 @@ The position of the demonstrator will be read by a separate sensor of the same t
 \item Settling time %TODO: Fel ord?
 \end{itemize}
 
-Datapoints for the performance of the embedded controller will be extracted from the RTOS, and the measures will consist of
+Data points for the performance of the embedded controller will be extracted from the RTOS, and the measures will consist of
 \begin{itemize}
 \item Missed deadlines
 \item CPU utilization
