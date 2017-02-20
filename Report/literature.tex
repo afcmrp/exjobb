@@ -5,6 +5,8 @@ This chapter will go through relevant articles and already known knowledge on th
 %SotA regarding MCS.
 A MCS is achieved by letting applications of different criticality share resources. These resources could be computational power in the CPU, memory, peripherals, input/output ports. As of July 2016, the most explored area is sharing the CPU between multiple criticality levels \cite{burns2016}. \\
 
+%The term Mixed Criticality had been used before 2007 to address issues of non-interference in non-federated architectures such as IMA [190];
+
 \subsection{Economical benefits of MCS}
 %Lower production cost, higher design cost?
 Potential benefits with pursuing MCS as opposed to distributed systems are reduced physical space required, reduced weight, reduced heat generation, reduced power consumption and reduced production costs~\cite{burns2016}. This would all ultimately lead to economical benefits.\\
@@ -22,12 +24,14 @@ The EMC\textsuperscript{2} project lists several goals \cite{website:emc2goals}:
 \end{itemize}
 
 \subsection{Sharing processor}
-Vestal, Burns.
+The area of MCS was first explored by Steve Vestal~\cite{vestal2007}. His paper showed that neither Rate Monotonic (RM) nor Deadline Monotonic (DM) priority assignment was optimal for MCS; however Audsley’s optimal priority assignment algorithm \cite{audsley2001} was found to be applicable. \\ %TODO: Wording
+
+This paper was followed by two publications in 2008 by Baruah and Vestal [59], and Huber et al. [206]. The first of these papers generalises Vestal’s model by using a sporadic task model and by assessing fixed job-priority scheduling and dynamic priority scheduling. It contains the important result that EDF (Earliest Deadline First) does not dominate FP when criticality levels are introduced, and that there are feasible systems that cannot be scheduled by EDF. The latter paper addresses multi-processor issues and virtualisation (though it did not use that term). It focused on AUTOSAR and resource management (encapsulation and monitoring) with time-triggered applications and a trusted network layer." \\
 
 %Schedulers
 1. (audsley) 2. EDF-VDL
 
-For a more complete review of work done on MCSs with a shared processor, see the paper by~\cite{burns2016}.
+For a more complete review of work done on MCSs with a shared processor, see the paper by Alan Burns~\cite{burns2016}.
 
 \subsection{Different criticality on different processors}
 
@@ -92,7 +96,7 @@ Different levels relating to hazard and risk.
 \begin{tabular}{|c|c|c|c|c|}
 \hline
 \multirow{2}{*}{Severity class} &\multirow{2}{*}{Probability} &\multicolumn{3}{|c|}{Controllability class} \\ \cline{3-5}
-& &C1 &C2 &C3 \\ \hline
+ & &C1 &C2 &C3 \\ \hline
 \multirow{4}{*}{S1} & E1 & QM & QM & QM \\ \cline{2-5}
  & E2 & QM & QM & QM \\ \cline{2-5}
  & E3 & QM & QM & A \\ \cline{2-5}

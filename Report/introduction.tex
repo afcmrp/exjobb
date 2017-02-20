@@ -5,7 +5,7 @@ This chapter will introduce the subject of mixed criticality embedded systems an
 \section{Background}
 %TODO: Better sources
 %, around 100 electric motors and 2 km of wiring
-Today, modern automotive systems contain around 70-100 Electric Control Units (ECU)s~\cite{thompson2012}. Each ECU controls a subsystem of a specific criticality level such as safety-critical anti-lock brake system, or non-critical entertainment systems \cite{weber2015}. Having the ECUs isolated ensures that the numerous critical and non-critical applications do not interfere with each other, thus it is a simple task to certify an individual ECU. However, this approach leads to an inefficient use of system resources and expensive system implementation \cite{burns2016}. In order to lower the cost of the collective system and increase system efficiency (utilization), applications of different criticality levels can be integrated into a single multicore platform, leading to a Mixed Criticality System (MCS). However, this approach increases system complexity, and hinders the certification of safety-critical systems \cite{zaki2016}. %TODO: wording
+Today, modern automotive systems contain around 70-100 Electric Control Units (ECU)s~\cite{thompson2012}. Each ECU controls a subsystem of a specific criticality level such as safety-critical anti-lock brake system, or non-critical entertainment systems \cite{weber2015}. Having the ECUs isolated ensures that the numerous critical and non-critical applications do not interfere with each other, thus it is a simple task to certify an individual ECU. However, this approach leads to an inefficient use of system resources and expensive system implementation \cite{burns2016}. In order to lower the cost of the collective system and increase system efficiency (utilization), applications of different criticality levels can be integrated into a single multicore platform, leading to a Mixed Criticality System (MCS). However, this approach increases system complexity, and hinders the certification of safety-critical systems \cite{zaki2016}. %TODO: wording, source
 In order to facilitate the design, test, and certification of such systems, spatial and temporal partitioning can be used in the architecture of the system as described by \cite{zaki2016}.\\
 
 Protecting the integrity of a component from the faults of another is desired in all systems hosting multiple applications. However, it is of higher significance if the different applications have different criticality levels. Without such protection all components on the same system would need to be engineered to the standards of the highest criticality level, potentially massively increasing development costs \cite{burns2016}.\\
@@ -23,18 +23,18 @@ The term "safety-critical system" has many definitions, most quite similar. Most
 In this thesis, a safety-critical system will be defined as "a system whose failure may cause injury or death to human beings."
 
 \subsection{Different levels of criticality}
-Different names of levels of criticality are typically Safety Integrity Level (SIL), Automotive Safety Integrity Level (ASIL) and Development Assurance Level (DAL). The IEC 61508 standard \cite{IEC61508} defines four different levels and the ISO 26262 standard \cite{ISO26262} and the DO-178C standard \cite{DO178C} define five different levels each. These levels range from low to no hazard up to life-threatening or fatal in the event of a malfunction requiring the highest level of assurance that the dependent safety goals are sufficient and have been achieved.\\
+Different names of levels of criticality are typically Safety Integrity Level (SIL), Automotive Safety Integrity Level (ASIL) and Development Assurance Level (DAL). The IEC 61508 standard \cite{IEC61508} defines four different levels and the ISO 26262 standard \cite{ISO26262} and the DO-178C standard \cite{DO178C} define five different levels each. These levels range from low or no hazard up to life-threatening or fatal in the event of a malfunction requiring the highest level of assurance that the dependent safety goals are sufficient and have been achieved.\\
 %It should be noted that not all standards and papers on MCS assign to "criticality" the same meaning, an issue  explored by  Graydon and Bate [141], Esper et al. [123] and Paulitsch et al. [256]
 
 In this report the number of criticality levels will be restricted to two: "safety-critical" and "non-critical". This is due to the constraints presented in section \ref{sec:mces} and \ref{sec:scope}.
 
 \subsection{EMC\textsuperscript{2} development board}
 \label{sec:mces}
-As a part of the EMC\textsuperscript{2} project, Alten has developed a system for handling applications of mixed criticality on the same piece of hardware. The MCS developed at Alten is implemented on a Xilinx Zynq-7000. The development board is called EMC\textsuperscript{2} Development Board, or EMC\textsuperscript{2}DB. It employs two operating systems to handle applications of different criticality. A General Purpose Operating System (GPOS) for non-critical applications and a Real-Time Operating System (RTOS) for safety-critical applications. A Virtual Machine Monitor (VMM) is used to alternate between the two. %TODO: unfinished
+As a part of the EMC\textsuperscript{2} project, Alten has developed a system for handling applications of mixed criticality on the same piece of hardware. The MCS developed at Alten is implemented on a Xilinx Zynq-7000~\cite{website:xilinx}. The development board is called EMC\textsuperscript{2} Development Platform, or EMC\textsuperscript{2}DP. It employs two operating systems to handle applications of different criticality. A General Purpose Operating System (GPOS) for non-critical applications and a Real-Time Operating System (RTOS) for safety-critical applications. A Virtual Machine Monitor (VMM) is used to alternate between the two. \\ %TODO: unfinished
 
-Peripherals connected to the board are separated between safety-critical and non-critical via ARM TrustZone \cite{website:ARM}.
+Peripherals connected to the board are separated between safety-critical and non-critical via ARM TrustZone \cite{website:ARM}. \\
 
-The board also has a Field Programmable Gate Array (FPGA).
+The board also has a Field Programmable Gate Array (FPGA). \\
 
 %An overview of the system can be seen in Figure~\ref{fig:introduction_overview}.
 
@@ -50,9 +50,11 @@ For more detailed information, see the report by \cite{zaki2016}.
 %Implement safety-critical controller on the embedded system. 
 An ideal MCS ensures partitioning between different criticality levels while still sharing resources efficiently.\\ %TODO: Expand?
 
-The MCS developed at Alten (EMC\textsuperscript{2}DP)~\ref{sec:mces} switches Operative System (OS) to enable partitioning between safety-critical and non-critical applications, which takes about 2$\mu s$. This mode switch introduces additional deadlines which makes processor scheduling more difficult.\\ %means that safety-critical tasks that require very high frequencies would not be suited for this system. Moreover, it is of interest to see at what point the effects of OS switching are "too much". %TODO: wording
+The MCS developed at Alten (EMC\textsuperscript{2}DP)~\ref{sec:mces} switches Operative System (OS) to enable partitioning between safety-critical and non-critical applications, which takes about 2 $\mu s$. This mode switch introduces additional deadlines which makes processor scheduling more difficult.\\ %means that safety-critical tasks that require very high frequencies would not be suited for this system. Moreover, it is of interest to see at what point the effects of OS switching are "too much". %TODO: wording
 
-To evaluate the performance of the system, a distance keeping control algorithm for platooning will be implemented on it. A demonstrator will be constructed in the form of a RC car capable of following a vehicle in front of it at a specified distance. If the lead car exceeds a predefined maximum speed or deviates from the road, the following car should not exceed the maximum speed. It should be verified that no matter the computational load and eventual crashes of the Linux based non-critical system, the distance keeping algorithm on the RTOS never crashes. It should also be investigated at how high frequencies the control algorithm can operate while still maintaining functionality on the GPOS. \\
+To evaluate the performance of the system, a distance keeping control algorithm for platooning will be implemented on it. A demonstrator will be constructed in the form of a RC car capable of following a vehicle in front of it at a specified distance. If the lead car exceeds a predefined maximum speed or deviates from the road, the following car should not exceed the maximum speed. The performance of the embedded controller and the control algorithm will be measured during heavy non-critical computational load, and without any non-critical load altogether. \\
+
+It should be verified that no matter the computational load and eventual crashes of the Linux based non-critical system, the distance keeping algorithm on the RTOS never crashes. It should also be investigated at how high frequencies the control algorithm can operate while still maintaining functionality on the GPOS. \\
 %This should be compared with performance of the system without the GPOS altogether.\\%TODO: Wording
 
 This problem leads to the research question: 
@@ -70,7 +72,7 @@ alternatively:
 
 \section{Purpose}
 %TODO: Wording
-Reducing the amount of computers in automotive systems would have many effects. Manufacturing costs would decrease and with fewer physical components maintenance costs would also decrease. However, the system complexity would increase and thereby increasing time and cost to design the system. 
+Reducing the amount of computers in automotive systems would have many effects. Manufacturing costs would decrease and with fewer physical components maintenance costs would also decrease. However, the system complexity would increase and thereby increasing time and cost to design the system. \\
 
 SafeCOP (Safe Cooperating Cyber-Physical Systems) is an European project that targets cyberphysical systems-of-systems whose safe cooperation relies on wireless communication~\cite{safecop2016}. SafeCOPs Use Case 3 (UC3) regarding "Vehicle control loss warning" together with the EMC2 goals tie well in with the problem statement and use case described in~\ref{sec:problem}. %TODO: wording
 %"We will develop a Control Loss Warning system where, when a vehicle in a platoon loses some functionality affecting its platooning ability, all vehicles downstream and the road infrastructure concessionaire are notified in order to assess if further actions are required. (e.g. full auto braking, emergency services assistance)."
@@ -83,12 +85,12 @@ In this project there are both team goals and individual goals that do not alway
 The team consists of five master thesis students. The students areas of work are: control theory and system modeling, data aggregation, safety-critical communication in MCS, lane detection and finally safety-critical control in MCS. Together the team will build a vehicle capable of following a vehicle ahead of it while keeping inside road markers.
 
 \subsection{Individual goal}
-Verify quantitatively the performance of safety-critical distance keeping controller, see \ref{sec:research} Solve the problems described in \ref{sec:problem}.
+Verify quantitatively the performance of safety-critical distance keeping controller, see \ref{sec:research}. Solve the problems described in \ref{sec:problem}.
 
 \subsection{Scope}
 \label{sec:scope}
 %TODO: How much can the result be generalized?
-The work of this thesis and the implementation on the demonstrator will build upon the work of \cite{zaki2016}.
+The work of this thesis and the implementation on the demonstrator will build upon the work of Youssef Zaki\cite{zaki2016}.
 
 The embedded computer is constrained to the Xilinx Zynq-7000 SoC \footnote{\url{https://www.xilinx.com/products/silicon-devices/soc/zynq-7000.html}}. 
 
@@ -104,7 +106,8 @@ Scheduling on the processor will be restricted to Rate Monotonic (RM).
 \label{sec:research}
 %TODO: verify source
 %Deductive approach
-The plan is to make an confirmatory investigation using quantitative data/operations with a deductive approach. This is a quantitative research method where data is gathered during experiments and from simulations of the environment \cite{hakansson2013}. %Gather data from simulations and from real tests, iterated many times.
+The plan is to make an confirmatory investigation using quantitative data/operations with a deductive approach. This is a quantitative research method where data is gathered during experiments and from simulations of the environment \cite{hakansson2013}. \\ %Gather data from simulations and from real tests, iterated many times.
+%TODO: Bättre
 
 %TODO: Kanske bättre i en annan del?
 The position of the demonstrator will be read by a separate sensor of the same type as the one on the demonstrator. The performance of the control system and the embedded controller will be measured and compared with the same system without any non-critical computational load. This will also be done for a simulation of the system. The measures regarding control system performance will consist of 
