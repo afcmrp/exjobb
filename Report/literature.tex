@@ -3,7 +3,7 @@ This chapter will go through relevant articles and already known knowledge on th
 
 \section{Mixed criticality systems}
 %SotA regarding MCS.
-A MCS is achieved by letting applications of different criticality share resources. These resources could be computational power in the CPU, memory, peripherals, input/output ports. As of July 2016, the most explored area is sharing the CPU between multiple criticality levels \cite{burns2016}. \\
+A MCS is achieved by letting applications of different criticality share resources. These resources could be the CPU, memory, peripherals, input/output ports etc. The most explored area is sharing the CPU between multiple criticality levels \cite{burns2016}. \\
 
 %The term Mixed Criticality had been used before 2007 to address issues of non-interference in non-federated architectures such as IMA [190];
 
@@ -42,7 +42,7 @@ For a more complete review of work done on MCSs with a shared processor, see the
 \section{Current system}
 \label{sec:lit_emc2mcs}
 %Describe current system more in depth.
-The EMC2DP uses two operating systems, a RTOS for safety-critical applications and a GPOS for non-critical applications. A Virtual Machine Monitor (VMM) or "Hypervisor" is used to alternate between safety-critical RTOS and non-critical GPOS. The RTOS is TOPPERS FMP kernel \cite{website:FMP}, and the GPOS is a custom modified Linux distribution. The VMM used is SafeG \cite{website:safeg}. It switches processor state via a hardware switch. See figure~\ref{fig:modeswitch}.
+The EMC2DP uses two operating systems, a RTOS for safety-critical applications and a GPOS for non-critical applications. A Virtual Machine Monitor (VMM) or "Hypervisor" is used to alternate between safety-critical RTOS and non-critical GPOS. The RTOS is TOPPERS FMP kernel \cite{website:FMP}, and the GPOS is a custom modified Linux distribution. The VMM used is SafeG \cite{website:safeg}, also developed by TOPPERS. It switches processor state via a hardware switch. See figure~\ref{fig:modeswitch}.
 
 \begin{figure}[H]
 \centering
