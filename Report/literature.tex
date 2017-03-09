@@ -11,7 +11,7 @@ A MCS is achieved by letting applications of different criticality share resourc
 %Lower production cost, higher design cost?
 Potential benefits with pursuing MCS as opposed to distributed systems are reduced physical space required, reduced weight, reduced heat generation, reduced power consumption and reduced production costs~\cite{burns2016}. This would all ultimately lead to economical benefits.\\
 
-Potential downsides are increased complexity which could lead to higher system design costs. Building applications on the same platform to share resources could require engineering teams to work more closely together, potentially leading to administrative difficulties and costs. This needs to be investigated and could vary from industry to industry. To combat the potential downsides, the EMC\textsuperscript{2} project aims at creating platforms for easier development of MCS. %TODO: källa eller ändra wording
+Potential downsides are increased complexity which could lead to higher system design costs. Building applications on the same platform to share resources could require engineering teams to work more closely together, potentially leading to administrative difficulties and costs. This needs to be investigated and could vary from industry to industry. To combat the potential downsides, the EMC\textsuperscript{2} project aims at creating platforms for easier development of MCS.\\ %TODO: källa eller ändra wording
 
 The EMC\textsuperscript{2} project lists several goals \cite{website:emc2goals}:
 \begin{itemize}
@@ -22,9 +22,10 @@ The EMC\textsuperscript{2} project lists several goals \cite{website:emc2goals}:
 \end{itemize}
 
 \subsection{Sharing processor}
+%A lot of work has been done regarding processor scheduling in MCS
 The area of MCS was first explored by Steve Vestal~\cite{vestal2007}. His paper showed that neither Rate Monotonic (RM) nor Deadline Monotonic (DM) priority assignment was optimal for MCS; however Audsley’s optimal priority assignment algorithm \cite{audsley2001} was found to be applicable. \\ %TODO: Wording
 
-This paper was followed by two publications in 2008 by Baruah and Vestal [59], and Huber et al. [206]. The first of these papers generalises Vestal’s model by using a sporadic task model and by assessing fixed job-priority scheduling and dynamic priority scheduling. It contains the important result that EDF (Earliest Deadline First) does not dominate FP when criticality levels are introduced, and that there are feasible systems that cannot be scheduled by EDF. The latter paper addresses multi-processor issues and virtualisation (though it did not use that term). It focused on AUTOSAR and resource management (encapsulation and monitoring) with time-triggered applications and a trusted network layer." \\
+In 2008 Baruah and Vestal~\cite{baruah2008} showed that EDF (Earliest Deadline First) does not dominate FP when criticality levels are introduced, and that there are feasible systems that cannot be scheduled by EDF.
 
 %Schedulers
 1. (audsley) 2. EDF-VDL
@@ -75,10 +76,13 @@ An overview of the system can be seen in Figure~\ref{fig:introduction_overview}.
 "TrustZone is a security extension available in modern ARM processors that creates a security infrastructure designers can use to protect critical system assets. This infrastructure is achieved by enabling the partition of system components, both hardware and software, into either a Secure and a Normal world (or zone). Resources that are marked as normal are not permitted to access Secure zone components. This mechanism is enforced by the AMBA3 (Advanced Microcontroller Bus Architecture) AXI (Advanced eXtensible Interface) bus system. It contains an extra control signal for each of the read and write channels (Non-secure or NS bits) that dictate the access rights Non-secure bus masters to the Secure slaves. Each processor with an enabled TrustZone security extension can be partitioned into a Normal and a Secure virtual CPU. The virtual processors execute in a time-multiplexed fashion, and use the ”Monitor Mode” state to create an efficiently switching mechanism between Normal and Secure zones. The NS-bit, bit[0] of the Secure Configuration Register (SCR) in the System Control Coprocessor (CP15), controls the activation of secure state of the processor. Whenever the NS-bit set high, the processor state immediately switches to the Normal world. However, if the processor is in Monitor Mode, it remains in the Secure world regardless of the state of the SCR NS-bit. The processor state can nter monitor mode by either issuing a special instruction, SMC (Secure Monitor Call), in software or by hardware exception mechanisms such as IRQ, FIQ, external Data Abort, or external Prefetch Abort. In general, the software running in monitor mode serves the purpose of saving the state of the current world, and loading the state the other."~\cite{website:ARM} \\ %TODO: Wording
 
 \section{Standards}
-Different standards to regulate and ensure safety.
+Safety practices are becoming more regulated as industries adopt a standardized set of practices for designing and testing products. %TODO: expand, wording
+
+\subsection{IEC 61508}
+IEC 61508~\cite{IEC61508} is intended to be a basic functional safety standard applicable to all kinds of industry. It defines four different safety integrity levels, SIL~1 being the least dependable up to SIL~4 which is the most dependable level.
 
 \subsection{ISO 26262}
-Safety practices are becoming more regulated as industries adopt a standardized set of practices for designing and testing products. ISO 26262 addresses the needs for an automotive-specific international standard that focuses on safety critical components. ISO 26262 is a derivative of IEC 61508, the generic functional safety standard for electrical and electronic (E/E) systems.
+ISO 26262~\cite{ISO26262} addresses the needs for an automotive-specific international standard that focuses on safety critical components. ISO 26262 is a derivative of IEC 61508, the generic functional safety standard for electrical and electronic (E/E) systems.
 
 \subsubsection{ASILs}
 %ASIL QM (quality management) relates to the lowest (no) hazard, and ASIL
@@ -107,7 +111,7 @@ ISO 26262 describes five different levels relating to hazard and risk. Ranked fr
 \label{table:ASIL}
 \end{table}
 
-ISO 26262 prescribes an "ASIL algebra", where the various integrity levels are translated into integers (ASIL $QM = 0$; $A = 1$; $B = 2$; $C = 3$ and $D = 4$). If a hazard requires several components to fail, the added ASIL of these components is used to determine if ther is an violation, assuming they are statistically independent of each other failures. For example, a safety level ASIL B can be met by two independent components which each individually only meet ASIL A (and thus effectively $A + A = B$).~\cite{azevedo2014} \\ %TODO: Wording
+The various integrity levels can be translated into integers (ASIL $QM = 0$; $A = 1$; $B = 2$; $C = 3$ and $D = 4$). If a hazard requires several components to fail, the added ASIL of these components is used to determine if there is an violation, assuming the components faults are statistically independent of each other. For example, a safety level ASIL B can be met by two independent components which each individually only meet ASIL A (and thus effectively $A + A = B$).~\cite{azevedo2014} \\ %TODO: semi Wording
 
 The different ASILs relate to cost, see table~\ref{table:cost_heuritics}. % TODO: Expand, wording
 
@@ -127,7 +131,6 @@ Experimental-II~\cite{azevedo2014} & 0 & 20 & 30 & 45 & 55 \\ \hline
 
 
 \subsubsection{Freedom from interference}
-
 
 
 \subsection{AUTOSAR}
