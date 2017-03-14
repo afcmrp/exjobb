@@ -30,15 +30,11 @@ In this report the number of criticality levels will be restricted to two: "safe
 
 \subsection{EMC\textsuperscript{2} development board}
 \label{sec:mces}
-As a part of the EMC\textsuperscript{2} project, Alten has developed a system for handling applications of mixed criticality on the same piece of hardware. The MCS developed at Alten is implemented on a Xilinx Zynq-7000~\cite{website:xilinx}. The development board is called EMC\textsuperscript{2} Development Platform, or EMC\textsuperscript{2}DP. It employs two operating systems to handle applications of different criticality. A General Purpose Operating System (GPOS) for non-critical applications and a Real-Time Operating System (RTOS) for safety-critical applications. A Virtual Machine Monitor (VMM) is used to alternate between the two. \\ %TODO: unfinished
+As a part of the EMC\textsuperscript{2} project, Alten has developed a system for handling applications of mixed criticality on the same piece of hardware. The MCS developed at Alten is implemented on a Xilinx Zynq-7000~\cite{website:xilinx}. The development board is called EMC\textsuperscript{2} Development Platform, or EMC\textsuperscript{2}DP. It employs two operating systems to handle applications of different criticality. A General Purpose Operating System (GPOS) for non-critical applications and a Real-Time Operating System (RTOS) for safety-critical applications. A Virtual Machine Monitor (VMM) is used to alternate between the two.\\ %TODO: unfinished
 
-Peripherals connected to the board are separated between safety-critical and non-critical via ARM TrustZone \cite{website:ARM}. \\
+Peripherals connected to the board are separated between safety-critical and non-critical via ARM TrustZone \cite{website:ARM}.\\
 
-The board also has a Field Programmable Gate Array (FPGA). \\
-
-%An overview of the system can be seen in Figure~\ref{fig:introduction_overview}.
-
-For more detailed information, see the report by \cite{zaki2016}.
+For more detailed information, see section \ref{sec:lit_emc2mcs} or the report by \cite{zaki2016}.
 
 \subsection{Platooning}
 \label{sec:platooning}
@@ -90,13 +86,11 @@ Verify quantitatively the performance of safety-critical distance keeping contro
 \section{Scope}
 \label{sec:scope}
 %TODO: How much can the result be generalized?
-The work of this thesis and the implementation on the demonstrator will build upon the work of Youssef Zaki\cite{zaki2016}.
+The work of this thesis and the implementation on the demonstrator will build upon the work of Youssef Zaki\cite{zaki2016}.\\
 
-The embedded computer is constrained to the Xilinx Zynq-7000 SoC \footnote{\url{https://www.xilinx.com/products/silicon-devices/soc/zynq-7000.html}}. 
+The embedded computer is constrained to the Xilinx Zynq-7000 SoC \cite{website:xilinx}.\\
 
-The thesis is produced at Alten AB. %TODO: Remove?
-
-%TODO: Control algorithm will be designed by Daniel Roshanghias
+The architecture of the cooperative adaptive cruise control algorithm will be designed by Daniel Roshanghias.\\
 
 %Scheduling on the processor will be restricted to Rate Monotonic (RM).
 
@@ -106,7 +100,7 @@ The thesis is produced at Alten AB. %TODO: Remove?
 \label{sec:research}
 %TODO: verify source
 %Deductive approach
-The plan is to make an confirmatory investigation using quantitative data/operations with a deductive approach. This is a quantitative research method where data is gathered during experiments and from simulations of the environment \cite{hakansson2013}. \\ %Gather data from simulations and from real tests, iterated many times.
+The plan is to conduct an confirmatory investigation using quantitative data/operations with a deductive approach. This is a quantitative research method where data is gathered during experiments and from simulations of the environment \cite{hakansson2013}. \\ %Gather data from simulations and from real tests, iterated many times.
 %TODO: Bättre
 
 %TODO: Kanske bättre i en annan del?

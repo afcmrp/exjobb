@@ -3,7 +3,7 @@ This chapter will go through relevant articles and already known knowledge on th
 
 \section{Mixed criticality systems}
 %SotA regarding MCS.
-A MCS is achieved by letting applications of different criticality share resources. These resources could be the CPU, memory, peripherals, input/output ports etc. The most explored area is sharing the CPU between multiple criticality levels \cite{burns2016}. The benefit of combining previously distributed systems is higher resource efficiency, which leads to economical benefits.\\
+A MCS is achieved by letting applications of different criticality share resources. These resources could be the processor, memory, peripherals, input/output ports etc. The most explored area is sharing the CPU between multiple criticality levels \cite{burns2016}. The benefit of combining previously distributed systems is higher resource efficiency, which leads to economical benefits.\\
 
 %The term Mixed Criticality had been used before 2007 to address issues of non-interference in non-federated architectures such as IMA [190];
 
@@ -59,8 +59,38 @@ For a more complete review of work done on MCSs with a shared processor, see the
 
 \section{Current system}
 \label{sec:lit_emc2mcs}
+%TODO: bättre rubrik
 %Describe current system more in depth.
-The EMC2DP uses two operating systems, a RTOS for safety-critical applications and a GPOS for non-critical applications. A Virtual Machine Monitor (VMM) or "Hypervisor" is used to alternate between safety-critical RTOS and non-critical GPOS. The RTOS is TOPPERS FMP kernel \cite{website:FMP}, and the GPOS is a custom modified Linux distribution. The VMM used is SafeG \cite{website:safeg}, also developed by TOPPERS. It switches processor state via a hardware switch. See figure~\ref{fig:modeswitch}.
+This section will describe the EMC2DP, for more information see the report by Zaki~\cite{zaki2016}.
+
+\subsection{Hardware}
+The Zynq-7000 SoC has a Processing System (PS) consisting of a hardwired application processing unit, memory controller, and peripheral devices. The main processing unit is a dual-core Cortex-A9 ARM processor. Connected to the PS region is a Programmable Logic (PL) region. The PL is based on Xilinx’s 7-series FPGA technology. 
+Due to the flexible nature of the PL, systems can be designed to reach a new level of performance. For example, the PL region can be used to instantiate standard or custom IP hardware modules that can serve as accelerators for the PS. Additionally, the PL region enables the PS to access system resources that are only accessible by the PL. %TODO: Wording
+An overview of the interfaces between the PS and the PL can be seen in Figure~\ref{fig:interface}.\\ 
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\textwidth]{./img/literature_interface.png}
+\caption{Overview of the interfaces between the PS and PL regions.\cite{zaki2016}}\label{fig:interface}
+\end{figure}
+
+The interfaces between the PS and PL regions can be divided into two categories: 
+\begin{itemize}
+\item Functional interfaces: include the Advanced eXtensible Interface (AXI) ports such as AXIGP for general purpose master/slave device interface between PS and PL regions, extended MIO (EMIO) which enable PL IPs to access most I/O peripherals, interrupts, DMA flow control, clocks, and debug interfaces.
+\item Configuration interfaces: these signals are connected to the configuration block of the PL, which allow the PS to control the configuration of the PL. %TODO: Wording
+\end{itemize}
+
+Resources are separated as secure and non-secure using ARM TrustZone \cite{website:ARM}.\\
+
+\subsection{TrustZone}
+\label{sec:trustzone}
+TrustZone is a security feature by ARM that is available in their modern processors. TrustZone creates a security infrastructure in order to protect critical system assets from beeing accessed by non-trusted sources. This is achieved by enabling partitioning system components, both hardware and software, into either a Secure or Normal zone. Resources that are marked as Normal are not permitted to access Secure resources. This mechanism is enforced by the AMBA3 (Advanced Microcontroller Bus Architecture) AXI bus system. It contains an extra control signal for each of the read and write channels that dictate the access rights Non-secure bus masters to the Secure slaves. Each processor with an enabled TrustZone security extension can be partitioned into a Normal and a Secure virtual CPU. The virtual processors execute in a time-multiplexed fashion, and use the ”Monitor Mode” state to create an efficiently switching mechanism between Normal and Secure zones.~\cite{zaki2016} \\ %TODO: Wording
+
+\subsection{Operative systems}
+The EMC2DP uses two Operative Systems (OS) to create temporal and spatial separation between safety-critical and non-critical applications using TrustZone. In its current setup the Real-Time Operative System (RTOS) FMP by TOPPERS~\cite{website:FMP} is used for safety-critical applications. This RTOS follows the uITRON4.0 specification~\cite{uitron}, which is a widely used RTOS specification for Japanese embedded systems. For non-critical applications, the General Purpose Operative System (GPOS) Linux kernel 4.4 is used. Instead of Linux another instance of FMP could be used for non-critical applications.\\
+
+\subsection{Virtual Machine Monitor}
+A Virtual Machine Monitor (VMM) or "Hypervisor" is used to alternate between the safety-critical and non-critical OS. The VMM used is SafeG \cite{website:safeg}, also developed by TOPPERS. It switches processor state via a hardware switch. See figure~\ref{fig:modeswitch}. The switching takes ~2 $\mu s$.
 
 \begin{figure}[H]
 \centering
@@ -69,30 +99,30 @@ The EMC2DP uses two operating systems, a RTOS for safety-critical applications a
 \caption{Flowchart of the boot sequence of the CPU. \cite{zaki2016}}\label{fig:modeswitch}
 \end{figure}
 
-A Field Programmable Gate Array (FPGA) as interface between processor and board. Peripherals are separated as secure and non-secure using ARM TrustZone \cite{website:ARM}, see section~\ref{sec:trustzone}. \\ %TODO: Expand!
-
-An overview of the system can be seen in Figure~\ref{fig:system_overview}.
+An basic overview of the hardware and the software of the system can be seen in Figure~\ref{fig:system_overview}.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{./img/literature_overview.png}
-\caption{System overview of the MCS in place.\cite{zaki2016}}\label{fig:system_overview}
+\caption{Overview of the MCS in place.\cite{zaki2016}}\label{fig:system_overview}
 \end{figure}
 
-%Linux:
-%Root File System
-%Device Tree
-%Kernel
 
-%Boot SD:
-%uboot
+\subsection{Build procedure}
+The MCS is built from many different components. Hardware design,  applications, virtualization layer, operative systems, boot loaders etc. This section will describe the build procedure.\\ %TODO: Expand
+%The virtualization layer (SafeG) and the Secure OS (RTOS) remain the same, the software that runs in the normal region can be either RTOS, GPOS, or a bare metal application. Furthermore, other configurations, such as RTOS or GPOS only mode, do not include the VMM.
 
-%FMP:
-%compiled RTOS
+Xilinx's software Vivado~\cite{website:vivado} is used to synthesize the hardware design (vhdl or verilog code) into a bitstream file (.bit) in order to configure the PL region of the Zynq. Vivado also produces a set of files that represent the designed hardware platform, which are used for software development. Xilinx SDK tool is used to create the Board Support Package (BSP) and the First Stage Boot Loader (FSBL) that correspond to the designed system. The FSBL is an Executable and Linkable Format (ELF) file that contains initialization software. During system boot, the FSBL is loaded into the On-Chip Memory (OCM) in order to initialize all available components (e.g. memory controller, data cache, instruction cache). In general, after the FSBL initialization process completes, and depending on boot sequence, the CPU can do any of the following actions: configure the FPGA, initiate the Second Stage Boot Loader SSBL, or jumps to the first address of the main program. The SDK tool is also used to generate a boot file (BOOT.bin), which must at least contain the FSBL (fsbl.elf). In the implemented system, the BOOT.bin file also includes the bitstream file (system.bit) and the SSBL (uboot.elf * ) The u-boot.elf file (universal boot-loader) is the SSBL. Once the system is initialized and the PL is configured, the system starts executing the u-boot instructions present in the BOOT.bin. U-boot is a full system on its own, and has many useful features. In particular, u-boot can be used to load executables and other system files from a remote server into the DDR3 memory using protocols such as Trivial File Transfer Protocol (TFTP) (Figure 6.3). This method is extremely usefully, particularly when dealing with large files during the development phase, such as the Root File System and Linux kernel.
 
-\subsection{TrustZone}
-\label{sec:trustzone}
-"TrustZone is a security extension available in modern ARM processors that creates a security infrastructure designers can use to protect critical system assets. This infrastructure is achieved by enabling the partition of system components, both hardware and software, into either a Secure and a Normal world (or zone). Resources that are marked as normal are not permitted to access Secure zone components. This mechanism is enforced by the AMBA3 (Advanced Microcontroller Bus Architecture) AXI (Advanced eXtensible Interface) bus system. It contains an extra control signal for each of the read and write channels (Non-secure or NS bits) that dictate the access rights Non-secure bus masters to the Secure slaves. Each processor with an enabled TrustZone security extension can be partitioned into a Normal and a Secure virtual CPU. The virtual processors execute in a time-multiplexed fashion, and use the ”Monitor Mode” state to create an efficiently switching mechanism between Normal and Secure zones. The NS-bit, bit[0] of the Secure Configuration Register (SCR) in the System Control Coprocessor (CP15), controls the activation of secure state of the processor. Whenever the NS-bit set high, the processor state immediately switches to the Normal world. However, if the processor is in Monitor Mode, it remains in the Secure world regardless of the state of the SCR NS-bit. The processor state can nter monitor mode by either issuing a special instruction, SMC (Secure Monitor Call), in software or by hardware exception mechanisms such as IRQ, FIQ, external Data Abort, or external Prefetch Abort. In general, the software running in monitor mode serves the purpose of saving the state of the current world, and loading the state the other."~\cite{zaki2016} \\ %TODO: Wording
+Figure \ref{fig:system_build} provides a summary of the different dependencies for the system and the required flow for building the system. The keyword ”step x” indicates instances where dependencies exists within a build directory. Software tools are indicated by the circular shape, such as Vivado, SDK, and GNU Compiler Collection (GCC) (make).
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{./img/literature_build.png}
+\caption{System build procedure.\cite{zaki2016}}\label{fig:system_build}
+\end{figure}
+
+For more information about the build and the system, see the report by Zaki~\cite{zaki2016}.
 
 \section{Standards}
 %Different standards to regulate and ensure safety
@@ -133,7 +163,7 @@ ISO 26262 describes five different Automotive Safety Integrity Levels (ASIL) rel
 
 The various integrity levels can be translated into integers (ASIL $QM = 0$; $A = 1$; $B = 2$; $C = 3$ and $D = 4$). If a hazard requires several components to fail, the added ASIL of these components is used to determine if there is an violation, assuming the components faults are statistically independent of each other. For example, a safety level ASIL B can be met by two independent components which each individually only meet ASIL A (and thus effectively $A + A = B$).~\cite{azevedo2014} \\ %TODO: semi Wording
 
-The different ASILs relate to cost, see table~\ref{table:cost_heuritics}. % TODO: Expand, wording
+The different ASILs relate to cost, see table~\ref{table:cost_heuritics}. %TODO: Expand, wording
 
 \begin{table}[H]
 \centering
@@ -159,6 +189,7 @@ element = "system or part of a system including components, hardware, software, 
 cascading failure = "failure of an element of an item causing another element or elements of the same item to fail" (ISO 26262, Part 1, Definition 1.13)
 
 \subsection{AUTOSAR}
+%TODO: Wording
 "AUTOSAR (AUTomotive Open System ARchitecture) is a international development partnership of automotive interested parties founded in 2003. It pursues the objective of creating and establishing an open and standardized software architecture for automotive electronic control units (ECUs) excluding infotainment. Goals include the scalability to different vehicle and platform variants, transferability of software, the consideration of availability and safety requirements, a collaboration between various partners, sustainable utilization of natural resources, maintainability throughout the whole "Product Life Cycle"."~\cite{website:autosar}
 
 The AUTOSAR Architecture distinguishes on the highest abstraction level between three software layers: Application, Runtime Environment (RTE) and Basic Software (BSW) which run on a Microcontroller.~\cite{website:autosar} See figure \ref{fig:autosar}.
