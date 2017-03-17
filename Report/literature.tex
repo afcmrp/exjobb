@@ -34,14 +34,15 @@ Earliest deadline first
 Round robin
 
 \subsubsection{Mixed criticality scheduling}
-The area of sharing the processor in MCS was first explored by Steve Vestal~\cite{vestal2007} in 2007. His paper showed that neither Rate Monotonic (RM) nor Deadline Monotonic (DM) priority assignment was optimal for MCS; however Audsley’s optimal priority assignment algorithm \cite{audsley2001} was found to be applicable. \\ %TODO: Wording
+The area of sharing the processor in MCS was first explored by Steve Vestal~\cite{vestal2007} in 2007. His paper showed that neither Rate Monotonic (RM) nor Deadline Monotonic (DM) priority assignment was optimal for MCS; however Audsley’s optimal priority assignment algorithm \cite{audsley2001} was found to be applicable.\\ %TODO: Wording
 
-In 2008 Baruah and Vestal~\cite{baruah2008} showed that EDF (Earliest Deadline First) does not dominate FP when criticality levels are introduced, and that there are feasible systems that cannot be scheduled by EDF.
+In 2008 Baruah and Vestal~\cite{baruah2008} showed that EDF (Earliest Deadline First) does not dominate FP when criticality levels are introduced, and that there are feasible systems that cannot be scheduled by EDF.\\
 
-%Schedulers
-1. (audsley)~\cite{audsley2001} 2. EDF-VDL 3. SMC 4. AMC-max 5. AMC-rtb \cite{baruah2011}
+One MCS scheduling algorithm is Criticality Monotonic Priority Ordering (CrMPO). Tasks are assigned priorities first according to criticality (highest criticality first) and then according to deadline (shortest deadline first). Static Mixed Criticality with no run-time monitoring (SMC-NO) is the scheduler that was Vestal's original approach~\cite{vestal2007}. Another scheduler is SMC with run-time monitoring (abbreviated only as SMC). Yet another scheduling algorithm is Adaptive Mixed Criticality (AMC), described Baruah, Burns and Davis~\cite{baruah2011}: "To summarise the main difference between SMC and AMC, in SMC any LO-critical task is descheduled if it executes for more than C(LO). While in AMC, all LO-critical tasks are descheduled if any job (from any task) executes for more than C(LO). If a HI-critical job executes for more than C(LO) (but no greater than C(HI)) then, under SMC, LO-critical tasks continue to execute but may miss their deadlines; but under AMC they stop executing."\\
 
-"This figure plots the percentage of task sets generated that were deemed schedulable for a system of 20 tasks, with on average 50\% of those tasks having high criticality and each task having a high criticality execution time that is twice its low criticality execution time. The compared approaches are (from least effective to most effective): CrMPO which assigned priorities in criticality order, SMC-NO (static  mixed criticality with no run-time  monitoring) which  is  Vestal’s  original approach, SMC which is an adaptation of Vestal’s approach in which LO-criticality tasks are monitored at run-time and are prevented from executing for more than C(LO), and AMC-rtb and AMC-max which are the two methods introduced in the previous paragraph (AMC for adaptive mixed criticality). In the graph the UB-H\&L line bounds the maximum possible number of schedulable task sets. It serves to illustrate the quality of the AMC-max approach."~\cite{burns2016}
+To evaluate the performance of the different scheduling algorithms Baruah, Burns and Davis~\cite{baruah2011} tested the scheduling algorithms AMC, SMC and CrMPO for scheduling sporadic tasks of a taskset of 20 tasks where on average 50\% where of high criticality and 50\% where of low criticality. The tasks of high criticality where allowed an execution time that was twice its low criticality execution time. The comparison of the performance of the schedulers can be seen in Figure~\ref{fig:schedulers}. In the graph the UB-H\&L line bounds the maximum possible number of schedulable task sets.
+
+%"This figure plots the percentage of task sets generated that were deemed schedulable for a system of 20 tasks, with on average 50\% of those tasks having high criticality and each task having a high criticality execution time that is twice its low criticality execution time. The compared approaches are (from least effective to most effective): CrMPO which assigned priorities in criticality order, SMC-NO (static  mixed criticality with no run-time  monitoring) which  is  Vestal’s  original approach, SMC which is an adaptation of Vestal’s approach in which LO-criticality tasks are monitored at run-time and are prevented from executing for more than C(LO), and AMC-rtb and AMC-max which are the two methods introduced in the previous paragraph (AMC for adaptive mixed criticality). In the graph the UB-H\&L line bounds the maximum possible number of schedulable task sets. It serves to illustrate the quality of the AMC-max approach."~\cite{burns2016}
 
 \begin{figure}[H]
 \centering
@@ -51,10 +52,10 @@ In 2008 Baruah and Vestal~\cite{baruah2008} showed that EDF (Earliest Deadline F
 
 For a more complete review of work done on MCSs with a shared processor, see the paper by Burns~\cite{burns2016}.
 
-\subsection{Different criticality on different processors}
+%\subsection{Different criticality on different processors}
 
 
-\subsection{Sharing memory}
+%\subsection{Sharing memory}
 %http://pertsserver.cs.uiuc.edu/~mcaccamo/papers/euromicro12.pdf
 
 \section{Current system}
@@ -66,7 +67,7 @@ This section will describe the EMC2DP, for more information see the report by Za
 \subsection{Hardware}
 The Zynq-7000 SoC has a Processing System (PS) consisting of a hardwired application processing unit, memory controller, and peripheral devices. The main processing unit is a dual-core Cortex-A9 ARM processor. Connected to the PS region is a Programmable Logic (PL) region. The PL is based on Xilinx’s 7-series FPGA technology. 
 Due to the flexible nature of the PL, systems can be designed to reach a new level of performance. For example, the PL region can be used to instantiate standard or custom IP hardware modules that can serve as accelerators for the PS. Additionally, the PL region enables the PS to access system resources that are only accessible by the PL. %TODO: Wording
-An overview of the interfaces between the PS and the PL can be seen in Figure~\ref{fig:interface}.\\ 
+An overview of the interfaces between the PS and the PL can be seen in Figure~\ref{fig:interface}.
 
 \begin{figure}[H]
 \centering
@@ -84,13 +85,13 @@ Resources are separated as secure and non-secure using ARM TrustZone \cite{websi
 
 \subsection{TrustZone}
 \label{sec:trustzone}
-TrustZone is a security feature by ARM that is available in their modern processors. TrustZone creates a security infrastructure in order to protect critical system assets from beeing accessed by non-trusted sources. This is achieved by enabling partitioning system components, both hardware and software, into either a Secure or Normal zone. Resources that are marked as Normal are not permitted to access Secure resources. This mechanism is enforced by the AMBA3 (Advanced Microcontroller Bus Architecture) AXI bus system. It contains an extra control signal for each of the read and write channels that dictate the access rights Non-secure bus masters to the Secure slaves. Each processor with an enabled TrustZone security extension can be partitioned into a Normal and a Secure virtual CPU. The virtual processors execute in a time-multiplexed fashion, and use the ”Monitor Mode” state to create an efficiently switching mechanism between Normal and Secure zones.~\cite{zaki2016} \\ %TODO: Wording
+TrustZone is a security feature by ARM that is available in their modern processors. TrustZone creates a security infrastructure in order to protect critical system assets from beeing accessed by non-trusted sources. This is achieved by enabling the partitioning of system components, both hardware and software, into either a Secure or Normal zone. Resources that are marked as Normal are not permitted to access Secure resources. This mechanism is enforced by the AMBA3 (Advanced Microcontroller Bus Architecture) AXI bus system. It contains an extra control signal for each of the read and write channels that dictate the access rights Non-secure bus masters to the Secure slaves. Each processor with an enabled TrustZone security extension can be partitioned into a Normal and a Secure virtual CPU. The virtual processors execute in a time-multiplexed fashion, and use the ”Monitor Mode” state to create an efficiently switching mechanism between Normal and Secure zones.~\cite{zaki2016} \\ %TODO: Wording
 
 \subsection{Operative systems}
 The EMC2DP uses two Operative Systems (OS) to create temporal and spatial separation between safety-critical and non-critical applications using TrustZone. In its current setup the Real-Time Operative System (RTOS) FMP by TOPPERS~\cite{website:FMP} is used for safety-critical applications. This RTOS follows the uITRON4.0 specification~\cite{uitron}, which is a widely used RTOS specification for Japanese embedded systems. For non-critical applications, the General Purpose Operative System (GPOS) Linux kernel 4.4 is used. Instead of Linux another instance of FMP could be used for non-critical applications.\\
 
 \subsection{Virtual Machine Monitor}
-A Virtual Machine Monitor (VMM) or "Hypervisor" is used to alternate between the safety-critical and non-critical OS. The VMM used is SafeG \cite{website:safeg}, also developed by TOPPERS. It switches processor state via a hardware switch. See figure~\ref{fig:modeswitch}. The switching takes ~2 $\mu s$.
+A Virtual Machine Monitor (VMM) or "Hypervisor" is used to alternate between the safety-critical (S\_OS) and non-critical (NS\_OS) OS. The VMM used is SafeG \cite{website:safeg}, also developed by TOPPERS. It switches processor state via a hardware switch. See figure~\ref{fig:modeswitch}. The switching takes ~2 $\mu s$.
 
 \begin{figure}[H]
 \centering
@@ -98,6 +99,12 @@ A Virtual Machine Monitor (VMM) or "Hypervisor" is used to alternate between the
 %Flowchart of how the physical CPU switches between the virtual CPUs
 \caption{Flowchart of the boot sequence of the CPU. \cite{zaki2016}}\label{fig:modeswitch}
 \end{figure}
+
+The time it takes the VMM to switch processor state bounds the maximum frequency a task can have while the processor still manages to maintain its switching capabilities. The maximum frequency, $f_{max}$, can be calculated as
+
+$$f_{max} = \lim_{e_s, e_{ns} \to 0} \frac{1}{e_s+e_{ns}+2e_{switch}} = 250\textrm{ kHz}$$
+
+where $e_s$ is the computational time of the tasks on the S\_OS, $e_{ns}$ is the computational time of the tasks on the NS\_OS and $e_{switch}$ is the time required for the mode-switch.\\
 
 An basic overview of the hardware and the software of the system can be seen in Figure~\ref{fig:system_overview}.
 
@@ -107,12 +114,11 @@ An basic overview of the hardware and the software of the system can be seen in 
 \caption{Overview of the MCS in place.\cite{zaki2016}}\label{fig:system_overview}
 \end{figure}
 
-
 \subsection{Build procedure}
 The MCS is built from many different components. Hardware design,  applications, virtualization layer, operative systems, boot loaders etc. This section will describe the build procedure.\\ %TODO: Expand
 %The virtualization layer (SafeG) and the Secure OS (RTOS) remain the same, the software that runs in the normal region can be either RTOS, GPOS, or a bare metal application. Furthermore, other configurations, such as RTOS or GPOS only mode, do not include the VMM.
 
-Xilinx's software Vivado~\cite{website:vivado} is used to synthesize the hardware design (vhdl or verilog code) into a bitstream file (.bit) in order to configure the PL region of the Zynq. Vivado also produces a set of files that represent the designed hardware platform, which are used for software development. Xilinx SDK tool is used to create the Board Support Package (BSP) and the First Stage Boot Loader (FSBL) that correspond to the designed system. The FSBL is an Executable and Linkable Format (ELF) file that contains initialization software. During system boot, the FSBL is loaded into the On-Chip Memory (OCM) in order to initialize all available components (e.g. memory controller, data cache, instruction cache). In general, after the FSBL initialization process completes, and depending on boot sequence, the CPU can do any of the following actions: configure the FPGA, initiate the Second Stage Boot Loader SSBL, or jumps to the first address of the main program. The SDK tool is also used to generate a boot file (BOOT.bin), which must at least contain the FSBL (fsbl.elf). In the implemented system, the BOOT.bin file also includes the bitstream file (system.bit) and the SSBL (uboot.elf * ) The u-boot.elf file (universal boot-loader) is the SSBL. Once the system is initialized and the PL is configured, the system starts executing the u-boot instructions present in the BOOT.bin. U-boot is a full system on its own, and has many useful features. In particular, u-boot can be used to load executables and other system files from a remote server into the DDR3 memory using protocols such as Trivial File Transfer Protocol (TFTP) (Figure 6.3). This method is extremely usefully, particularly when dealing with large files during the development phase, such as the Root File System and Linux kernel.
+Xilinx's software Vivado~\cite{website:vivado} is used to synthesize the hardware design (vhdl or verilog code) into a bitstream file (.bit) in order to configure the PL region of the Zynq. Vivado also produces a set of files that represent the designed hardware platform, which are used for software development. Xilinx SDK tool is used to create the Board Support Package (BSP) and the First Stage Boot Loader (FSBL) that correspond to the designed system. In general, after the FSBL initialization process completes, and depending on boot sequence, the CPU can do any of the following actions: configure the FPGA, initiate the Second Stage Boot Loader SSBL, or jumps to the first address of the main program. The SDK tool is also used to generate a boot file (BOOT.bin), which must at least contain the FSBL (fsbl.elf). In the implemented system, the BOOT.bin file also includes the bitstream file (system.bit) and the SSBL (uboot.elf * ). Once the system is initialized and the PL is configured, the system starts executing the u-boot instructions present in the BOOT.bin. U-boot is a full system on its own, and has many useful features. In particular, u-boot can be used to load executables and other system files from a remote server into the DDR3 memory using protocols such as Trivial File Transfer Protocol (TFTP), see Figure~\ref{fig:system_build}.\\
 
 Figure \ref{fig:system_build} provides a summary of the different dependencies for the system and the required flow for building the system. The keyword ”step x” indicates instances where dependencies exists within a build directory. Software tools are indicated by the circular shape, such as Vivado, SDK, and GNU Compiler Collection (GCC) (make).
 
@@ -163,7 +169,7 @@ ISO 26262 describes five different Automotive Safety Integrity Levels (ASIL) rel
 
 The various integrity levels can be translated into integers (ASIL $QM = 0$; $A = 1$; $B = 2$; $C = 3$ and $D = 4$). If a hazard requires several components to fail, the added ASIL of these components is used to determine if there is an violation, assuming the components faults are statistically independent of each other. For example, a safety level ASIL B can be met by two independent components which each individually only meet ASIL A (and thus effectively $A + A = B$).~\cite{azevedo2014} \\ %TODO: semi Wording
 
-The different ASILs relate to cost, see table~\ref{table:cost_heuritics}. %TODO: Expand, wording
+The different ASILs can relate to cost according to various cost heuristics, see table~\ref{table:cost_heuritics}. %TODO: Expand, wording
 
 \begin{table}[H]
 \centering
@@ -182,15 +188,11 @@ Experimental-II~\cite{azevedo2014} & 0 & 20 & 30 & 45 & 55 \\ \hline
 
 \subsubsection{Freedom from interference}
 %TODO: Källa, utveckla, wording
-In ISO 26262, Part 1, Definition 1.49, freedom from interference is defined as: Absence of cascading failures between two or more elements that could lead to the violation of a safety requirement. 
-
-element = "system or part of a system including components, hardware, software, hardware parts, and software units" (ISO 26262, Part 1, Definition 1.32)
-
-cascading failure = "failure of an element of an item causing another element or elements of the same item to fail" (ISO 26262, Part 1, Definition 1.13)
+In ISO 26262, Part 1, Definition 1.49, freedom from interference is defined as: Absence of cascading failures between two or more elements that could lead to the violation of a safety requirement. A cascading failure is defined as = "failure of an element of an item causing another element or elements of the same item to fail" (ISO 26262, Part 1, Definition 1.13), and an element is defined as: "system or part of a system including components, hardware, software, hardware parts, and software units" (ISO 26262, Part 1, Definition 1.32)
 
 \subsection{AUTOSAR}
 %TODO: Wording
-"AUTOSAR (AUTomotive Open System ARchitecture) is a international development partnership of automotive interested parties founded in 2003. It pursues the objective of creating and establishing an open and standardized software architecture for automotive electronic control units (ECUs) excluding infotainment. Goals include the scalability to different vehicle and platform variants, transferability of software, the consideration of availability and safety requirements, a collaboration between various partners, sustainable utilization of natural resources, maintainability throughout the whole "Product Life Cycle"."~\cite{website:autosar}
+"AUTOSAR (AUTomotive Open System ARchitecture) is a international development partnership of automotive interested parties founded in 2003. It pursues the objective of creating and establishing an open and standardized software architecture for automotive electronic control units (ECUs) excluding infotainment. Goals include the scalability to different vehicle and platform variants, transferability of software, the consideration of availability and safety requirements, a collaboration between various partners, sustainable utilization of natural resources, maintainability throughout the whole "Product Life Cycle"."~\cite{website:autosar}\\
 
 The AUTOSAR Architecture distinguishes on the highest abstraction level between three software layers: Application, Runtime Environment (RTE) and Basic Software (BSW) which run on a Microcontroller.~\cite{website:autosar} See figure \ref{fig:autosar}.
 \begin{itemize}

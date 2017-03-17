@@ -34,7 +34,7 @@ As a part of the EMC\textsuperscript{2} project, Alten has developed a system fo
 
 Resources on the board are separated between safety-critical and non-critical via ARM TrustZone \cite{website:ARM}.\\
 
-For more detailed information, see section \ref{sec:lit_emc2mcs} or the report by \cite{zaki2016}.
+For more detailed information, see section \ref{sec:lit_emc2mcs} or the report by Zaki \cite{zaki2016}.
 
 \subsection{Platooning}
 \label{sec:platooning}
@@ -43,9 +43,11 @@ For more detailed information, see section \ref{sec:lit_emc2mcs} or the report b
 
 \section{Problem statement}
 \label{sec:problem}
-%Implement safety-critical controller on the embedded system. 
-An ideal MCS ensures partitioning between different criticality levels while still sharing resources efficiently.\\ %TODO: Expand?
-
+%Implement safety-critical controller on the embedded system.
+An ideal MCS ensures partitioning between different criticality levels while still sharing resources efficiently. This leads to the underlying research question:
+\begin{itemize}
+\item "How, in a disciplined way, to reconcile the conflicting requirements of partitioning for safety assurance and sharing for efficient resource usage?" \cite{burns2016}
+\end{itemize}
 The MCS developed at Alten (EMC\textsuperscript{2}DP)~\ref{sec:mces} switches Operative System (OS) to enable partitioning between safety-critical and non-critical applications, which takes about 2 $\mu s$. This mode switch introduces additional deadlines which makes processor scheduling more difficult.\\ %means that safety-critical tasks that require very high frequencies would not be suited for this system. Moreover, it is of interest to see at what point the effects of OS switching are "too much". %TODO: wording
 
 To evaluate the performance of the system, a distance keeping control algorithm for platooning will be implemented on it. A demonstrator will be constructed in the form of a RC car capable of following a vehicle in front of it at a specified distance. If the lead car exceeds a predefined maximum speed or deviates from the road, the following car should not exceed the maximum speed. The performance of the embedded controller and the control algorithm will be measured during heavy non-critical computational load, and without any non-critical load altogether. \\
@@ -58,10 +60,7 @@ This problem leads to the research question:
 \item How well can a safety-critical control system perform when implemented on a mixed criticality system using virtualization?
 \end{itemize}
 alternatively:
-\begin{itemize}
-\item "How, in a disciplined way, to reconcile the conflicting requirements of partitioning for safety assurance and sharing for efficient resource usage?" \cite{burns2016}
-\end{itemize}
-alternatively:
+
 \begin{itemize}
 \item Is virtualization an efficient approach when trying to reconcile the conflicting requirements of partitioning for safety assurance and sharing for efficient resource usage when implementing a safety-critical control system?
 \end{itemize}
@@ -81,7 +80,7 @@ In this project there are both team goals and individual goals that do not alway
 The team consists of five master thesis students. The students areas of work are: control theory and system modeling, data aggregation, safety-critical communication in MCS, lane detection and finally safety-critical control in MCS. Together the team will build a vehicle capable of following a vehicle ahead of it while keeping inside road markers.
 
 \subsection{Individual goal}
-Verify quantitatively the performance of safety-critical distance keeping controller, see \ref{sec:research}. Solve the problems described in \ref{sec:problem}.
+Verify quantitatively the performance of safety-critical distance keeping controller, see section~\ref{sec:research}. Solve the problems described in section~\ref{sec:problem}.
 
 \section{Scope}
 \label{sec:scope}
@@ -90,7 +89,7 @@ The work of this thesis and the implementation on the demonstrator will build up
 
 The embedded computer is constrained to the Xilinx Zynq-7000 SoC \cite{website:xilinx}.\\
 
-The architecture of the cooperative adaptive cruise control algorithm will be designed by Daniel Roshanghias.\\
+The architecture of the cooperative adaptive cruise control algorithm will be designed by Daniel Roshanghias.
 
 %Scheduling on the processor will be restricted to Rate Monotonic (RM).
 
