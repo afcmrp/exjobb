@@ -1,0 +1,71 @@
+\chapter{Current system}
+\label{sec:lit_emc2mcs}
+%TODO: bättre rubrik
+%Describe current system more in depth.
+This section will describe the EMC2DP, for more information see the report by Zaki~\cite{zaki2016}.
+
+\section{Hardware}
+The Zynq-7000 SoC has a Processing System (PS) consisting of a hardwired application processing unit, memory controller, and peripheral devices. The main processing unit is a dual-core Cortex-A9 ARM processor. Connected to the PS region is a Programmable Logic (PL) region. The PL is based on Xilinx’s 7-series FPGA technology. 
+Due to the flexible nature of the PL, systems can be designed to reach a new level of performance. For example, the PL region can be used to instantiate standard or custom IP hardware modules that can serve as accelerators for the PS. Additionally, the PL region enables the PS to access system resources that are only accessible by the PL. %TODO: Wording
+An overview of the interfaces between the PS and the PL can be seen in Figure~\ref{fig:interface}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\textwidth]{./img/literature_interface.png}
+\caption{Overview of the interfaces between the PS and PL regions.\cite{zaki2016}}\label{fig:interface}
+\end{figure}
+
+The interfaces between the PS and PL regions can be divided into two categories: 
+\begin{itemize}
+\item Functional interfaces: include the Advanced eXtensible Interface (AXI) ports such as AXIGP for general purpose master/slave device interface between PS and PL regions, extended MIO (EMIO) which enable PL IPs to access most I/O peripherals, interrupts, DMA flow control, clocks, and debug interfaces.
+\item Configuration interfaces: these signals are connected to the configuration block of the PL, which allow the PS to control the configuration of the PL. %TODO: Wording
+\end{itemize}
+
+Resources are separated as secure and non-secure using ARM TrustZone \cite{website:ARM}.\\
+
+\section{TrustZone}
+\label{sec:trustzone}
+TrustZone is a security feature by ARM that is available in their modern processors. TrustZone creates a security infrastructure in order to protect critical system assets from beeing accessed by non-trusted sources. This is achieved by enabling the partitioning of system components, both hardware and software, into either a Secure or Normal zone. Resources that are marked as Normal are not permitted to access Secure resources. This mechanism is enforced by the AMBA3 (Advanced Microcontroller Bus Architecture) AXI bus system. It contains an extra control signal for each of the read and write channels that dictate the access rights Non-secure bus masters to the Secure slaves. Each processor with an enabled TrustZone security extension can be partitioned into a Normal and a Secure virtual CPU. The virtual processors execute in a time-multiplexed fashion, and use the ”Monitor Mode” state to create an efficiently switching mechanism between Normal and Secure zones.~\cite{zaki2016} \\ %TODO: Wording
+
+\section{Operative systems}
+The EMC2DP uses two Operative Systems (OS) to create temporal and spatial separation between safety-critical and non-critical applications using TrustZone. In its current setup the Real-Time Operative System (RTOS) FMP by TOPPERS~\cite{website:FMP} is used for safety-critical applications. This RTOS follows the uITRON4.0 specification~\cite{uitron}, which is a widely used RTOS specification for Japanese embedded systems. For non-critical applications, the General Purpose Operative System (GPOS) Linux kernel 4.4 is used. Instead of Linux another instance of FMP could be used for non-critical applications.\\
+
+\section{Virtual Machine Monitor}
+A Virtual Machine Monitor (VMM) or "Hypervisor" is used to alternate between the safety-critical (S\_OS) and non-critical (NS\_OS) OS. The VMM used is SafeG \cite{website:safeg}, also developed by TOPPERS. It switches processor state via a hardware switch. See figure~\ref{fig:modeswitch}. The switching takes ~2 $\mu s$.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{./img/literature_modeswitch.png}
+%Flowchart of how the physical CPU switches between the virtual CPUs
+\caption{Flowchart of the boot sequence of the CPU. \cite{zaki2016}}\label{fig:modeswitch}
+\end{figure}
+
+The time it takes the VMM to switch processor state bounds the maximum frequency a task can have while the processor still manages to maintain its switching capabilities. The maximum frequency, $f_{max}$, can be calculated as
+
+$$f_{max} = \lim_{e_s, e_{ns} \to 0} \frac{1}{e_s+e_{ns}+2e_{switch}} = 250\textrm{ kHz}$$
+
+where $e_s$ is the computational time of the tasks on the S\_OS, $e_{ns}$ is the computational time of the tasks on the NS\_OS and $e_{switch}$ is the time required for the mode-switch.\\
+
+An basic overview of the hardware and the software of the system can be seen in Figure~\ref{fig:system_overview}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{./img/literature_overview.png}
+\caption{Overview of the MCS in place.\cite{zaki2016}}\label{fig:system_overview}
+\end{figure}
+
+\section{Build procedure}
+The MCS is built from many different components. Hardware design,  applications, virtualization layer, operative systems, boot loaders etc. This section will describe the build procedure.\\ %TODO: Expand
+%The virtualization layer (SafeG) and the Secure OS (RTOS) remain the same, the software that runs in the normal region can be either RTOS, GPOS, or a bare metal application. Furthermore, other configurations, such as RTOS or GPOS only mode, do not include the VMM.
+
+Xilinx's software Vivado~\cite{website:vivado} is used to synthesize the hardware design (vhdl or verilog code) into a bitstream file (.bit) in order to configure the PL region of the Zynq. Vivado also produces a set of files that represent the designed hardware platform, which are used for software development. Xilinx SDK tool is used to create the Board Support Package (BSP) and the First Stage Boot Loader (FSBL) that correspond to the designed system. In general, after the FSBL initialization process completes, and depending on boot sequence, the CPU can do any of the following actions: configure the FPGA, initiate the Second Stage Boot Loader SSBL, or jumps to the first address of the main program. The SDK tool is also used to generate a boot file (BOOT.bin), which must at least contain the FSBL (fsbl.elf). In the implemented system, the BOOT.bin file also includes the bitstream file (system.bit) and the SSBL (uboot.elf * ). Once the system is initialized and the PL is configured, the system starts executing the u-boot instructions present in the BOOT.bin. U-boot is a full system on its own, and has many useful features. In particular, u-boot can be used to load executables and other system files from a remote server into the DDR3 memory using protocols such as Trivial File Transfer Protocol (TFTP), see Figure~\ref{fig:system_build}.\\
+
+Figure \ref{fig:system_build} provides a summary of the different dependencies for the system and the required flow for building the system. The keyword ”step x” indicates instances where dependencies exists within a build directory. Software tools are indicated by the circular shape, such as Vivado, SDK, and GNU Compiler Collection (GCC) (make).
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{./img/literature_build.png}
+\caption{System build procedure.\cite{zaki2016}}\label{fig:system_build}
+\end{figure}
+
+For more information about the build and the system, see the report by Zaki~\cite{zaki2016}.
