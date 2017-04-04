@@ -1,5 +1,5 @@
 \chapter{State of the art}
-This chapter will go through relevant articles and already known knowledge on the subject of mixed criticality systems. It will also explain the EMC2DP.
+This chapter will go through relevant articles and already known knowledge on the subject of mixed criticality systems, vehicle platooning and safety standards in the automotive industry.
 
 \section{Mixed criticality systems}
 %SotA regarding MCS.
@@ -143,4 +143,11 @@ The AUTOSAR Architecture distinguishes on the highest abstraction level between 
 Vehicle platooning can be described as a chain of vehicles traveling at a given intermediate distance and velocity. The primary objective for each vehicle with respect to safety is to maintain its distance to the preceding vehicle in the platoon. A platoon of N vehicles is often modeled in the literature as a set of moving point masses
 
 \subsection{Benefits of platooning}
-In Alam, Gattami, and Johansson (2010) it has been shown that there is a 4.7–7.7\% fuel reduction potential in HDV platooning.
+%TODO: Expand, wording, source
+Potential benefits of vehicle platooning includes lower fuel consumption, less road space required and more efficient traffic flow.\\ 
+
+Alam, Gattami, and Johansson \cite{johansson2010} showed in 2010 that there is a \mbox{4.7--7.7\%} fuel reduction potential in heavy duty vehicle platooning at a set speed of 70 km/h with two identical trucks.
+
+\subsection{Safety requirements for platooning}
+%more sources
+System uncertainties or varying vehicle parameters, such as mass, could cause a difference in braking capabilities between the vehicles. Having different braking capacity changes the shape of the safe sets. If the follower vehicle has a higher braking capacity, the level surface derived for neighboring vehicles with identical braking capacity will shift in the positive v 21 -direction and the slope of the surface will decrease, as shown in Fig. 4. This means that the follower vehicle will be able to lie closer without endangering a collision. The minimum safe relative distance is therefore shorter compared to the case of two identical vehicles. However, if the lead vehicle has a greater braking capability a perturbation arises in the level surface at v 21  0 and the slope becomes steeper. In this case a minimum distance of d = 13 m must be maintained to remain outside the reachable set at normal mode. Thus, the relative distance must be increased significantly if the lead vehicle has a stronger braking capability. Delays for the platoon control system commonly occur due to detection, transmission, computation, and producing the control command. A delay in the system implies that the lead vehicle will be able to act, change the relative velocity and distance, before the follower vehicle is able to react. A delay can be translated into a shift of the reachable set in Fig. 3 by $\delta$ d units in the positive direction along the d-axis and by $\delta$ v 21 units in the negative direction along the v 21 -axis. However, no change occurs in the follower vehicle's velocity v 2 , since it does not react. Depending on the radar and the collision detection algorithm, a worst-case delay is approximately 500 ms for the considered vehicles. Hence, the lead vehicle will be able to reduce the relative velocity by 3.25 m/s and the relative distance by 0.8 m if it is driving 25 m/s at normal mode. Thus if the follower vehicle maintains d Z 2 m, a collision can always be avoided for two identical vehicles according to the safe set in Fig. 3. \cite{johansson2013}
