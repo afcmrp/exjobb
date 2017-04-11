@@ -3,7 +3,7 @@ This chapter will go through relevant articles and already known knowledge on th
 
 \section{Mixed criticality systems}
 %SotA regarding MCS.
-A MCS is achieved by letting applications of different criticality share resources. These resources could be the processor, memory, peripherals, input/output ports etc. The most explored area is sharing the CPU between multiple criticality levels \cite{burns2016}. The benefit of combining previously distributed systems is higher resource efficiency, which leads to economical benefits.\\
+A MCS is achieved by letting applications of different criticality share resources. These resources could be the processor, memory, peripherals, input/output ports etc. The most explored area is sharing the CPU between multiple criticality levels \cite{burns2016}. The benefit of combining previously distributed systems is higher resource efficiency, which leads to economical benefits.
 
 %The term Mixed Criticality had been used before 2007 to address issues of non-interference in non-federated architectures such as IMA [190];
 
@@ -116,7 +116,7 @@ Experimental-II~\cite{azevedo2014} & 0 & 20 & 30 & 45 & 55 \\ \hline
 
 \subsubsection{Freedom from interference}
 %TODO: Källa, utveckla, wording
-In ISO 26262, Part 1, Definition 1.49, freedom from interference is defined as: Absence of cascading failures between two or more elements that could lead to the violation of a safety requirement. A cascading failure is defined as = "failure of an element of an item causing another element or elements of the same item to fail" (ISO 26262, Part 1, Definition 1.13), and an element is defined as: "system or part of a system including components, hardware, software, hardware parts, and software units" (ISO 26262, Part 1, Definition 1.32)
+In ISO 26262, Part 1, Definition 1.49, freedom from interference is defined as: Absence of cascading failures between two or more elements that could lead to the violation of a safety requirement. A cascading failure is defined as "failure of an element of an item causing another element or elements of the same item to fail" (ISO 26262, Part 1, Definition 1.13), and an element is defined as: "system or part of a system including components, hardware, software, hardware parts, and software units" (ISO 26262, Part 1, Definition 1.32)
 
 \subsection{AUTOSAR}
 %TODO: Wording
@@ -139,23 +139,141 @@ The AUTOSAR Architecture distinguishes on the highest abstraction level between 
 %Literature study about platfrom solutions for MCS
 
 \subsection{Hypervisors}
-Xen hypervisor
-Xen zynq
-SEL4 microkernel
-Sierra visor
-SafeG
-SICS Thin hypervisor
+A virtual machine monitor, or hypervisor, can be seen as an interface between the operative systems and the hardware of a system. In order to facilitate for multiple operative systems of different criticality an appropriate hypervisor bla bla. A system will only be as secure as its hypervisor. Some hypervisors can accommodate multiple instances of operative systems, and some only facilitate for two. A description of a few available open-source hypervisors will follow.
+
+\subsubsection{SafeG}
+TOPPERS group of Nagoya University in Japan has developed an open-source dual-OS architecture designed to concurrently host a real-time operating system (RTOS) and a general purpose operating system (GPOS) on TrustZone enabled ARM SoC devices [34]. SafeG takes advantage of ARM’s TrustZone security extensions to efficiently partition the system into Trusted and Non-Trusted states, which provides full system access to trusted software, and limits the capabilities of software running in Non-Trusted state. SafeG includes the following features:
+
+Enables the concurrent execution of RTOS and GPOS on either single-core or multi-core ARM-based platforms.
+
+Devices and memory regions that are configured as Secure are protected against illegal GPOS accesses.
+
+Normal world devices can be accessed from both GPOS (Non-Trusted) and RTOS (Trusted) software.
+
+Real-time requirements are guaranteed in RTOS (Trusted) via the utilization of FIQ and IRQ interrupts, where FIQ interrupts are issued for RTOS and IRQ interrupts are issued for GPOS. While in the Trusted state, IRQ interrupts are disabled so that GPOS can not disturb the execution of the RTOS. Therefore, GPOS only executes when the RTOS issues the Secure Monitor Call (SMC) instruction, which causes the SafeG monitor to switch from the Trusted world (RTOS) to the Non-Trusted world (GPOS). Furthermore, FIQ interrupts are active during the execution of GPOS, which enables RTOS to retake control of the system. For example, a cyclic execution of RTOS/GPOS can be controlled by an FIQ interrupt of a system timer.
+
+GPOS does not require any major changes, and can execute with minimal overhead.
+
+Includes an efficient guest-to-guest communication mechanism (i.e.referred to as SafeG COM)
+
+Figure 5.1 depicts the SafeG architecture. It shows a simplified view of a TrustZone enabled ARM processor together with partitioned memory and device IO. The memory and device IO are configured as either Trusted (Secure) or Non-Trusted (Non-Secure), and their access is controlled by the NS bit of the bus (see subsection 3.2.9). The SafeG Monitor is the gateway between the GPOS and the RTOS. During the switch operation, it is responsible for saving the state of one world and loading the state of the other. The RTOS tasks are statically mapped to each processor during compilation. On the other hand, the GPOS uses all available virtual CPUs in SMP (Symmetric Multi-Processor) mode. Furthermore, the GPOS does not have access to Secure memory regions and Secure device IO. However, the RTOS can access all system resources. Therefore, by designating a resource as Non-Secure and making the RTOS aware of its existance, both the GPOS and RTOS can gain access, which is essential for communication between the two regions.
+
+\subsubsection{SICS Thin hypervisor}
+SICS Thin Hypervisor (STH) is a light-weight hypervisor designed for ARM-
+based devices [35]. STH runs directly on top of the hardware (bare metal),
+and achieves system virtualization through paravirtualization. As a result,
+guest systems require some modifications to the OS kernel, including the
+addition of a hypercall * inteface. STH strengthens the security of embedded
+systems through the isolation capabilities of virtual machines, and allows
+for the existence of heterogeneous operating systems on the same platform.
+Current STH version supports ARMv5 (926EJ-S) and ARMv7 Cortex-A8
+only. However, STH is a highly flexible and portable hypervisor that uses a
+hardware abstraction layer with minimal size.
+
+\subsubsection{Sierra visor}
+Sierraware offers a bare metal universal hypervisor (SierraVisor) that is
+available as open-source under the GNU GPL v2 license or with a commercial
+license [33]. It supports paravirtualization, TrustZone virtualization, and
+hardware assisted virtualization. SierraVisor is compatible with Cortex-
+A9/A15 and ARM11 based SoCs, but only Cortex-A15 supports the
+hardware assisted virtualization option * . The TrustZone virtualization
+approach allows for the integration of guest operating systems without any
+kernel modifications. Each guest kernel and applications run in their usual
+privilege mode, supervisor and user mode respectively. Furthermore, each
+guest executes in an isolated container with low overhead.
+
+\subsubsection{Xen hypervisor}
+The Xen hypervisor is widely used in enterprise and is now making its way
+to embedded systems. It was developed in Cambridge University, and is
+available as open-source software under the the general public license (GNU).
+The Xen hypervisor is implemented as the guest console architecture, as
+discussed in subsection 4.2.4. The hypervisor layer is a thin software layer
+that resides above the hardware layer. It is the first program that runs
+after the bootloader, and is responsible for managing the CPU, Memory, and
+interrupts.
+By default, the Xen hypervisor uses Credit as the CPU scheduler, which
+allows the user to allocate a percentage of the CPU time for each VM, or allow
+the hypervisor to automatically balance the workload across active CPUs in
+the system. Alternatively, the user can specify Simple Earliest Deadline First
+(SEDF) algorithm for the scheduler. However, the load-balancing feature will
+be unavailable [28].
+The hypervisor is responsible for launches Dom0, which is a special virtual
+machine that has privileged access rights to the physical I/O resources. It
+handles I/O accesses and interacts with the other virtual machines. All other
+VM instances operate in Domain U (DomU), which runs in unprivileged mode. The guest virtual machines can be either paravirtualized (PV) or
+fully virtualized {a.k.a. Hardware-assisted Virtual Machine (HVM)}. The
+PV guest are modified operating systems such as: Linux, Solaris, FreeBSD,
+or other UNIX operating systems. In order to facilitate I/O sharing, Xen
+uses split-driver architecture. This approach manges I/O accesses of DomU
+PV guests. The split-driver technique divides the driver into a front-end,
+located in the DomU PV guest, and a back-end, located in the Dom0 guest.
+DomU PV guests are aware that they do not have direct access to the
+hardware and that they are running alongside other virtual machines on the
+same hardware. However, DomU HVM guests are unaware of the presence
+of other VMs, and of the fact that they are sharing hardware resources.
+Instead of split-drivers, in the HVM architecture, a special daemon is started
+in Dom0 guest for each DomU HVM guest. The Xen hypervisor is available
+for both Intel and ARM devices. However, it is not recommended to use Xen
+with devices that do not contain IOMMU units because the hypervisor can
+be easily subverted by DMA capable devices [29].
+
+\subsubsection{Xen zynq}
+The open-source Xen hypervisor has recently been ported to the new
+Xilinx Zynq Ultrascale+Multi-Processor System-on-Chip (MPSoC) device
+[30]. Xen Zynq Distribution is released under the GNU General Purpose
+License 2 (GPL2). The processing platform features a quad-core ARM
+Cortex-A53, a dual-core ARM Cortex-R5, a Mali-400MP2 GPU, and FPGA
+fabric that supports run-time reconfiguration. This device is the successor of
+Xilinx Zynq SoC, which features a dual-core Cortex-A9 processor and FPGA
+fabric.
+
+\subsubsection{SEL4 microkernel}
+The sel4 microkernel is based on the L4 microkernel, which is one of the
+smallest kernels available today. Sel4 is the first formally verified microkernel,
+which implies that its specification is verified mathematically. Sel follows
+the ”minimality principle”, which dictates that the kernel shall only contain
+functionalities that can not be implemented at the user-level [31]. As a result,
+the microkernel is small, efficient, and robust. All device drivers are excluded
+from the microkernel level and execute in unprivileged mode, except for a
+timer driver and an interrupt controller driver.
+The microkernel supports a small number of services that enable applicationsto create and manage threads, virtual memory spaces, and interprocess
+communication (IPC). Furthermore, sel4 follows a ”capability-based access
+control model” in order to manage the access rights to all kernel services.
+Capabilities are unforgeable tokens that contain metadata about a specific
+kernel object, including its access rights. The use of capabilities as a control
+mechanism allows the system to maintain strong isolation between software
+components [32].
+The sel4 microkernel implements a fixed-priority round-robin scheduler
+policy, mainly because its current ”time” abstraction method is under-
+developed and does not yield satisfactory results. As proposed in [31],
+reservations can be added to sel4 in order to provide a suitable temporal
+isolation solution for real-time systems.
+Sel4 provides IOMMU support for Intel-based architectures (IA-32),
+which allows the safe integration of DMA enabled devices. Furthermore,
+Sel4 can support multicore systems via multikernel bootstrapping. However,
+this feature is only available for x86 machines; only uniprocessor is supported
+for ARM-based devices.
+
 
 \section{Platooning}
 %TODO: wording
-Vehicle platooning can be described as a chain of vehicles traveling at a given intermediate distance and velocity. The primary objective for each vehicle with respect to safety is to maintain its distance to the preceding vehicle in the platoon. A platoon of N vehicles is often modeled in the literature as a set of moving point masses
+Platooning, road trains or convoy driving is the concept of a chain of vehicles traveling at a given (short) intermediate distance in order to utilize the reduced air friction behind the vehicle in front. The primary objective for each vehicle with respect to safety is to maintain its distance to the preceding vehicle in the platoon.
 
 \subsection{Benefits of platooning}
 %TODO: Expand, wording, source
 Potential benefits of vehicle platooning includes lower fuel consumption, less road space required and more efficient traffic flow.\\ 
 
-Using simulations of platooning, Alam, Gattami, and Johansson \cite{johansson2010} showed in 2010 that there is a \mbox{4.7--7.7\%} fuel reduction potential in heavy duty vehicle platooning at a set speed of 70 km/h with two identical trucks.
+Using simulations of platooning, Alam, Gattami, and Johansson \cite{johansson2010} showed in 2010 that there is a \mbox{4.7--7.7\%} fuel reduction potential in heavy duty vehicle platooning at a set speed of 70 km/h with two identical trucks.\\
+
+In 2014, Lammert et. al.~\cite{lammert2014} showed in tests that platooning can result in reduced fuel consumption of up to 5.3\% for the lead vehicle and up to 9.7\% for following vehicles.\\
+
+Tests by truck manufacturer Scania have shown that platooning can reduce fuel consumption by up to 12\%~\cite{scania2015}.
 
 \subsection{Safety requirements for platooning}
 %more sources
-System uncertainties or varying vehicle parameters, such as mass, could cause a difference in braking capabilities between the vehicles. Having different braking capacity changes the shape of the safe sets. If the follower vehicle has a higher braking capacity, the level surface derived for neighboring vehicles with identical braking capacity will shift in the positive v 21 -direction and the slope of the surface will decrease, as shown in Fig. 4. This means that the follower vehicle will be able to lie closer without endangering a collision. The minimum safe relative distance is therefore shorter compared to the case of two identical vehicles. However, if the lead vehicle has a greater braking capability a perturbation arises in the level surface at v 21  0 and the slope becomes steeper. In this case a minimum distance of d = 13 m must be maintained to remain outside the reachable set at normal mode. Thus, the relative distance must be increased significantly if the lead vehicle has a stronger braking capability. Delays for the platoon control system commonly occur due to detection, transmission, computation, and producing the control command. A delay in the system implies that the lead vehicle will be able to act, change the relative velocity and distance, before the follower vehicle is able to react. A delay can be translated into a shift of the reachable set in Fig. 3 by $\delta$ d units in the positive direction along the d-axis and by $\delta$ v 21 units in the negative direction along the v 21 -axis. However, no change occurs in the follower vehicle's velocity v 2 , since it does not react. Depending on the radar and the collision detection algorithm, a worst-case delay is approximately 500 ms for the considered vehicles. Hence, the lead vehicle will be able to reduce the relative velocity by 3.25 m/s and the relative distance by 0.8 m if it is driving 25 m/s at normal mode. Thus if the follower vehicle maintains d Z 2 m, a collision can always be avoided for two identical vehicles according to the safe set in Fig. 3. \cite{johansson2013}
+With shorter distance between vehicles, the margin of error also decreases. This puts high requirements on the system controlling the speed of the vehicles in the platoon.\\
+
+In the article by Alam et al.~\cite{johansson2013}, safe sets for heavy duty vehicle platooning are computed to calculate minimum distance between the  vehicles in a platoon without endangering safety. System uncertainties or varying vehicle parameters, such as mass, air resistance and road gradient, could cause a difference in braking capabilities between the vehicles, thereby changing the shape of the safe sets. If the follower vehicle has a higher braking capacity, it will be able to lie closer without endangering a collision. The minimum safe relative distance is therefore shorter compared to the case of two identical vehicles. However, if the lead vehicle has a greater braking capability the relative distance must be increased significantly. Delays for the platoon control system commonly occur due to detection, transmission, computation, and producing the control command. A delay in the system implies that the lead vehicle will be able to act, change the relative velocity and distance, before the follower vehicle is able to react. A delay can be translated into a shift of the reachable set. However, no change occurs in the follower vehicle's velocity, since it does not react. Depending on the radar and the collision detection algorithm, a worst-case delay is approximately 500~ms for the considered vehicles. Hence, the lead vehicle will be able to reduce the relative velocity by 3.25~m/s and the relative distance by 0.8~m if it is driving 25~m/s at normal mode. Thus if the follower vehicle maintains a distance of at least 2~m, a collision can always be avoided for two identical vehicles~\cite{johansson2013}.
+
+\section{Lane detection and lateral control}
+%

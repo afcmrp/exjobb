@@ -34,7 +34,7 @@ As a part of the EMC\textsuperscript{2} project, Alten has developed a system fo
 
 Resources on the board are separated between safety-critical and non-critical via ARM TrustZone \cite{website:ARM}.\\
 
-For more detailed information, see section \ref{sec:lit_emc2mcs} or the report by Zaki \cite{zaki2016}.
+For more detailed information, see chapter \ref{sec:lit_emc2mcs} or the report by Zaki \cite{zaki2016}.
 
 \subsection{Platooning}
 \label{sec:platooning}
@@ -52,7 +52,7 @@ The MCS developed at Alten (EMC\textsuperscript{2}DP)~\ref{sec:mces} switches Op
 
 To evaluate the performance of the system, a distance keeping control algorithm for platooning will be implemented on it. A demonstrator will be constructed in the form of a RC car capable of following a vehicle in front of it at a specified distance. If the lead car exceeds a predefined maximum speed or deviates from the road, the following car should not exceed the maximum speed. The performance of the embedded controller and the control algorithm will be measured during heavy non-critical computational load, and without any non-critical load altogether. \\
 
-It should be verified that no matter the computational load and eventual crashes of the Linux based non-critical system, the distance keeping algorithm on the RTOS never crashes. It should also be investigated at how high frequencies the control algorithm can operate while still maintaining functionality on the GPOS. \\
+It should be verified that no matter the computational load and eventual crashes of the Linux based non-critical system, the distance keeping algorithm on the RTOS should never crash.\\ %It should also be investigated at how high frequencies the control algorithm can operate while still maintaining functionality on the GPOS. \\
 %This should be compared with performance of the system without the GPOS altogether.\\%TODO: Wording
 
 This problem leads to the research question: 
@@ -89,7 +89,9 @@ The work of this thesis and the implementation on the demonstrator will build up
 
 The embedded computer is constrained to the Xilinx Zynq-7000 SoC \cite{website:xilinx}.\\
 
-The architecture of the cooperative adaptive cruise control algorithm will be designed by Daniel Roshanghias.
+The architecture of the cooperative adaptive cruise control algorithm will be designed by Daniel Roshanghias.\\
+
+The lane detection and lateral control will be developed by Sanel Ferhatovic.
 
 %Scheduling on the processor will be restricted to Rate Monotonic (RM).
 
@@ -99,7 +101,7 @@ The architecture of the cooperative adaptive cruise control algorithm will be de
 \label{sec:research}
 %TODO: verify source
 %Deductive approach
-The plan is to conduct an confirmatory investigation using quantitative data/operations with a deductive approach. This is a quantitative research method where data is gathered during experiments and from simulations of the environment \cite{hakansson2013}. \\ %Gather data from simulations and from real tests, iterated many times.
+The plan is to conduct an confirmatory investigation using quantitative data/operations with a deductive approach. This is a quantitative research method. \cite{hakansson2013}.\\ % where data is gathered during experiments and from simulations of the environment %Gather data from simulations and from real tests, iterated many times.
 %TODO: Bättre
 
 %TODO: Kanske bättre i en annan del?
