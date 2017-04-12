@@ -139,22 +139,26 @@ The AUTOSAR Architecture distinguishes on the highest abstraction level between 
 %Literature study about platfrom solutions for MCS
 
 \subsection{Hypervisors}
-A virtual machine monitor, or hypervisor, can be seen as an interface between the operative systems and the hardware of a system. In order to facilitate for multiple operative systems of different criticality an appropriate hypervisor bla bla. A system will only be as secure as its hypervisor. Some hypervisors can accommodate multiple instances of operative systems, and some only facilitate for two. A description of a few available open-source hypervisors will follow.
+A virtual machine monitor, or hypervisor, can be seen as an interface between the operative systems and the hardware of a system. In order to facilitate for multiple operative systems of different criticality an appropriate hypervisor should be used. A system will only be as secure as its hypervisor, so it is important that the hypervisor has been engineered to at least the same standards as the most critical functions that will be implemented on the system. Other things to consider is that some hypervisors can accommodate multiple instances of operative systems, and some only facilitate for two. A description of a few available open-source hypervisors will follow.
 
 \subsubsection{SafeG}
-TOPPERS group of Nagoya University in Japan has developed an open-source dual-OS architecture designed to concurrently host a real-time operating system (RTOS) and a general purpose operating system (GPOS) on TrustZone enabled ARM SoC devices [34]. SafeG takes advantage of ARM’s TrustZone security extensions to efficiently partition the system into Trusted and Non-Trusted states, which provides full system access to trusted software, and limits the capabilities of software running in Non-Trusted state. SafeG includes the following features:
+SafeG is a hypervisor developed by the TOPPERS group of Nagoya University in Japan~\cite{website:safeg}. It can host two operating systems on the same hardware, partitioning them into Trusted and Non-Trusted states via ARM TrustZone~\cite{website:ARM}. This provides full system access to the software running in Trusted state, and limits the access and capabilities of the software running in Non-Trusted state.
 
-Enables the concurrent execution of RTOS and GPOS on either single-core or multi-core ARM-based platforms.
+The features of SafeG as described on their website are as follows:
 
-Devices and memory regions that are configured as Secure are protected against illegal GPOS accesses.
+\begin{itemize}
+\item Enables the concurrent execution of RTOS and GPOS on either single-core or multi-core ARM-based platforms.
 
-Normal world devices can be accessed from both GPOS (Non-Trusted) and RTOS (Trusted) software.
+\item Devices and memory regions that are configured as Secure are protected against illegal GPOS accesses.
 
-Real-time requirements are guaranteed in RTOS (Trusted) via the utilization of FIQ and IRQ interrupts, where FIQ interrupts are issued for RTOS and IRQ interrupts are issued for GPOS. While in the Trusted state, IRQ interrupts are disabled so that GPOS can not disturb the execution of the RTOS. Therefore, GPOS only executes when the RTOS issues the Secure Monitor Call (SMC) instruction, which causes the SafeG monitor to switch from the Trusted world (RTOS) to the Non-Trusted world (GPOS). Furthermore, FIQ interrupts are active during the execution of GPOS, which enables RTOS to retake control of the system. For example, a cyclic execution of RTOS/GPOS can be controlled by an FIQ interrupt of a system timer.
+\item Normal world devices can be accessed from both GPOS (Non-Trusted) and RTOS (Trusted) software.
 
-GPOS does not require any major changes, and can execute with minimal overhead.
+\item Real-time requirements are guaranteed in RTOS (Trusted) via the utilization of FIQ and IRQ interrupts, where FIQ interrupts are issued for RTOS and IRQ interrupts are issued for GPOS. While in the Trusted state, IRQ interrupts are disabled so that GPOS can not disturb the execution of the RTOS. Therefore, GPOS only executes when the RTOS issues the Secure Monitor Call (SMC) instruction, which causes the SafeG monitor to switch from the Trusted world (RTOS) to the Non-Trusted world (GPOS). Furthermore, FIQ interrupts are active during the execution of GPOS, which enables RTOS to retake control of the system. For example, a cyclic execution of RTOS/GPOS can be controlled by an FIQ interrupt of a system timer.
 
-Includes an efficient guest-to-guest communication mechanism (i.e.referred to as SafeG COM)
+\item GPOS does not require any major changes, and can execute with minimal overhead.
+
+\item Includes an efficient guest-to-guest communication mechanism (i.e.referred to as SafeG COM).
+\end{itemize}
 
 Figure 5.1 depicts the SafeG architecture. It shows a simplified view of a TrustZone enabled ARM processor together with partitioned memory and device IO. The memory and device IO are configured as either Trusted (Secure) or Non-Trusted (Non-Secure), and their access is controlled by the NS bit of the bus (see subsection 3.2.9). The SafeG Monitor is the gateway between the GPOS and the RTOS. During the switch operation, it is responsible for saving the state of one world and loading the state of the other. The RTOS tasks are statically mapped to each processor during compilation. On the other hand, the GPOS uses all available virtual CPUs in SMP (Symmetric Multi-Processor) mode. Furthermore, the GPOS does not have access to Secure memory regions and Secure device IO. However, the RTOS can access all system resources. Therefore, by designating a resource as Non-Secure and making the RTOS aware of its existance, both the GPOS and RTOS can gain access, which is essential for communication between the two regions.
 
