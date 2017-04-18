@@ -50,7 +50,7 @@ An ideal MCS ensures partitioning between different criticality levels while sti
 \end{itemize}
 The MCS developed at Alten (EMC\textsuperscript{2}DP)~\ref{sec:mces} switches Operative System (OS) to enable partitioning between safety-critical and non-critical applications, which takes about 2 $\mu s$. This mode switch introduces additional deadlines which makes processor scheduling more difficult.\\ %means that safety-critical tasks that require very high frequencies would not be suited for this system. Moreover, it is of interest to see at what point the effects of OS switching are "too much". %TODO: wording
 
-To evaluate the performance of the system, a distance keeping control algorithm for platooning will be implemented on it. A demonstrator will be constructed in the form of a RC car capable of following a vehicle in front of it at a specified distance. If the lead car exceeds a predefined maximum speed or deviates from the road, the following car should not exceed the maximum speed. The performance of the embedded controller and the control algorithm will be measured during heavy non-critical computational load, and without any non-critical load altogether. \\
+To evaluate the performance of the system, a distance keeping control algorithm for platooning will be implemented on it. A demonstrator will be constructed in the form of a RC car capable of following a vehicle in front of it at a specified distance. If the lead car exceeds a predefined maximum speed or deviates from the road, the following car should not exceed the maximum speed. The performance of the embedded controller and the control algorithm will be measured when running the algorithms on the dual-OS and on one OS.\\
 
 It should be verified that no matter the computational load and eventual crashes of the Linux based non-critical system, the distance keeping algorithm on the RTOS should never crash.\\ %It should also be investigated at how high frequencies the control algorithm can operate while still maintaining functionality on the GPOS. \\
 %This should be compared with performance of the system without the GPOS altogether.\\%TODO: Wording
@@ -105,18 +105,18 @@ The plan is to conduct an confirmatory investigation using quantitative data/ope
 %TODO: Bättre
 
 %TODO: Kanske bättre i en annan del?
-The position of the demonstrator will be read by a separate sensor of the same type as the one on the demonstrator. The performance of the control system and the embedded controller will be measured and compared with the same system without any non-critical computational load. This will also be done for a simulation of the system. The measures regarding control system performance will consist of 
-\begin{itemize}
-\item Response time
-\item Overshoot
-\item Settling time %TODO: Fel ord?
-\end{itemize}
+%The position of the demonstrator will be read by a separate sensor of the same type as the one on the demonstrator. The performance of the control system and the embedded controller will be measured and compared with the same system without any non-critical computational load. This will also be done for a simulation of the system. The measures regarding control system performance will consist of 
+%\begin{itemize}
+%\item Response time
+%\item Overshoot
+%\item Settling time %TODO: Fel ord?
+%\end{itemize}
 
-Data points for the performance of the embedded controller will be extracted from the RTOS, and the measures will consist of
-\begin{itemize}
-\item Missed deadlines
-\item CPU utilization
-\end{itemize}
+%Data points for the performance of the embedded controller will be extracted from the RTOS, and the measures will consist of
+%\begin{itemize}
+%\item Missed deadlines
+%\item CPU utilization
+%\end{itemize}
 
 \section{Ethical considerations}
 When designing a MCS it is crucial to ensure that errors made by a lower criticality application cannot propagate to higher criticality applications. This could have catastrophic consequences. Because of this the requirement of partitioning must have higher priority than the need of sharing.
