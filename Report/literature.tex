@@ -37,10 +37,10 @@ Deadline Monotonic (DM) assigns a priority level to a task depending on its dead
 
 Earliest Deadline First (EDF) is a dynamic scheduling algorithm that executes the task with the least amount of time left until its deadline.\\
 
-Round Robin (RR) scheduling lets each task in the job queue execute for a predefined amount of time (called a time quanta), and if a task does not complete it is interrupted and placed back in the queue waiting for its next time slot~\cite{kleinrock1964}.
+Round Robin (RR) scheduling lets each task in the job queue execute for a predefined amount of time (called a time quanta), and if a task does not complete it is preempted and placed back in the queue waiting for its next time slot~\cite{kleinrock1964}.
 
 \subsubsection{Mixed criticality scheduling}
-The area of sharing the processor in MCS was first explored by Steve Vestal~\cite{vestal2007} in 2007. His paper showed that neither Rate Monotonic (RM) nor Deadline Monotonic (DM) priority assignment was optimal for MCS; however Audsley’s optimal priority assignment algorithm \cite{audsley2001} was found to be applicable.\\ %TODO: Wording
+The area of sharing the processor in MCS was first explored by Steve Vestal~\cite{vestal2007} in 2007. His paper showed that neither Rate Monotonic (RM) nor Deadline Monotonic (DM) priority assignment was optimal for MCS.% however Audsley’s optimal priority assignment algorithm \cite{audsley2001} was found to be applicable.\\ %TODO: Wording
 
 In 2008 Baruah and Vestal~\cite{baruah2008} showed that EDF (Earliest Deadline First) does not dominate FP when criticality levels are introduced, and that there are feasible systems that cannot be scheduled by EDF.\\
 
@@ -264,6 +264,8 @@ Sel4 can support multicore systems via multikernel bootstrapping. However,
 this feature is only available for x86 machines; only uniprocessor is supported
 for ARM-based devices.
 
+\section{Field Programmable Gate Array}
+%FPGA sota
 
 \section{Platooning}
 %TODO: wording
