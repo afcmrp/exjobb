@@ -67,6 +67,7 @@ For a more complete review of work done on MCSs with a shared processor, see the
 \section{Standards}
 %Different standards to regulate and ensure safety
 Safety practices are becoming more regulated as industries adopt a standardized set of practices for designing and testing products. %TODO: expand, wording
+To ensure safe and secure practices in industries, safety standards are becoming more regulated. Different standards address different areas. Below, the two safety standards IEC~61508 and ISO~26262 will be described.
 
 \subsection{IEC 61508}
 IEC 61508~\cite{IEC61508} is intended to be a basic functional safety standard for electrical and electronic systems applicable to all kinds of industry. It defines four different safety integrity levels, SIL~1 being the least dependable up to SIL~4 which is the most dependable level.
@@ -150,7 +151,7 @@ A virtual machine monitor, or hypervisor, can be seen as an interface between th
 \subsubsection{SafeG}
 SafeG is a hypervisor developed by the TOPPERS group of Nagoya University in Japan~\cite{website:safeg}. It can host two operating systems on the same hardware, partitioning them into Trusted and Non-Trusted states via ARM TrustZone~\cite{website:ARM}. This provides full system access to the software running in Trusted state, and limits the access and capabilities of the software running in Non-Trusted state.
 
-The features of SafeG as described on their website are as follows:
+The features of SafeG as described on their website are as follows~\cite{website:safeg}:
 
 \begin{itemize}
 \item Enables the concurrent execution of RTOS and GPOS on either single-core or multi-core ARM-based platforms.
@@ -170,7 +171,7 @@ Figure 5.1 depicts the SafeG architecture. It shows a simplified view of a Trust
 
 \subsubsection{SICS Thin hypervisor}
 SICS Thin Hypervisor (STH) is a light-weight hypervisor designed for ARM-
-based devices [35]. STH runs directly on top of the hardware (bare metal),
+based devices~\cite{STH2013}. STH runs directly on top of the hardware (bare metal),
 and achieves system virtualization through paravirtualization. As a result,
 guest systems require some modifications to the OS kernel, including the
 addition of a hypercall * inteface. STH strengthens the security of embedded
