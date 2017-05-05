@@ -33,8 +33,11 @@ TrustZone is a security feature by ARM that is available in their modern process
 \section{Operative systems}
 The EMC2DP uses two Operative Systems (OS) to create temporal and spatial separation between safety-critical and non-critical applications using TrustZone. In its current setup the Real-Time Operative System (RTOS) FMP by TOPPERS~\cite{website:FMP} is used for safety-critical applications. This RTOS follows the uITRON4.0 specification~\cite{uitron}, which is a widely used RTOS specification for Japanese embedded systems. For non-critical applications, the General Purpose Operative System (GPOS) Linux kernel 4.4 is used. Instead of Linux another instance of FMP could be used for non-critical applications.\\
 
-\section{Virtual Machine Monitor}
-A Virtual Machine Monitor (VMM) or "Hypervisor" is used to alternate between the safety-critical (S\_OS) and non-critical (NS\_OS) OS. The VMM used is SafeG \cite{website:safeg}, also developed by TOPPERS. It switches processor state via a hardware switch. See figure~\ref{fig:modeswitch}. The switching takes ~2 $\mu s$.
+\section{Hypervisor}
+%TODO: timings for switching
+%The hypervisor SafeG is used to alternate between the safety-critical (S\_OS) and non-critical (NS\_OS) OS. It switches processor state via a hardware switch. See figure~\ref{fig:modeswitch}. The switching takes ~2 $\mu s$.
+
+A hypervisor or Virtual Machine Monitor (VMM) is used to alternate between the safety-critical (S\_OS) and non-critical (NS\_OS) OS. The VMM used is SafeG \cite{website:safeg}, also developed by TOPPERS. It switches processor state via a hardware switch. See figure~\ref{fig:modeswitch}. The switching takes ~2 $\mu s$.
 
 \begin{figure}[H]
 \centering
