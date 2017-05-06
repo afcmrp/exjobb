@@ -270,10 +270,18 @@ for ARM-based devices.
 
 \section{Field Programmable Gate Array}
 %FPGA sota
+%TODO: some wording, probably longer
+A Field Programmable Gate Array (FPGA) is an array of logical gates with reconfigurable interconnects that can be connected to each other. This makes it so that the FPGA can perform any computational functions. As the name suggests, it is possible to reprogram the physical function of the FPGA "in the field".
+
+To program the connections in the FPGA Hardware Descriptive Language (HDL) is used. Two examples of HDL is Verilog and VHDL (VHSIC Hardware Descriptive Language, where VHSIC is an acronym for Very High Speed Integrated Circuit). 
+
+A key difference between code running on a processor and code describing functions in a FPGA is that traditional code is executed in serial, where only one computation can be executed at any one time. In an FPGA however, functions can run in parallel 
+
+Some FPGA circuits have non-volatile memory from where the hardware descriptive language is loaded when the circuit is powered up, this means that its configuration is not lost if its power goes down.
 
 \section{Platooning}
 %TODO: wording
-Platooning, road trains or convoy driving is the concept of a chain of vehicles traveling at a given (short) intermediate distance in order to utilize the reduced air friction behind the vehicle in front. The primary objective for each vehicle with respect to safety is to maintain its distance to the preceding vehicle in the platoon.
+Platooning, road trains or convoy driving is the concept of a chain of vehicles with no physical connection traveling at a given (short) intermediate distance in order to utilize the reduced air friction behind the vehicle in front. The primary objective for each vehicle with respect to safety is to maintain its distance to the preceding vehicle in the platoon.
 
 \subsection{Benefits of platooning}
 %TODO: Expand, wording, source
@@ -286,7 +294,7 @@ In 2014, Lammert et. al.~\cite{lammert2014} showed in tests that platooning can 
 Tests by truck manufacturer Scania have shown that platooning can reduce fuel consumption by up to 12\%~\cite{scania2015}.
 
 \subsection{Safety requirements for platooning}
-%more sources
+%TODO: more sources
 With shorter distance between vehicles, the margin of error also decreases. This puts high requirements on the system controlling the speed of the vehicles in the platoon.\\
 
 In the article by Alam et al.~\cite{johansson2013}, safe sets for heavy duty vehicle platooning are computed to calculate minimum distance between the  vehicles in a platoon without endangering safety. System uncertainties or varying vehicle parameters, such as mass, air resistance and road gradient, could cause a difference in braking capabilities between the vehicles, thereby changing the shape of the safe sets. If the follower vehicle has a higher braking capacity, it will be able to lie closer without endangering a collision. The minimum safe relative distance is therefore shorter compared to the case of two identical vehicles. However, if the lead vehicle has a greater braking capability the relative distance must be increased significantly. Delays for the platoon control system commonly occur due to detection, transmission, computation, and producing the control command. A delay in the system implies that the lead vehicle will be able to act, change the relative velocity and distance, before the follower vehicle is able to react. A delay can be translated into a shift of the reachable set. However, no change occurs in the follower vehicle's velocity, since it does not react. Depending on the radar and the collision detection algorithm, a worst-case delay is approximately 500~ms for the considered vehicles. Hence, the lead vehicle will be able to reduce the relative velocity by 3.25~m/s and the relative distance by 0.8~m if it is driving 25~m/s at normal mode. Thus if the follower vehicle maintains a distance of at least 2~m, a collision can always be avoided for two identical vehicles~\cite{johansson2013}.
