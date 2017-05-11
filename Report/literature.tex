@@ -143,14 +143,12 @@ The AUTOSAR Architecture distinguishes on the highest abstraction level between 
 \caption{AUTOSAR.~\cite{website:autosar}}\label{fig:autosar}
 \end{figure}
 
-\section{Mixed criticality platform solutions}
-%Literature study about platfrom solutions for MCS
-
-\subsection{Hypervisors}
+\section{Hypervisors}
 A virtual machine monitor, or hypervisor, can be seen as an interface between the operative systems and the hardware of a system. In order to facilitate for multiple operative systems of different criticality an appropriate hypervisor should be used. A system will only be as secure as its hypervisor, so it is important that the hypervisor has been engineered to at least the same standards as the most critical functions that will be implemented on the system. Other things to consider is that some hypervisors can accommodate multiple instances of operative systems, and some only facilitate for two. A description of a few available open-source hypervisors will follow.
 
-\subsubsection{SafeG}
-SafeG is a hypervisor developed by the TOPPERS group of Nagoya University in Japan~\cite{website:safeg}. It can host two operating systems on the same hardware, partitioning them into Trusted and Non-Trusted states via ARM TrustZone~\cite{website:ARM}. This provides full system access to the software running in Trusted state, and limits the access and capabilities of the software running in Non-Trusted state.\\
+\subsection{SafeG}
+\label{sec:safeg}
+SafeG is a hypervisor developed by the TOPPERS group of Nagoya University in Japan~\cite{website:safeg}. It can host two operating systems on the same hardware, partitioning them into Trusted and Non-Trusted states (sometimes called Trusted and Non-Trusted "worlds") via ARM TrustZone~\cite{website:ARM}. This provides full system access to the software running in Trusted state, and limits the access and capabilities of the software running in Non-Trusted state.\\
 
 The features of SafeG as described on their website are as follows~\cite{website:safeg}:
 
@@ -169,7 +167,7 @@ The features of SafeG as described on their website are as follows~\cite{website
 \end{itemize}
 
 %TODO: Timings of switching
-According to TOPPERS, the WCET of switching the OS is just under $2 \mu s$, see table~\ref{table:safegswitch}.
+According to TOPPERS~\cite{safegswitch}, the WCET of switching the OS is just under $2 \mu s$, see table~\ref{table:safegswitch}.
 
 \begin{table}[H]
 \centering
@@ -185,7 +183,7 @@ Switch from GPOS to RTOS & $1.7 \mu s$\\ \hline
 
 Figure 5.1 depicts the SafeG architecture. It shows a simplified view of a TrustZone enabled ARM processor together with partitioned memory and device IO. The memory and device IO are configured as either Trusted (Secure) or Non-Trusted (Non-Secure), and their access is controlled by the NS bit of the bus (see subsection 3.2.9). The SafeG Monitor is the gateway between the GPOS and the RTOS. During the switch operation, it is responsible for saving the state of one world and loading the state of the other. The RTOS tasks are statically mapped to each processor during compilation. On the other hand, the GPOS uses all available virtual CPUs in SMP (Symmetric Multi-Processor) mode. Furthermore, the GPOS does not have access to Secure memory regions and Secure device IO. However, the RTOS can access all system resources. Therefore, by designating a resource as Non-Secure and making the RTOS aware of its existance, both the GPOS and RTOS can gain access, which is essential for communication between the two regions.
 
-\subsubsection{SICS Thin hypervisor}
+\subsection{SICS Thin hypervisor}
 SICS Thin Hypervisor (STH) is a light-weight hypervisor designed for ARM-
 based devices~\cite{STH2013}. STH runs directly on top of the hardware (bare metal),
 and achieves system virtualization through paravirtualization. As a result,
@@ -197,7 +195,7 @@ Current STH version supports ARMv5 (926EJ-S) and ARMv7 Cortex-A8
 only. However, STH is a highly flexible and portable hypervisor that uses a
 hardware abstraction layer with minimal size.
 
-\subsubsection{Sierra visor}
+\subsection{Sierra visor}
 Sierraware offers a bare metal universal hypervisor (SierraVisor) that is
 available as open-source under the GNU GPL v2 license or with a commercial
 license [33]. It supports paravirtualization, TrustZone virtualization, and
@@ -209,7 +207,7 @@ kernel modifications. Each guest kernel and applications run in their usual
 privilege mode, supervisor and user mode respectively. Furthermore, each
 guest executes in an isolated container with low overhead.
 
-\subsubsection{Xen hypervisor}
+\subsection{Xen hypervisor}
 The Xen hypervisor is widely used in enterprise and is now making its way
 to embedded systems. It was developed in Cambridge University, and is
 available as open-source software under the the general public license (GNU).
@@ -244,7 +242,7 @@ for both Intel and ARM devices. However, it is not recommended to use Xen
 with devices that do not contain IOMMU units because the hypervisor can
 be easily subverted by DMA capable devices [29].
 
-\subsubsection{Xen zynq}
+\subsection{Xen zynq}
 The open-source Xen hypervisor has recently been ported to the new
 Xilinx Zynq Ultrascale+Multi-Processor System-on-Chip (MPSoC) device
 [30]. Xen Zynq Distribution is released under the GNU General Purpose
@@ -254,7 +252,7 @@ fabric that supports run-time reconfiguration. This device is the successor of
 Xilinx Zynq SoC, which features a dual-core Cortex-A9 processor and FPGA
 fabric.
 
-\subsubsection{SEL4 microkernel}
+\subsection{SEL4 microkernel}
 The sel4 microkernel is based on the L4 microkernel, which is one of the
 smallest kernels available today. Sel4 is the first formally verified microkernel,
 which implies that its specification is verified mathematically. Sel follows
