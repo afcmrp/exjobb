@@ -148,7 +148,15 @@ A virtual machine monitor, or hypervisor, can be seen as an interface between th
 
 \subsection{SafeG}
 \label{sec:safeg}
-SafeG is a hypervisor developed by the TOPPERS group of Nagoya University in Japan~\cite{website:safeg}. It can host two operating systems on the same hardware, partitioning them into Trusted and Non-Trusted states (sometimes called Trusted and Non-Trusted "worlds") via ARM TrustZone~\cite{website:ARM}. This provides full system access to the software running in Trusted state, and limits the access and capabilities of the software running in Non-Trusted state.\\
+SafeG is a hypervisor developed by the TOPPERS group of Nagoya University in Japan~\cite{website:safeg}. It can host two operating systems on the same hardware, partitioning them into Trusted and Non-Trusted zones (sometimes called Trusted and Non-Trusted "worlds") via ARM TrustZone~\cite{website:ARM}. This provides full system access to the software running in Trusted state, and limits the access and capabilities of the software running in Non-Trusted state.\\
+
+Figure~\ref{fig:safeg} depicts the SafeG architecture. It shows a simplified view of a TrustZone enabled ARM processor together with partitioned memory and device IO.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{./img/literature_safeg.png}
+\caption{SafeG and TrustZone.}\label{fig:safeg}
+\end{figure}
 
 The features of SafeG as described on their website are as follows~\cite{website:safeg}:
 
@@ -166,8 +174,9 @@ The features of SafeG as described on their website are as follows~\cite{website
 \item Includes an efficient guest-to-guest communication mechanism (i.e.referred to as SafeG COM).
 \end{itemize}
 
-%TODO: Timings of switching
-According to TOPPERS~\cite{safegswitch}, the WCET of switching the OS is just under $2 \mu s$, see table~\ref{table:safegswitch}.
+The RTOS tasks are statically mapped to a processor during compilation, while the GPOS uses all available virtual CPUs in Symmetric Multi-Processor mode.\\
+
+The SafeG Monitor is the gateway between the GPOS and the RTOS. During the switch operation, it is responsible for saving the state of one zone and loading the state of the other. According to TOPPERS~\cite{safegswitch}, the WCET of switching the OS is just under $2 \mu s$, see table~\ref{table:safegswitch}.
 
 \begin{table}[H]
 \centering
@@ -181,19 +190,12 @@ Switch from GPOS to RTOS & $1.7 \mu s$\\ \hline
 \label{table:safegswitch}
 \end{table}
 
-Figure 5.1 depicts the SafeG architecture. It shows a simplified view of a TrustZone enabled ARM processor together with partitioned memory and device IO. The memory and device IO are configured as either Trusted (Secure) or Non-Trusted (Non-Secure), and their access is controlled by the NS bit of the bus (see subsection 3.2.9). The SafeG Monitor is the gateway between the GPOS and the RTOS. During the switch operation, it is responsible for saving the state of one world and loading the state of the other. The RTOS tasks are statically mapped to each processor during compilation. On the other hand, the GPOS uses all available virtual CPUs in SMP (Symmetric Multi-Processor) mode. Furthermore, the GPOS does not have access to Secure memory regions and Secure device IO. However, the RTOS can access all system resources. Therefore, by designating a resource as Non-Secure and making the RTOS aware of its existance, both the GPOS and RTOS can gain access, which is essential for communication between the two regions.
-
 \subsection{SICS Thin hypervisor}
-SICS Thin Hypervisor (STH) is a light-weight hypervisor designed for ARM-
-based devices~\cite{STH2013}. STH runs directly on top of the hardware (bare metal),
-and achieves system virtualization through paravirtualization. As a result,
-guest systems require some modifications to the OS kernel, including the
-addition of a hypercall * inteface. STH strengthens the security of embedded
-systems through the isolation capabilities of virtual machines, and allows
-for the existence of heterogeneous operating systems on the same platform.
-Current STH version supports ARMv5 (926EJ-S) and ARMv7 Cortex-A8
-only. However, STH is a highly flexible and portable hypervisor that uses a
-hardware abstraction layer with minimal size.
+SICS Thin Hypervisor (STH) is a light-weight hypervisor designed for ARM-based devices~\cite{STH2013}. STH runs directly on top of the hardware (bare metal), and achieves system virtualization through paravirtualization. STH allows for more than two guests to run on top of the hypervisor.\\
+
+There is no graphical support and all communication with the kernel is done through the UART.\\
+
+The current version of STH supports ARMv5 (926EJ-S) and ARMv7 Cortex-A8 only, but due to its flexible nature and minimal layer of hardware abstraction it is easily migrated to other platform~\cite{STH2013}.
 
 \subsection{Sierra visor}
 Sierraware offers a bare metal universal hypervisor (SierraVisor) that is
