@@ -1,15 +1,16 @@
-\chapter{System design}
+\chapter{System design and implementation}
 \label{sec:system_design}
 %This chapter will derive the design of the system.
 For the system to accomplish the goals stated in \ref{sec:problem}, several hardware and software functions need to be designed and implemented.\\
 
-For the mixed criticality implementation, the hypervisor SafeG~\ref{sec:safeg}~\cite{website:safeg} will be used to alternate between the safety-critical RTOS and the GPOS, as described in section~\ref{sec:lit_emc2mcs}.
+%For the mixed criticality implementation, the hypervisor SafeG~\ref{sec:safeg}~\cite{website:safeg} will be used to alternate between the safety-critical RTOS FMP and the GPOS, as described in section~\ref{sec:lit_emc2mcs}. Several safety-critical functions will run on FMP.
 
 \section{Operative system functions}
-This section will describe the functions to be implemented on the OS.
+This section will describe the functions to be implemented in the RTOS FMP.
 
 \subsection{Longitudinal control}
-PID controller
+A PID controller will be implemented to control the speed of the vehicle and its distance to the vehicle in front of it.
+
 Shared information (safe, control signal)
 
 \subsection{Lane detection}
@@ -19,13 +20,13 @@ A lane-detecting algorithm will be implemented on a Raspberry Pi that will send 
 Lateral control will be implemented on the RTOS on the EMC2DP. The function receives the deviation from the center line as calculated by the lane detection algorithm from the Raspberry Pi, and calculates a control signal from this.
 
 \subsection{Data aggregation}
-See the report by~\cite{hellman2017}.
+This function will read wheel sensor data and calculate if the road conditions are unsafe for platooning. See the report by~\cite{hellman2017}.
 
 \subsection{Communication}
-To establish secure communication between the two vehicles in the platoon, WiFi is used. For more information, see the report by~\cite{lerander2017}.
+To maintain secure communication between the two vehicles in the platoon, a communication protocol is developed. A WiFi module receives data and sends it via UART to a MicroBlaze processor on the FPGA where data is parsed and sent up to the OS via a mailbox. In the OS the mailbox is emptied and data is sent to where it is needed. The communication task then sends the data it should sent to the MicroBlaze where the data is packaged properly and sent as an UDP packet via the WiFi module. For more information, see the report by~\cite{lerander2017}.
 
 \section{Hardware implemented functions}
-This section will describe the functions to be implemented on the FPGA.
+This section will describe the functions to be implemented on the FPGA, also known as IPs.
 
 \subsection{Decoder}
 To read the speed of the vehicle, encoders are connected to the wheels. The encoders have a resolution of TODO pulses per revolution. The four encoders will send pulses very quickly and a hardware decoder is needed to process them and send the speed of each wheel to the OS.
@@ -56,6 +57,12 @@ A sequence diagram of the various dependencies and flow of each function can be 
 \caption{Sequence diagram of the various hardware and software functions.}\label{fig:sequence}
 \end{figure}
 
-Processor tasks
-Dependencies
-Flow chart
+The Vivado block design can be seen in Appendix A.
+
+\section{Car}
+To demonstrate the system, the RC car UTOR 8E from BSD racing was chosen. It has a steering servo, brushless DC motor, TODO: etc
+
+PWM signal to driver for motor and servo, 50 Hz
+
+\section{Electrical design}
+Two 7.4V batteries in parallel. Voltage regulator to 5V for LIDAR, Raspberry Pi, encoders and WiFi module. Voltage regulator to DC input voltage for Zedboard.

@@ -1,13 +1,13 @@
 \chapter{Implementation}
 This chapter will describe the implementation of the entire system in the demonstrator.
 
-%Vivado?
-
 \section{Platform}
-UTOR RC car
+To demonstrate the system, the RC car UTOR 8E from BSD racing was chosen. It has a steering servo, brushless DC motor, 
+
+PWM signal to driver for motor and servo, 50Hz
 
 \section{Electrical schematics}
-Power supply, physical components
+Two 7.4V batteries in parallel. Voltage regulator to 5V for LIDAR, Raspberry Pi, encoders and WiFi module. Voltage regulator to DC input voltage for Zedboard.
 
 \section{System overview}
 
@@ -48,7 +48,3 @@ Power supply, physical components
 
 
 \end{tikzpicture}
-
-
-\section{Build procedure}
-Vivado -> SDK -> BOOT.bin -> RTOS + GPOS -> TFTP -> Zedboard/EMC2 board

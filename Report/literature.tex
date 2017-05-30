@@ -144,7 +144,7 @@ The AUTOSAR Architecture distinguishes on the highest abstraction level between 
 \end{figure}
 
 \section{Hypervisors}
-A virtual machine monitor, or hypervisor, can be seen as an interface between the operative systems and the hardware of a system. In order to facilitate for multiple operative systems of different criticality an appropriate hypervisor should be used. A system will only be as secure as its hypervisor, so it is important that the hypervisor has been engineered to at least the same standards as the most critical functions that will be implemented on the system. Other things to consider is that some hypervisors can accommodate multiple instances of operative systems, and some only facilitate for two. A description of a few available open-source hypervisors will follow.
+A hypervisor (or virtual machine monitor) is a piece of software capable of running several operating systems on the same hardware system. The hypervisor can be seen as an interface between the operative systems and the hardware of a system. In order to facilitate for multiple operative systems of different criticality an appropriate hypervisor should be used. A system will only be as secure as its hypervisor, so it is important that the hypervisor has been engineered to at least the same standards as the most critical functions that will be implemented on the system. Other things to consider is that some hypervisors can accommodate multiple instances of operative systems, and some only facilitate for two. A description of a few available open-source hypervisors will follow.
 
 \subsection{SafeG}
 \label{sec:safeg}
@@ -190,95 +190,26 @@ Switch from GPOS to RTOS & $1.7 \mu s$\\ \hline
 \label{table:safegswitch}
 \end{table}
 
+\subsection{seL4 microkernel}
+seL4 is a microkernel developed, maintained and formally verified by NICTA (now the Trustworthy Systems Group at Data61) and owned by General Dynamics C4 Systems~\cite{sel4}. seL4 is formally verified, which implies that its specification is verified mathematically~\cite{sel4math}. The kernel follows the ”minimality principle”, meaning that it "allows features in the kernel only if the required functionality could not be achieved by a user-level implementation"~\cite{lyons2014}. As a result, the microkernel is small, efficient, and robust.\\
+
+The resource time is considered the last concept for which no satisfactory abstraction has been found. Consequently, scheduling is deliberately left underspecified in seL4. The present implementation uses a fixed-priority round-robin
+scheduler~\cite{lyons2014}. 
+
 \subsection{SICS Thin hypervisor}
-SICS Thin Hypervisor (STH) is a light-weight hypervisor designed for ARM-based devices~\cite{STH2013}. STH runs directly on top of the hardware (bare metal), and achieves system virtualization through paravirtualization. STH allows for more than two guests to run on top of the hypervisor.\\
+SICS Thin Hypervisor (STH) is a light-weight hypervisor designed for ARM-based devices~\cite{STH2013}. STH runs directly on top of the hardware (bare metal), and achieves system virtualization through paravirtualization. STH allows for more than two guests to run on top of the hypervisor. STH has no TrustZone support.\\
 
-There is no graphical support and all communication with the kernel is done through the UART.\\
-
-The current version of STH supports ARMv5 (926EJ-S) and ARMv7 Cortex-A8 only, but due to its flexible nature and minimal layer of hardware abstraction it is easily migrated to other platform~\cite{STH2013}.
+The current version of STH supports ARMv5 (926EJ-S) and ARMv7 Cortex-A8 only, but due to its flexible nature and minimal layer of hardware abstraction it is easily migrated to other platform~\cite{STH2013}. There is no graphical support and all communication with the kernel is done through the UART.\\
 
 \subsection{Sierra visor}
-Sierraware offers a bare metal universal hypervisor (SierraVisor) that is
-available as open-source under the GNU GPL v2 license or with a commercial
-license [33]. It supports paravirtualization, TrustZone virtualization, and
-hardware assisted virtualization. the SierraVisor Hypervisor supports any ARM11, Cortex-A9, or Cortex-A15 platform., but only Cortex-A15 supports the
-hardware assisted virtualization option * . The TrustZone virtualization
-approach allows for the integration of guest operating systems without any
-kernel modifications. Each guest kernel and applications run in their usual
-privilege mode, supervisor and user mode respectively. Furthermore, each
-guest executes in an isolated container with low overhead.
+SierraVisor is a bare metal universal hypervisor created by Sierraware~\cite{sierraware}. It supports paravirtualization, TrustZone virtualization, and hardware assisted virtualization. The SierraVisor Hypervisor supports any ARM11, Cortex-A9, or Cortex-A15 platform, but only Cortex-A15 supports the hardware assisted virtualization option. 
+%The TrustZone virtualization approach allows for the integration of guest operating systems without any kernel modifications. Each guest kernel and applications run in their usual privilege mode, supervisor and user mode respectively. Furthermore, each guest executes in an isolated container with low overhead.
 
-\subsection{Xen hypervisor}
-The Xen hypervisor is widely used in enterprise and is now making its way
-to embedded systems. It was developed in Cambridge University, and is
-available as open-source software under the the general public license (GNU).
-The Xen hypervisor is implemented as the guest console architecture, as
-discussed in subsection 4.2.4. The hypervisor layer is a thin software layer
-that resides above the hardware layer. It is the first program that runs
-after the bootloader, and is responsible for managing the CPU, Memory, and
-interrupts.
-By default, the Xen hypervisor uses Credit as the CPU scheduler, which
-allows the user to allocate a percentage of the CPU time for each VM, or allow
-the hypervisor to automatically balance the workload across active CPUs in
-the system. Alternatively, the user can specify Simple Earliest Deadline First
-(SEDF) algorithm for the scheduler. However, the load-balancing feature will
-be unavailable [28].
-The hypervisor is responsible for launches Dom0, which is a special virtual
-machine that has privileged access rights to the physical I/O resources. It
-handles I/O accesses and interacts with the other virtual machines. All other
-VM instances operate in Domain U (DomU), which runs in unprivileged mode. The guest virtual machines can be either paravirtualized (PV) or
-fully virtualized {a.k.a. Hardware-assisted Virtual Machine (HVM)}. The
-PV guest are modified operating systems such as: Linux, Solaris, FreeBSD,
-or other UNIX operating systems. In order to facilitate I/O sharing, Xen
-uses split-driver architecture. This approach manges I/O accesses of DomU
-PV guests. The split-driver technique divides the driver into a front-end,
-located in the DomU PV guest, and a back-end, located in the Dom0 guest.
-DomU PV guests are aware that they do not have direct access to the
-hardware and that they are running alongside other virtual machines on the
-same hardware. However, DomU HVM guests are unaware of the presence
-of other VMs, and of the fact that they are sharing hardware resources.
-Instead of split-drivers, in the HVM architecture, a special daemon is started
-in Dom0 guest for each DomU HVM guest. The Xen hypervisor is available
-for both Intel and ARM devices. However, it is not recommended to use Xen
-with devices that do not contain IOMMU units because the hypervisor can
-be easily subverted by DMA capable devices [29].
+%\subsection{Xen hypervisor}
+%The Xen hypervisor is widely used in enterprise and is now making its way to embedded systems. It was developed in Cambridge University, and is available as open-source software under the the general public license (GNU). The Xen hypervisor is implemented as the guest console architecture, as discussed in subsection 4.2.4. The hypervisor layer is a thin software layer that resides above the hardware layer. It is the first program that runs after the bootloader, and is responsible for managing the CPU, Memory, and interrupts. By default, the Xen hypervisor uses Credit as the CPU scheduler, which allows the user to allocate a percentage of the CPU time for each VM, or allow the hypervisor to automatically balance the workload across active CPUs in the system. Alternatively, the user can specify Simple Earliest Deadline First (SEDF) algorithm for the scheduler. However, the load-balancing feature will be unavailable [28]. The hypervisor is responsible for launches Dom0, which is a special virtual machine that has privileged access rights to the physical I/O resources. It handles I/O accesses and interacts with the other virtual machines. All other VM instances operate in Domain U (DomU), which runs in unprivileged mode. The guest virtual machines can be either paravirtualized (PV) or fully virtualized {a.k.a. Hardware-assisted Virtual Machine (HVM)}. The PV guest are modified operating systems such as: Linux, Solaris, FreeBSD, or other UNIX operating systems. In order to facilitate I/O sharing, Xen uses split-driver architecture. This approach manges I/O accesses of DomU PV guests. The split-driver technique divides the driver into a front-end, located in the DomU PV guest, and a back-end, located in the Dom0 guest. DomU PV guests are aware that they do not have direct access to the hardware and that they are running alongside other virtual machines on the same hardware. However, DomU HVM guests are unaware of the presence of other VMs, and of the fact that they are sharing hardware resources. Instead of split-drivers, in the HVM architecture, a special daemon is started in Dom0 guest for each DomU HVM guest. The Xen hypervisor is available for both Intel and ARM devices. However, it is not recommended to use Xen with devices that do not contain IOMMU units because the hypervisor can be easily subverted by DMA capable devices [29].
 
-\subsection{Xen zynq}
-The open-source Xen hypervisor has recently been ported to the new
-Xilinx Zynq Ultrascale+Multi-Processor System-on-Chip (MPSoC) device
-[30]. Xen Zynq Distribution is released under the GNU General Purpose
-License 2 (GPL2). The processing platform features a quad-core ARM
-Cortex-A53, a dual-core ARM Cortex-R5, a Mali-400MP2 GPU, and FPGA
-fabric that supports run-time reconfiguration. This device is the successor of
-Xilinx Zynq SoC, which features a dual-core Cortex-A9 processor and FPGA
-fabric.
-
-\subsection{SEL4 microkernel}
-The sel4 microkernel is based on the L4 microkernel, which is one of the
-smallest kernels available today. Sel4 is the first formally verified microkernel,
-which implies that its specification is verified mathematically. Sel follows
-the ”minimality principle”, which dictates that the kernel shall only contain
-functionalities that can not be implemented at the user-level [31]. As a result,
-the microkernel is small, efficient, and robust. All device drivers are excluded
-from the microkernel level and execute in unprivileged mode, except for a
-timer driver and an interrupt controller driver.
-The microkernel supports a small number of services that enable applicationsto create and manage threads, virtual memory spaces, and interprocess
-communication (IPC). Furthermore, sel4 follows a ”capability-based access
-control model” in order to manage the access rights to all kernel services.
-Capabilities are unforgeable tokens that contain metadata about a specific
-kernel object, including its access rights. The use of capabilities as a control
-mechanism allows the system to maintain strong isolation between software
-components [32].
-The sel4 microkernel implements a fixed-priority round-robin scheduler
-policy, mainly because its current ”time” abstraction method is under-
-developed and does not yield satisfactory results. As proposed in [31],
-reservations can be added to sel4 in order to provide a suitable temporal
-isolation solution for real-time systems.
-Sel4 provides IOMMU support for Intel-based architectures (IA-32),
-which allows the safe integration of DMA enabled devices. Furthermore,
-Sel4 can support multicore systems via multikernel bootstrapping. However,
-this feature is only available for x86 machines; only uniprocessor is supported
-for ARM-based devices.
+%\subsection{Xen zynq}
+%The open-source Xen hypervisor has recently been ported to the new Xilinx Zynq Ultrascale+Multi-Processor System-on-Chip (MPSoC) device [30]. Xen Zynq Distribution is released under the GNU General Purpose License 2 (GPL2). The processing platform features a quad-core ARM Cortex-A53, a dual-core ARM Cortex-R5, a Mali-400MP2 GPU, and FPGA fabric that supports run-time reconfiguration. This device is the successor of Xilinx Zynq SoC, which features a dual-core Cortex-A9 processor and FPGA fabric.
 
 \section{Field Programmable Gate Array}
 %FPGA sota
