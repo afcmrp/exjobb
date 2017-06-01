@@ -4,10 +4,12 @@ Discussion about the results produced by the thesis.
 \section{Information retrieval}
 Printing to SYSLOG takes time and affects the system that's being monitored.
 
+Timer used requires very little processor time, but still some. TOPPERS might have measured using less processor time.
+
 \section{Utilization}
 Deterministic system - work towards 100\%, anything under that: reduce clock frequency to reduce power consumption and reach 100\%.\\
 
 Sporadic system - probably want to be around ~50\% utilization to maintain 100\% schedulability, higher depending on requirements on performance versus requirements on efficiency.
 
 \section{Errors}
-Unregistered exception, accessing restricted AXI bus address.
+Unregistered exception, accessing restricted AXI bus address. Should be avoided by accessing via OS instead of address. All address space should be handled by the OS/monitor, allowing or restricting access to certain address spaces. Probably not correctly setup.

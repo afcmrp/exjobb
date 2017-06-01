@@ -9,6 +9,8 @@ Today, modern automotive systems contain around 70-100 Electric Control Units (E
 
 Protecting the integrity of a component from the faults of another is desired in all systems hosting multiple applications. However, it is of higher significance if the different applications have different criticality levels. Without such protection all components on the same system would need to be engineered to the standards of the highest criticality level, potentially massively increasing development costs \cite{burns2016}.\\
 
+TODO: Security concerns.\\
+
 %TODO: wording
 The EU project "Embedded Multi-Core systems for Mixed Criticality applications in dynamic and changeable real-time environments" (EMC\textsuperscript{2}) was founded in order to "find solutions for dynamic adaptability in open systems, provide handling of mixed criticality applications under real-time conditions, scalability and utmost flexibility, full scale deployment and management of integrated tool chains, through the entire lifecycle" \cite{weber2015}. 
 
@@ -27,9 +29,9 @@ Different names of levels of criticality are typically Safety Integrity Level (S
 
 The number of criticality levels in the implementation part of this thesis will be restricted to two: "safety-critical" and "non-critical". This is due to the constraints presented in section \ref{sec:mces} and \ref{sec:scope}.
 
-\subsection{EMC\textsuperscript{2} development board}
+\subsection{Alten Mixed Criticality System}
 \label{sec:mces}
-As a part of the EMC\textsuperscript{2} project, Alten has developed a system for handling applications of mixed criticality on the same piece of hardware. The MCS developed at Alten is implemented on a Xilinx Zynq-7000~\cite{website:xilinx}. The development board is called EMC\textsuperscript{2} Development Platform, or EMC\textsuperscript{2}DP. It employs two operating systems to handle applications of different criticality. A General Purpose Operating System (GPOS) for non-critical applications and a Real-Time Operating System (RTOS) for safety-critical applications. A Virtual Machine Monitor (VMM) is used to alternate between the two.\\ %TODO: unfinished
+As a part of the EMC\textsuperscript{2} project, Alten has developed a system for handling applications of mixed criticality on the same piece of hardware, Alten MCS. The MCS developed at Alten has been implemented on two development boards, the Zedboard (Zynq Evaluation and Development board) and the EMC\textsuperscript{2} Development Platform, or EMC\textsuperscript{2}DP. Both boards have a Xilinx Zynq-7000 SoC~\cite{website:xilinx}. Alten MCS employs two operating systems to handle applications of different criticality. A General Purpose Operating System (GPOS) for non-critical applications and a Real-Time Operating System (RTOS) for safety-critical applications. A Virtual Machine Monitor (VMM) is used to alternate between the two.\\ %TODO: unfinished
 
 Resources on the board are separated between safety-critical and non-critical via ARM TrustZone \cite{website:ARM}.\\
 
