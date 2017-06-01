@@ -1,4 +1,4 @@
-\chapter{System design and implementation}
+\chapter{System design}
 \label{sec:system_design}
 %This chapter will derive the design of the system.
 For the system to accomplish the goals stated in \ref{sec:problem}, several hardware and software functions need to be designed and implemented.\\
@@ -14,10 +14,10 @@ A PID controller will be implemented to control the speed of the vehicle and its
 Shared information (safe, control signal)
 
 \subsection{Lane detection}
-A lane-detecting algorithm will be implemented on a Raspberry Pi that will send data to the Zedboard/EMC2DP. The choice of Raspberry Pi was made because of the amount of open source video processing code available for the platform. For more info, see the report by Ferhatovic~\cite{ferhatovic2017}.
+A lane-detecting algorithm will be implemented on a Raspberry Pi that will send data to the Alten MCS. The choice of Raspberry Pi was made because of the amount of open source video processing code available for the platform. For more info, see the report by Ferhatovic~\cite{ferhatovic2017}.
 
 \subsection{Lateral control}
-Lateral control will be implemented on the RTOS on the EMC2DP. The function receives the deviation from the center line as calculated by the lane detection algorithm from the Raspberry Pi, and calculates a control signal from this.
+Lateral control will be implemented on the RTOS on the Alten MCS. The function receives the deviation from the center line as calculated by the lane detection algorithm from the Raspberry Pi, and calculates a control signal from this.
 
 \subsection{Data aggregation}
 This function will read wheel sensor data and calculate if the road conditions are unsafe for platooning. See the report by~\cite{hellman2017}.
@@ -38,7 +38,7 @@ To control the speed of the motor and the position of the steering servo, Pulse 
 To read the distance to the preceding vehicle, a LIDAR (LIght Detection And Ranging) is used. The LIDAR communicates the distance it is reading via a PWM signal. A hardware function is needed to read the PWM pulse and convert it to a distance.
 
 \subsection{Communication}
-WiFi communication is used between the two vehicles in the platoon. To read packages, a WiFi module is used that communicates via UART with the EMC2DP. A MicroBlaze in the FPGA processes the packages and sends the parsed data to the OS via a mailbox. For more information, see the report by~\cite{lerander2017}.
+WiFi communication is used between the two vehicles in the platoon. To read packages, a WiFi module is used that communicates via UART with the Alten MCS. A MicroBlaze in the FPGA processes the packages and sends the parsed data to the OS via a mailbox. For more information, see the report by~\cite{lerander2017}.
 
 \section{Overview design}
 An overview of the different functions to be implemented on the Zynq-7000 can be seen in figure~\ref{fig:overview}.

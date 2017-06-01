@@ -4,3 +4,23 @@
 This chapter will present results from the demonstrator to the reader.
 
 Things to evaluate: Overhead, memory usage, security stuff, economical benefit
+
+\section{Experiment design}
+Timer setup, etc
+
+\section{SafeG overhead}
+
+From TOPPERS: 1.7 $\mu s$
+
+Using only safeg\_syscall\_switch():
+
+Samples: 323
+WCET: 2.68 $\mu s$
+BCET: 0.98 $\mu s$
+Average ET: 1.63 $\mu s$
+Median: 1.72 $\mu s$
+STdev: 0.258 $\mu s$
+
+Task switch introduces extra 1.18 $\mu s$. Combined WCET: $3.86 \mu s$.
+
+Unregistered exception was possible to create by accessing restricted AXI bus address, causing the processor to stop.
