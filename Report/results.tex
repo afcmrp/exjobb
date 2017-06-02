@@ -5,22 +5,51 @@ This chapter will present results from the demonstrator to the reader.
 
 Things to evaluate: Overhead, memory usage, security stuff, economical benefit
 
-\section{Experiment design}
-Timer setup, etc
+%\section{Experiment design}
+%Timer setup, etc
 
 \section{SafeG overhead}
+To measure the overhead of SafeG monitor, a hardware timer was started on the secure side, immediately followed by a syscall to switch OS. The non-secure side immediately read the value of the timer and printed this value. This procedure was looped many times to gather a reliable set of data points. Pseudo code for this procedure follows below:\\
 
-From TOPPERS: 1.7 $\mu s$
+Secure side:
+\begin{algorithmic}
+\Loop
+	\State $start\_timer()$
+	\State $safeg\_syscall\_switch()$
+\EndLoop
+\end{algorithmic}
 
-Using only safeg\_syscall\_switch():
+Non-secure side:
+\begin{algorithmic}
+\Loop
+	\State $time\gets get\_time()$
+	\State $reset\_timer()$
+	\State $print(time)$
+	\State $safeg\_syscall\_switch()$
+\EndLoop
+\end{algorithmic}
 
-Samples: 323
-WCET: 2.68 $\mu s$
-BCET: 0.98 $\mu s$
-Average ET: 1.63 $\mu s$
-Median: 1.72 $\mu s$
-STdev: 0.258 $\mu s$
+%According to TOPPERS~\cite{safegswitch}, this system switch should take at most 1.7 $\mu s$. 
 
-Task switch introduces extra 1.18 $\mu s$. Combined WCET: $3.86 \mu s$.
+This resulted in a data set of 103211 execution times, see table~\ref{table:switch_et}.
 
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|c|}
+\hline
+Samples & 103211\\ \hline
+WCET & 3.06 $\mu s$\\ \hline
+BCET & 0.96 $\mu s$\\ \hline
+Average ET & 1.63 $\mu s$\\ \hline
+Median ET & 1.72 $\mu s$\\ \hline
+Standard deviation & 0.258 $\mu s$\\ \hline
+\end{tabular}
+\caption{Execution times of OS switch.}
+\label{table:switch_et}
+\end{table}
+
+\section{Task switch}
+The task switch introduces extra 1.18 $\mu s$. Combined WCET: $3.86 \mu s$.
+
+\section{Hypervisor robustness}
 Unregistered exception was possible to create by accessing restricted AXI bus address, causing the processor to stop.
