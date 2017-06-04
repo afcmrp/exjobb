@@ -3,7 +3,7 @@
 
 This chapter will present results from the demonstrator to the reader.
 
-Things to evaluate: Overhead, memory usage, security stuff, economical benefit
+%Things to evaluate: Overhead, memory usage, security stuff, economical benefit
 
 %\section{Experiment design}
 %Timer setup, etc
@@ -49,7 +49,10 @@ Standard deviation & 0.258 $\mu s$\\ \hline
 \end{table}
 
 \section{Task switch}
-The task switch introduces extra 1.18 $\mu s$. Combined WCET: $3.86 \mu s$.
+The task switch introduces extra 1.18 $\mu s$. Combined WCET: $4.24 \mu s$.
+
+\section{OS tasks}
+Communication, Lateral control, Data aggregation, Longitudinal control
 
 \section{Hypervisor robustness}
 Unregistered exception was possible to create by accessing restricted AXI bus address, causing the processor to stop.

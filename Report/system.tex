@@ -5,7 +5,21 @@
 This chapter will describe the Alten MCS, its different components and how it is built.
 
 \section{Overview}
-The Alten MCS (Alten Mixed Criticality System) is a Mixed Criticality System consisting of both hardware and software components. The general idea is that it should be capable of running two operating systems of different criticality on the same hardware, separated via a hypervisor, where errors from the non-critical OS should not be able to propagate into the safety-critical OS. The Alten MCS has currently been built on two different development boards, the EMC\textsuperscript{2} Development Platform (EMC\textsuperscript{2}DP) and the Zedboard (Zynq Evaluation and Development board). Both boards are equipped with a Zynq-7000 System on Chip (SoC). %Connections. I/O. Bild.
+The Alten MCS (Alten Mixed Criticality System) is a Mixed Criticality System consisting of both hardware and software components. The general idea is that it should be capable of running two operating systems of different criticality on the same hardware, separated via a hypervisor, where errors from the non-critical OS should not be able to propagate into the safety-critical OS. The Alten MCS has currently been built on two different development boards, the EMC\textsuperscript{2} Development Platform (EMC\textsuperscript{2}DP) and the Zedboard (Zynq Evaluation and Development board). Both boards are equipped with a Zynq-7000 System on Chip (SoC). The development boards can be seen in Figure~\ref{fig:development_boards}.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[b]{0.3\textwidth}
+\includegraphics[width=\textwidth]{./img/zedboard.jpg}
+\caption{Zeboard}
+\end{subfigure}
+\begin{subfigure}[b]{0.3\textwidth}
+\includegraphics[width=\textwidth]{./img/emc2dp.jpg}
+\caption{EMC2DP}
+\end{subfigure}
+\caption{}
+\label{fig:development_boards}
+\end{figure}
 
 \section{Hardware}
 The Zynq-7000 SoC has a Processing System (PS) consisting of a hardwired application processing unit, memory controller, and peripheral devices. The main processing unit is a dual-core Cortex-A9 ARM processor. Connected to the PS region is a Programmable Logic (PL) region. The PL is based on Xilinx’s 7-series FPGA technology.\\

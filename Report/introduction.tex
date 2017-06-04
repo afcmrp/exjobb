@@ -9,7 +9,8 @@ Today, modern automotive systems contain around 70-100 Electric Control Units (E
 
 Protecting the integrity of a component from the faults of another is desired in all systems hosting multiple applications. However, it is of higher significance if the different applications have different criticality levels. Without such protection all components on the same system would need to be engineered to the standards of the highest criticality level, potentially massively increasing development costs \cite{burns2016}.\\
 
-TODO: Security concerns.\\
+%TODO: words and stuff
+With cars being increasingly connected to the internet, security poses another concern for MCS. If one part of a system is easier to attack, the entire system could be compromised if proper isolation is not in place.\\
 
 %TODO: wording
 The EU project "Embedded Multi-Core systems for Mixed Criticality applications in dynamic and changeable real-time environments" (EMC\textsuperscript{2}) was founded in order to "find solutions for dynamic adaptability in open systems, provide handling of mixed criticality applications under real-time conditions, scalability and utmost flexibility, full scale deployment and management of integrated tool chains, through the entire lifecycle" \cite{weber2015}. 
@@ -31,16 +32,12 @@ The number of criticality levels in the implementation part of this thesis will 
 
 \subsection{Alten Mixed Criticality System}
 \label{sec:mces}
-As a part of the EMC\textsuperscript{2} project, Alten has developed a system for handling applications of mixed criticality on the same piece of hardware, Alten MCS. The MCS developed at Alten has been implemented on two development boards, the Zedboard (Zynq Evaluation and Development board) and the EMC\textsuperscript{2} Development Platform, or EMC\textsuperscript{2}DP. Both boards have a Xilinx Zynq-7000 SoC~\cite{website:xilinx}. Alten MCS employs two operating systems to handle applications of different criticality. A General Purpose Operating System (GPOS) for non-critical applications and a Real-Time Operating System (RTOS) for safety-critical applications. A Virtual Machine Monitor (VMM) is used to alternate between the two.\\ %TODO: unfinished
-
-Resources on the board are separated between safety-critical and non-critical via ARM TrustZone \cite{website:ARM}.\\
-
-For more detailed information, see chapter \ref{sec:lit_emc2mcs} or the report by Zaki \cite{zaki2016}.
+As a part of the EMC\textsuperscript{2} project, Alten has developed a system for handling applications of mixed criticality on the same piece of hardware, Alten MCS. The MCS developed at Alten has been implemented on two development boards, the Zedboard (Zynq Evaluation and Development board) and the EMC\textsuperscript{2} Development Platform, or EMC\textsuperscript{2}DP. Both boards have a Xilinx Zynq-7000 SoC~\cite{website:xilinx}. Alten MCS employs two operating systems to handle applications of different criticality. A General Purpose Operating System (GPOS) for non-critical applications and a Real-Time Operating System (RTOS) for safety-critical applications. A hypervisor is used to alternate between the two. For more information, see chapter \ref{sec:lit_emc2mcs}.
 
 \subsection{Platooning}
 \label{sec:platooning}
 %TODO: Wording
-"The platooning concept can be defined as a collection of  vehicles that travel together, actively coordinated in formation. Some expected advantages of platooning include increased fuel and traffic efficiency, safety and driver comfort"~\cite{bergenhem}.
+Platooning is the concept of a collection of vehicles that travel coordinated in formation in order to reduce air drag. Some expected advantages of platooning include increased fuel and traffic efficiency, safety and driver comfort~\cite{bergenhem}. Platooning puts high requirements on the control systems in the platooning vehicles, since failure of these systems could have fatal consequences.
 
 \section{Problem statement}
 \label{sec:problem}
@@ -49,10 +46,9 @@ An ideal MCS ensures partitioning between different criticality levels while sti
 \begin{itemize}
 \item "How, in a disciplined way, to reconcile the conflicting requirements of partitioning for safety assurance and sharing for efficient resource usage?" \cite{burns2016}
 \end{itemize}
-The MCS developed at Alten (EMC\textsuperscript{2}DP)~\ref{sec:mces} switches Operative System (OS) to enable partitioning between safety-critical and non-critical applications, which takes about 2 $\mu s$. This mode switch introduces additional deadlines which makes processor scheduling more difficult.\\ %means that safety-critical tasks that require very high frequencies would not be suited for this system. Moreover, it is of interest to see at what point the effects of OS switching are "too much". %TODO: wording
+The MCS developed at Alten switches Operative System (OS) via a hypervisor to enable partitioning between safety-critical and non-critical applications, which takes about 2 $\mu s$. This means that at higher switching frequencies the mode switch takes up more processor time, potentially making up almost all processor time at very high frequencies.\\ %means that safety-critical tasks that require very high frequencies would not be suited for this system. Moreover, it is of interest to see at what point the effects of OS switching are "too much". %TODO: wording
 
-To evaluate the performance of the system, a distance keeping control algorithm for platooning will be implemented on it. A demonstrator will be constructed in the form of a RC car capable of following a vehicle in front of it at a specified distance. If the lead car exceeds a predefined maximum speed or deviates from the road, the following car should not exceed the maximum speed. The performance of the embedded controller and the control algorithm will be measured when running the algorithms on the dual-OS and on one OS.\\
-
+To evaluate the performance of the system, a distance keeping control algorithm for platooning will be implemented on it. A demonstrator will be constructed in the form of a RC car capable of following a vehicle in front of it at a specified distance. If the lead car exceeds a predefined maximum speed or deviates from the road, the following car should not exceed the maximum speed. %The performance of the embedded controller and the control algorithm will be measured when running the algorithms on the dual-OS and on one OS.\\
 It should be verified that no matter the computational load and eventual crashes of the Linux based non-critical system, the distance keeping algorithm on the RTOS should never crash.\\ %It should also be investigated at how high frequencies the control algorithm can operate while still maintaining functionality on the GPOS. \\
 %This should be compared with performance of the system without the GPOS altogether.\\%TODO: Wording
 
