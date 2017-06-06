@@ -13,10 +13,9 @@ A PID controller will be implemented to control the speed of the vehicle and its
 
 Shared information (safe, control signal)
 
-\subsection{Lane detection}
-A lane-detecting algorithm will be implemented on a Raspberry Pi that will send data to the Alten MCS. The choice of Raspberry Pi was made because of the amount of open source video processing code available for the platform. For more info, see the report by Ferhatovic~\cite{ferhatovic2017}.
-
 \subsection{Lateral control}
+A lane-detecting algorithm will be implemented on a Raspberry Pi that will send data to the Alten MCS. The choice of Raspberry Pi was made because of the amount of open source video processing code available for the platform. For more info, see the report by Ferhatovic~\cite{ferhatovic2017}.\\
+
 Lateral control will be implemented on the RTOS on the Alten MCS. The function receives the deviation from the center line as calculated by the lane detection algorithm from the Raspberry Pi, and calculates a control signal from this.
 
 \subsection{Data aggregation}
@@ -28,14 +27,11 @@ To maintain secure communication between the two vehicles in the platoon, a comm
 \section{Hardware implemented functions}
 This section will describe the functions to be implemented on the FPGA, also known as IPs.
 
-\subsection{Decoder}
-To read the speed of the vehicle, encoders are connected to the wheels. The encoders have a resolution of TODO pulses per revolution. The four encoders will send pulses very quickly and a hardware decoder is needed to process them and send the speed of each wheel to the OS.
+\subsection{Speed reading}
+To read the speed of the vehicle, encoders need to be connected to the wheels. The four encoders will send pulses very quickly and a hardware decoder is needed to process them and send the speed of each wheel to the OS.
 
-\subsection{Pulse Width Modulation}
-To control the speed of the motor and the position of the steering servo, Pulse Width Modulation (PWM) is used. Two hardware implemented PWM functions will be needed.
-
-\subsection{LIDAR}
-To read the distance to the preceding vehicle, a LIDAR (LIght Detection And Ranging) is used. The LIDAR communicates the distance it is reading via a PWM signal. A hardware function is needed to read the PWM pulse and convert it to a distance.
+\subsection{Distance reading}
+To read the distance to the preceding vehicle, a LIDAR (LIght Detection And Ranging) will be used. The LIDAR communicates the distance it is reading via a PWM signal. A hardware function is needed to read the PWM pulse and convert it to a distance.
 
 \subsection{Communication}
 WiFi communication is used between the two vehicles in the platoon. To read packages, a WiFi module is used that communicates via UART with the Alten MCS. A MicroBlaze in the FPGA processes the packages and sends the parsed data to the OS via a mailbox. For more information, see the report by~\cite{lerander2017}.
@@ -59,10 +55,10 @@ A sequence diagram of the various dependencies and flow of each function can be 
 
 The Vivado block design can be seen in Appendix A.
 
-\section{Car}
-To demonstrate the system, the RC car UTOR 8E from BSD racing was chosen. It has a steering servo, brushless DC motor, TODO: etc
+%\section{Car}
+%To demonstrate the system, the RC car UTOR 8E from BSD racing was chosen. It has a steering servo, brushless DC motor, TODO: etc
 
-PWM signal to driver for motor and servo, 50 Hz
+%PWM signal to driver for motor and servo, 50 Hz
 
-\section{Electrical design}
-Two 7.4V batteries in parallel. Voltage regulator to 5V for LIDAR, Raspberry Pi, encoders and WiFi module. Voltage regulator to DC input voltage for Zedboard.
+%\section{Electrical design}
+%Two 7.4V batteries in parallel. Voltage regulator to 5V for LIDAR, Raspberry Pi, encoders and WiFi module. Voltage regulator to DC input voltage for Zedboard.

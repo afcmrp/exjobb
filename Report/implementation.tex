@@ -9,6 +9,15 @@ PWM signal to driver for motor and servo, 50Hz
 \section{Electrical schematics}
 Two 7.4V batteries in parallel. Voltage regulator to 5V for LIDAR, Raspberry Pi, encoders and WiFi module. Voltage regulator to DC input voltage for Zedboard.
 
+\section{Pulse Width Modulation}
+To control the speed of the motor and the position of the steering servo, Pulse Width Modulation (PWM) is used. Two hardware implemented PWM functions will be needed.
+
+\section{LIDAR}
+To read the distance to the preceding vehicle, the LIDAR Garmin LIDAR Lite v3 was used. Specs. The PWM interface was used. A hardware function was implemented on the FPGA to read the pulse width from the PWM signal. The length of the pulse width was counted and written on an AXI bus address, ready for the OS to be read and convert into a distance in cm. The hardware code was written in VHDL and can be seen in Appendix B.
+
+\section{Encoders/Decoders}
+To read the speed of each wheel, the encoders TODO were used. Specs. To convert the signals from each encoder, hardware implemented decoders were written. The decoders read A and B pulses from each encoder and counted the time between each pulse to calculate the rotational speed of the wheels. This value was written on an AXI bus address for the OS to read. The hardware code was written in VHDL and can be seen in Appendix B.
+
 \section{System overview}
 
 %\begin{tikzpicture}

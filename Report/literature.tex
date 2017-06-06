@@ -1,5 +1,5 @@
 \chapter{State of the art}
-This chapter will go through relevant articles and already known knowledge on the subject of mixed criticality systems, vehicle platooning and safety standards in the automotive industry.
+This chapter will go through relevant articles and research on the subject of mixed criticality systems, vehicle platooning and safety standards in the automotive industry.
 
 \section{Mixed criticality systems}
 %SotA regarding MCS.
@@ -159,11 +159,9 @@ A hypervisor (or virtual machine monitor) is a piece of software capable of runn
 
 \subsection{SafeG}
 \label{sec:safeg}
-SafeG (short for \textit{Safety Gate}) is a hypervisor developed by the TOPPERS group of Nagoya University in Japan~\cite{website:safeg}. It can host two operating systems on the same hardware, partitioning them into Trusted and Non-Trusted zones (sometimes called Trusted and Non-Trusted "worlds") via ARM TrustZone~\cite{website:ARM}. %This provides full system access to the software running in Trusted state, and limits the access and capabilities of the software running in Non-Trusted state.\\
+SafeG (short for \textit{Safety Gate}) is a hypervisor developed by the TOPPERS group of Nagoya University in Japan~\cite{website:safeg}. It can host two operating systems on the same hardware, partitioning them into Trusted and Non-Trusted zones (sometimes called Trusted and Non-Trusted "worlds") via ARM TrustZone~\cite{website:ARM}.\\ %This provides full system access to the software running in Trusted state, and limits the access and capabilities of the software running in Non-Trusted state.\\
 
-SafeG guarantees both that the memory and temporal execution of tasks in the OS on the secure side is isolated from the OS on the non-secure side~\cite{sangorrinlopez2012}. Both memory and time isolation is backed by the ARM TrustZone hardware extensions~\cite{sangorrinlopez2012}.
-
-RTOS tasks are triggered by FIQ (Fast Interrupt Request), an interrupt with higher priority than IRQ (Interrupt Request), which is allocated to the GPOS~\cite{sangorrinlopez2012}.
+SafeG guarantees both that the memory and temporal execution of tasks in the OS on the secure side is isolated from the OS on the non-secure side~\cite{sangorrinlopez2012}. Both memory and time isolation is backed by the ARM TrustZone hardware extensions~\cite{sangorrinlopez2012}. RTOS tasks are triggered by FIQ (Fast Interrupt Request), an interrupt with higher priority than IRQ (Interrupt Request), which is allocated to the GPOS~\cite{sangorrinlopez2012}.
 
 Figure~\ref{fig:safeg} depicts the SafeG architecture. It shows a simplified view of a TrustZone enabled ARM processor together with partitioned memory and device IO.
 
@@ -252,7 +250,7 @@ Potential benefits of vehicle platooning includes lower fuel consumption, less r
 
 Using simulations of platooning, Alam, Gattami, and Johansson \cite{johansson2010} showed in 2010 that there is a \mbox{4.7--7.7\%} fuel reduction potential in heavy duty vehicle platooning at a set speed of 70 km/h with two identical trucks.\\
 
-In 2014, Lammert et. al.~\cite{lammert2014} showed in tests that platooning can result in reduced fuel consumption of up to 5.3\% for the lead vehicle and up to 9.7\% for following vehicles.\\
+In 2014, Lammert et. al.~\cite{lammert2014} showed that platooning can result in reduced fuel consumption of up to 5.3\% for the lead vehicle and up to 9.7\% for following vehicles.\\
 
 Tests by truck manufacturer Scania have shown that platooning can reduce fuel consumption by up to 12\%~\cite{scania2015}.
 
@@ -260,6 +258,6 @@ Tests by truck manufacturer Scania have shown that platooning can reduce fuel co
 %TODO: more sources
 With shorter distance between vehicles, the margin of error also decreases. This puts high requirements on the systems controlling the speed of the vehicles in the platoon.\\
 
-In the article by Alam et al.~\cite{johansson2013}, safe sets for heavy duty vehicle platooning are computed to calculate minimum distance between the  vehicles in a platoon without endangering safety. Varying parameters are concidered such as mass, air resistance and road gradient since these could cause a difference in braking capabilities between the vehicles. If the follower vehicle has a higher braking capacity, it will be able to lie closer without endangering a collision. The minimum safe relative distance is therefore shorter compared to the case of two identical vehicles. Delays for the platoon control system commonly occur due to detection, transmission, computation, and producing the control command. A delay in the system implies that the lead vehicle will be able to act, change the relative velocity and distance, before the follower vehicle is able to react. Depending on the radar and the collision detection algorithm, a worst-case delay is approximately 500~ms for the considered vehicles~\cite{johansson2013}. %Hence, the lead vehicle will be able to reduce the relative velocity by 3.25~m/s and the relative distance by 0.8~m if it is driving 25~m/s at normal mode. Thus if the follower vehicle maintains a distance of at least 2~m, a collision can always be avoided for two identical vehicles~\cite{johansson2013}.
+In an article by Alam et al.~\cite{johansson2013}, safe sets for heavy duty vehicle platooning are computed to calculate minimum distance between the  vehicles in a platoon without endangering safety. Varying parameters are concidered such as mass, air resistance and road gradient since these could cause a difference in braking capabilities between the vehicles. If the follower vehicle has a higher braking capacity, it will be able to lie closer without endangering a collision. The minimum safe relative distance is therefore shorter compared to the case of two identical vehicles. Delays for the platoon control system commonly occur due to detection, transmission, computation, and producing the control command. A delay in the system implies that the lead vehicle will be able to act, change the relative velocity and distance, before the follower vehicle is able to react. Depending on the radar and the collision detection algorithm, a worst-case delay is approximately 500~ms for the considered vehicles~\cite{johansson2013}. %Hence, the lead vehicle will be able to reduce the relative velocity by 3.25~m/s and the relative distance by 0.8~m if it is driving 25~m/s at normal mode. Thus if the follower vehicle maintains a distance of at least 2~m, a collision can always be avoided for two identical vehicles~\cite{johansson2013}.
 %
 %\section{Lane detection and lateral control}
