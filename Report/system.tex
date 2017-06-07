@@ -44,6 +44,9 @@ A hypervisor (also known as a Virtual Machine Monitor (VMM)) is used to alternat
 \caption{Flowchart of the boot sequence of the CPU. \cite{zaki2016}}\label{fig:modeswitch}
 \end{figure}
 
+%TODO: gör okefft
+For the hypervisor, the GPOS is regarded as another task with lowest priority. \\
+
 The time it takes the hypervisor to switch processor state bounds the maximum frequency a task can have while the processor still manages to maintain its switching capabilities. The maximum frequency, $f_{max}$, can be calculated as
 
 $$f_{max} = \lim_{e_s, e_{ns} \to 0} \frac{1}{e_s+e_{ns}+2e_{switch}} = 250\textrm{ kHz}$$
