@@ -67,7 +67,6 @@ Xilinx's software Vivado HLS~\cite{website:vivado} is used to design the FPGA of
 
 %Xilinx's software Vivado~\cite{website:vivado} is used to synthesize the hardware design (vhdl or verilog code) into a bitstream file (.bit) in order to configure the PL region of the Zynq. Vivado also produces a set of files that represent the designed hardware platform, which are used for software development. Xilinx SDK tool is used to create the Board Support Package (BSP) and the First Stage Boot Loader (FSBL) that correspond to the designed system. In general, after the FSBL initialization process completes, and depending on boot sequence, the CPU can do any of the following actions: configure the FPGA, initiate the Second Stage Boot Loader SSBL, or jumps to the first address of the main program. The SDK tool is also used to generate a boot file (BOOT.bin), which must at least contain the FSBL (fsbl.elf). In the implemented system, the BOOT.bin file also includes the bitstream file (system.bit) and the SSBL (uboot.elf * ). Once the system is initialized and the PL is configured, the system starts executing the u-boot instructions present in the BOOT.bin. U-boot is a full system on its own, and has many useful features. In particular, u-boot can be used to load executables and other system files from a remote server into the DDR3 memory using protocols such as Trivial File Transfer Protocol (TFTP), see Figure~\ref{fig:system_build}.\\
 
-
 Figure \ref{fig:system_build} provides a summary of the different dependencies for the system and the required flow for building the system.
 
 %TODO: NY BILD
@@ -80,5 +79,5 @@ Figure \ref{fig:system_build} provides a summary of the different dependencies f
 
 %For more information about the build and the system, see the report by Zaki~\cite{zaki2016}.
 
-This build procedure setup provides for easy modifications to a small part of the system without having to rebuild other parts, and the board where the code should be loaded in only needs to be connected to a network socket and a laptop.
+This build procedure setup provides for easy modifications to a small part of the system without having to rebuild other parts, and the board to which the code should be loaded into only needs to be connected to a network socket and a laptop.
 %TODO: rephrase

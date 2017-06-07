@@ -9,9 +9,7 @@ For the system to accomplish the goals stated in \ref{sec:problem}, several hard
 This section will describe the functions to be implemented in the RTOS FMP.
 
 \subsection{Longitudinal control}
-A PID controller will be implemented to control the speed of the vehicle and its distance to the vehicle in front of it.
-
-Shared information (safe, control signal)
+A PID controller will be implemented to control the speed of the vehicle and its distance to the vehicle in front of it. The controller will use information from the preceding vehicle and a distance sensor as input to calculate a control signal. See the report by Roshanghias~\cite{roshanghias2017}.
 
 \subsection{Lateral control}
 A lane-detecting algorithm will be implemented on a Raspberry Pi that will send data to the Alten MCS. The choice of Raspberry Pi was made because of the amount of open source video processing code available for the platform. For more info, see the report by Ferhatovic~\cite{ferhatovic2017}.\\
@@ -19,10 +17,12 @@ A lane-detecting algorithm will be implemented on a Raspberry Pi that will send 
 Lateral control will be implemented on the RTOS on the Alten MCS. The function receives the deviation from the center line as calculated by the lane detection algorithm from the Raspberry Pi, and calculates a control signal from this.
 
 \subsection{Data aggregation}
-This function will read wheel sensor data and calculate if the road conditions are unsafe for platooning. See the report by~\cite{hellman2017}.
+This function will read wheel sensor data and calculate if the road conditions are unsafe for platooning. See the report by Hellman~\cite{hellman2017}.
 
 \subsection{Communication}
-To maintain secure communication between the two vehicles in the platoon, a communication protocol is developed. A WiFi module receives data and sends it via UART to a MicroBlaze processor on the FPGA where data is parsed and sent up to the OS via a mailbox. In the OS the mailbox is emptied and data is sent to where it is needed. The communication task then sends the data it should sent to the MicroBlaze where the data is packaged properly and sent as an UDP packet via the WiFi module. For more information, see the report by~\cite{lerander2017}.
+To maintain secure communication between the two vehicles in the platoon, a communication protocol will be developed. WiFi messages will be parsed in a MicroBlaze processor in the FPGA and sent to the OS. For more information, see the report by~\cite{lerander2017}.
+
+%A WiFi module receives data and sends it via UART to a MicroBlaze processor on the FPGA where data is parsed and sent up to the OS via a mailbox. In the OS the mailbox is emptied and data is sent to where it is needed. The communication task then sends the data it should sent to the MicroBlaze where the data is packaged properly and sent as an UDP packet via the WiFi module. 
 
 \section{Hardware implemented functions}
 This section will describe the functions to be implemented on the FPGA, also known as IPs.

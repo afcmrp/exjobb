@@ -161,7 +161,7 @@ A hypervisor (or virtual machine monitor) is a piece of software capable of runn
 \label{sec:safeg}
 SafeG (short for \textit{Safety Gate}) is a hypervisor developed by the TOPPERS group of Nagoya University in Japan~\cite{website:safeg}. It can host two operating systems on the same hardware, partitioning them into Trusted and Non-Trusted zones (sometimes called Trusted and Non-Trusted "worlds") via ARM TrustZone~\cite{website:ARM}.\\ %This provides full system access to the software running in Trusted state, and limits the access and capabilities of the software running in Non-Trusted state.\\
 
-SafeG guarantees both that the memory and temporal execution of tasks in the OS on the secure side is isolated from the OS on the non-secure side~\cite{sangorrinlopez2012}. Both memory and time isolation is backed by the ARM TrustZone hardware extensions~\cite{sangorrinlopez2012}. RTOS tasks are triggered by FIQ (Fast Interrupt Request), an interrupt with higher priority than IRQ (Interrupt Request), which is allocated to the GPOS~\cite{sangorrinlopez2012}.
+SafeG guarantees both that the memory and temporal execution of tasks in the OS on the secure side is isolated from the OS on the non-secure side~\cite{sangorrinlopez2012}. Both memory and time isolation is backed by the ARM TrustZone hardware extensions~\cite{sangorrinlopez2012}. RTOS tasks are triggered by FIQ (Fast Interrupt Request), an interrupt with higher priority than IRQ (Interrupt Request), which is allocated to the GPOS~\cite{sangorrinlopez2012}.\\
 
 Figure~\ref{fig:safeg} depicts the SafeG architecture. It shows a simplified view of a TrustZone enabled ARM processor together with partitioned memory and device IO.
 
