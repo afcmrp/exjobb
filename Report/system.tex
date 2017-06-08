@@ -5,13 +5,13 @@
 This chapter will describe the Alten MCS, its different components and how it is built.
 
 \section{Overview}
-The Alten MCS (Alten Mixed Criticality System) is a Mixed Criticality System consisting of both hardware and software components. The general idea is that it should be capable of running two operating systems of different criticality on the same hardware, separated via a hypervisor, where errors from the non-critical OS should not be able to propagate into the safety-critical OS. The Alten MCS has currently been built on two different development boards, the EMC\textsuperscript{2} Development Platform (EMC\textsuperscript{2}DP) and the Zedboard (Zynq Evaluation and Development board). Both boards are equipped with a Zynq-7000 System on Chip (SoC). The development boards can be seen in Figure~\ref{fig:development_boards}.
+The Alten MCS (Alten Mixed Criticality System) is a Mixed Criticality System consisting of both hardware and software components. The general idea is that it should be capable of running two operating systems of different criticality on the same hardware, separated via a hypervisor, where errors from the non-critical OS should not be able to propagate into the safety-critical OS. The Alten MCS has currently been built on two different development boards, the EMC\textsuperscript{2} Development Platform (EMC\textsuperscript{2}DP) and the Zynq Evaluation and Development board (Zedboard). Both boards are equipped with a Zynq-7000 System on Chip (SoC). The development boards can be seen in Figure~\ref{fig:development_boards}.
 
 \begin{figure}[H]
 \centering
 \begin{subfigure}[b]{0.3\textwidth}
 \includegraphics[width=\textwidth]{./img/zedboard.jpg}
-\caption{Zeboard}
+\caption{Zedboard}
 \end{subfigure}
 \begin{subfigure}[b]{0.3\textwidth}
 \includegraphics[width=\textwidth]{./img/emc2dp.jpg}
@@ -45,19 +45,22 @@ A hypervisor (also known as a Virtual Machine Monitor (VMM)) is used to alternat
 \end{figure}
 
 %TODO: gör okefft
-For the hypervisor, the GPOS is regarded as another task with lowest priority. \\
+%As far as the hypervisor is concerned, the GPOS is another task with lowest priority. \\
+When executing the tasks via the hypervisor, all S\_OS tasks are executed according to the scheduling. At the lowest priority is the task that switches processor state. As soon as an S\_OS task needs to execute, a FIQ is issued to interrupt the processor and switch mode back to the S\_OS. \\
 
-The time it takes the hypervisor to switch processor state bounds the maximum frequency a task can have while the processor still manages to maintain its switching capabilities. The maximum frequency, $f_{max}$, can be calculated as
+The time it takes the hypervisor to switch processor state bounds the theoretical maximum frequency a cyclic task can have while the processor still manages to maintain its switching capabilities. The maximum frequency, $f_{max}$, can be calculated as
 
 $$f_{max} = \lim_{e_s, e_{ns} \to 0} \frac{1}{e_s+e_{ns}+2e_{switch}} = 250\textrm{ kHz}$$
 
 where $e_s$ is the execution time of the tasks on the S\_OS, $e_{ns}$ is the execution time of the tasks on the NS\_OS and $e_{switch}$ is the time required for the mode-switch.\\
 
+A more practical limitation is that the periodicity of a cyclic task in FMP is defined by an integer in milliseconds, meaning that the highest frequency for a periodic task is $1\textrm{ kHz}$.\\
+
 A basic overview of the hardware and the software of the system can be seen in Figure~\ref{fig:system_overview}.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{./img/literature_overview.png}
+\includegraphics[width=\textwidth]{./img/system_overview.png}
 \caption{Overview of the MCS in place.\cite{zaki2016}}\label{fig:system_overview}
 \end{figure}
 
