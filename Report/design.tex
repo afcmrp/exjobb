@@ -6,10 +6,14 @@ For the system to accomplish the goals stated in \ref{sec:problem}, several hard
 %For the mixed criticality implementation, the hypervisor SafeG~\ref{sec:safeg}~\cite{website:safeg} will be used to alternate between the safety-critical RTOS FMP and the GPOS, as described in section~\ref{sec:lit_emc2mcs}. Several safety-critical functions will run on FMP.
 
 \section{Operative system functions}
-This section will describe the functions to be implemented in the RTOS FMP.
+This section will describe the functions to be implemented in the RTOS.
 
 \subsection{Longitudinal control}
-A PID controller will be implemented to control the speed of the vehicle and its distance to the vehicle in front of it. The controller will use information from the preceding vehicle and a distance sensor as input to calculate a control signal. See the report by Roshanghias~\cite{roshanghias2017}.
+A PID controller will be implemented to control the speed of the vehicle and its distance to the vehicle in front of it. The controller will use information from the preceding vehicle and a distance sensor as input to calculate a control signal. \\
+
+CC-ACC-CACC, architecture, shared info.\\
+
+For more information, see the report by Roshanghias~\cite{roshanghias2017}.
 
 \subsection{Lateral control}
 A lane-detecting algorithm will be implemented on a Raspberry Pi that will send data to the Alten MCS. The choice of Raspberry Pi was made because of the amount of open source video processing code available for the platform. For more info, see the report by Ferhatovic~\cite{ferhatovic2017}.\\
@@ -18,6 +22,8 @@ Lateral control will be implemented on the RTOS on the Alten MCS. The function r
 
 \subsection{Data aggregation}
 This function will read wheel sensor data and calculate if the road conditions are unsafe for platooning. See the report by Hellman~\cite{hellman2017}.
+
+The function will also serve as a filter for distance measurements and speed measurements for other tasks to use.
 
 \subsection{Communication}
 To maintain secure communication between the two vehicles in the platoon, a communication protocol will be developed. WiFi messages will be parsed in a MicroBlaze processor in the FPGA and sent to the OS. For more information, see the report by~\cite{lerander2017}.

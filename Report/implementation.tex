@@ -4,21 +4,59 @@ This chapter will describe the implementation of the entire system in the demons
 \section{Platform}
 To demonstrate the system, the RC car UTOR 8E from BSD racing was chosen. It has a steering servo, brushless DC motor, 
 
-PWM signal to driver for motor and servo, 50Hz
+PWM signal to driver for motor and servo, 50Hz. The speed is controlled by the pulselength of the PWM signal. This was tested with the handcontroller to see what PWM signals were received at the end points. Maximum and minimum high time measured was 0.02 seconds and 0.01 seconds. Depending on how high frequencies the driver can handle, the frequency could be increased without changing the high time, potentially up until 0.02 seconds would correspond to a duty cycle of 100\%, see figure.
+
+%TODO: Latex plot
+
+This was tested, and gave expected results for frequencies up to 200 Hz. After this 
 
 \section{Electrical schematics}
 Two 7.4V batteries in parallel. Voltage regulator to 5V for LIDAR, Raspberry Pi, encoders and WiFi module. Voltage regulator to DC input voltage for Zedboard.
 
-\section{Pulse Width Modulation}
+\section{Hardware functions}
+
+\subsection{Pulse Width Modulation}
 To control the speed of the motor and the position of the steering servo, Pulse Width Modulation (PWM) is used. Two hardware implemented PWM functions will be needed.
 
-\section{LIDAR}
+\subsection{LIDAR}
 To read the distance to the preceding vehicle, the LIDAR Garmin LIDAR Lite v3 was used. Specs. The PWM interface was used. A hardware function was implemented on the FPGA to read the pulse width from the PWM signal. The length of the pulse width was counted and written on an AXI bus address, ready for the OS to be read and convert into a distance in cm. The hardware code was written in VHDL and can be seen in Appendix B.
 
-\section{Encoders/Decoders}
+\subsection{Encoders/Decoders}
 To read the speed of each wheel, the encoders TODO were used. Specs. To convert the signals from each encoder, hardware implemented decoders were written. The decoders read A and B pulses from each encoder and counted the time between each pulse to calculate the rotational speed of the wheels. This value was written on an AXI bus address for the OS to read. The hardware code was written in VHDL and can be seen in Appendix B.
 
+\section{RTOS tasks}
+
+\subsection{Longitudinal control}
+longitudinal\_control(), due to the limitations by the PWM, the control frequency was capped at 50 Hz, meaning a period of 20 ms. 
+
+\subsection{Lateral control}
+lateral\_control(), due to the limitations by the PWM, the control frequency was capped at 50 Hz, meaning a period of 20 ms.
+
+\subsection{Data aggregation}
+data\_aggregation(), this task needs to be activated with as high frequency as possible. 1 ms is the shortest period allowed in FMP.
+
+\subsection{Communication}
+communication(), this task is bounded by the period of the larger communication loop, more than 20 ms, used 20 ms
+
+\section{Processor scheduling}
+
+\begin{RTGrid}{2}{20}
+	\multido{\n=0+4}{5}{
+		\TaskArrDead{1}{\n}{4}
+		\TaskExecDelta{1}{\n}{1}}
+	\multido{\n=0+6}{3}{
+	\TaskArrDead{2}{\n}{6}}
+	\TaskRespTime{2}{0}{4}   % draws the hatched rectangle in [0,4]
+	\TaskExecution{2}{1}{4}  % draws execution (over the previous rectangle)
+	\TaskRespTime{2}{6}{4}   % draws the hatched rectangle in [6,10]
+	\TaskExecution{2}{6}{8}  % draws execution
+	\TaskExecution{2}{9}{10} % draws execution
+	\TaskRespTime{2}{12}{4}   % draws the hatched rectangle in [12,16]
+	\TaskExecution{2}{13}{16} % draws execution
+\end{RTGrid}
+
 \section{System overview}
+
 
 %\begin{tikzpicture}
 

@@ -1,12 +1,14 @@
 \chapter{Results}
 \label{sec:results}
 
-This chapter will present results from the demonstrator to the reader.
+This chapter will present results from the demonstrator to the reader.\\
 
 %Things to evaluate: Overhead, memory usage, security stuff, economical benefit
 
 %\section{Experiment design}
 %Timer setup, etc
+
+
 
 \section{SafeG overhead}
 To measure the overhead of SafeG monitor, a hardware timer was started on the secure side, immediately followed by a syscall to switch OS. The non-secure side immediately read the value of the timer and printed this value. This procedure was looped many times to gather a reliable set of data points. Pseudo code for this procedure follows below:\\
@@ -48,11 +50,11 @@ Standard deviation & 0.258 $\mu s$\\ \hline
 \label{table:switch_et}
 \end{table}
 
-\section{Task switch}
-The task switch introduces extra 1.18 $\mu s$. Combined WCET: $4.24 \mu s$.
-
 \section{OS tasks}
 Communication, Lateral control, Data aggregation, Longitudinal control
+
+\section{Task switch}
+The task switch introduces extra 1.18 $\mu s$. Combined WCET: $4.24 \mu s$.
 
 \section{Hypervisor robustness}
 Unregistered exception was possible to create by accessing restricted AXI bus address, causing the processor to stop.\\
