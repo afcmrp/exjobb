@@ -1,0 +1,82 @@
+\section{Processor scheduling}
+The above tasks with their required period and WCET as can be seen in chapter~\ref{sec:results} resulted in the processor scheduling seen in figure~\ref{fig:rtsched}.
+
+\begin{tikzpicture}[scale=1,transform shape]
+
+\draw [-latex](-0.5,0) coordinate(dd)-- (0,0) coordinate (O1) -- (11,0)coordinate(ff) node[above]{$t$};
+\draw [dashed,thick] (O1) -- (0,1) coordinate(Linux) -- (0,3) coordinate(OS switch) -- (0,5) coordinate(longitudinal control) -- (0,7) coordinate(lateral control) -- (0,9) coordinate(communication) -- (0,11) coordinate(data aggregation) ++(0,1)coordinate(ff2);
+
+\foreach \nn in{Linux,OS switch,longitudinal control,lateral control,communication,data aggregation}{
+\draw [thick] (dd|-\nn) node[above]{\nn}-- (\nn-|ff);
+}
+
+\foreach \xx in{1,2,...,10}{
+\draw[dashed] (\xx,0) -- (\xx,0|- ff2);
+}
+
+\foreach \xx in{0,2,4,...,10}{
+\draw[dashed] (\xx,0.2) -- (\xx,-0.2) node[below]{\xx 0};
+}
+
+\begin{scope}[shift={(data aggregation)}]
+\node[above right=0.4cm and 0cm of data aggregation,right,draw, minimum width=1cm,minimum height=0.8cm,fill=white](n3a) {};
+\draw[-latex,thick] (n3a.north west) -- ++(0,0.5);% node[right]{$a^{e3}_{3=f(e3)}$};
+\end{scope}
+
+\begin{scope}[shift={(communication)}]
+\node[ above right=0.4cm and 0cm of communication,right,draw, minimum width=1cm,minimum height=0.8cm,fill=white](n4a) {};
+\draw[-latex,thick] (n4a.north west) -- ++(0,0.5);%node[right,fill=white]{$a^{S2}_{f(S2)}$};
+%\draw[-latex,thick] ([xshift=2.7cm]n4a.north west) coordinate(bb1)-- ++(0,0.5)node[right,fill=white]{$a^{S2}_{3=f(e3)}$};
+%\draw[dashed,red] (n3a.south east) -- (bb1);
+%\node[right=0cm of n4a,right,draw, minimum width=4cm,minimum height=0.8cm,fill=white](n3b) {$3=p(e_3)$};
+\end{scope}
+
+\begin{scope}[shift={(lateral control)}]
+\coordinate(O3) at (0.5,0);
+%\node[ above right=0.4cm and 0cm of O3,right,draw, minimum width=4cm,minimum height=0.8cm,fill=white](n1) {$1=f(s_2)$};
+%\node[right=0cm of n1,right,draw, minimum width=4cm,minimum height=0.8cm,fill=white](n5) {$5$};
+%\node[right=0cm of n5,right,draw, minimum width=4cm,minimum height=0.8cm,fill=white](n4b) {$4=p(S2)$};
+%\node[right=0cm of n4b,right,draw, minimum width=4cm,minimum height=0.8cm,fill=white](n3c) {$3$};
+\end{scope}
+
+\end{tikzpicture}
+
+\section{System overview}
+
+
+%\begin{tikzpicture}
+
+%\draw (0,0) -- (14,0) -- (14,16) -- (0,16) -- (0,0);
+%\node [below, right] at (0,15.75) {Processing System};
+
+%\draw (1,7.25) -- (13,7.25) -- (13,15.5) -- (1,15.5) -- (1,7.25);
+%\node [below, right] at (1,15.25) {CPU};
+
+%\draw [rounded corners] (1.5,13) -- (1.5,7.5) -- (12.5,7.5) -- (12.5,15) -- (1.5,15) -- (1.5,13);
+%\node [below, right] at (1.5,14.75) {SafeG Hypervisor};
+
+%\draw [rounded corners] (2,13) -- (2,7.75) -- (6.5,7.75) -- (6.5,14.5) -- (2,14.5) -- (2,13);
+%\node [below, right] at (2,14.25) {Virtual CPU};
+
+%\draw [rounded corners] (7.5,13) -- (7.5,7.75) -- (12,7.75) -- (12,14.5) -- (7.5,14.5) -- (7.5,13);
+%\node [below, right] at (7.5,14.25) {Virtual CPU};
+
+%\draw [rounded corners] (2.25,13.5) -- (2.25,13) -- (6.25,13) -- (6.25,14) -- (2.25,14) -- (2.25,13.5);
+%\node [below, right] at (2.25,13.5) {Longitudinal control};
+
+%\draw [rounded corners] (2.25,12.5) -- (2.25,11.75) -- (6.25,11.75) -- (6.25,12.75) -- (2.25,12.75) -- (2.25,12.5);
+%\node [below, right] at (2.25,12.25) {Lateral control};
+
+%\draw [rounded corners] (2.25,11) -- (2.25,10.5) -- (6.25,10.5) -- (6.25,11.5) -- (2.25,11.5) -- (2.25,11);
+%\node [below, right] at (2.25,11) {Data aggregation};
+
+%\draw [rounded corners] (2.25,9.75) -- (2.25,9.25) -- (6.25,9.25) -- (6.25,10.25) -- (2.25,10.25) -- (2.25,9.75);
+%\node [below, right] at (2.25,9.75) {Communication};
+
+%\draw [rounded corners] (2.25,8.5) -- (2.25,8) -- (6.25,8) -- (6.25,9) -- (2.25,9) -- (2.25,8.5);
+%\node [below, right] at (2.25,8.5) {SafeG system switch};
+
+%\draw (0,6.75) -- (14,6.75);
+%\node [below, right] at (0,6.5) {Programmable Logic};
+
+%\end{tikzpicture}

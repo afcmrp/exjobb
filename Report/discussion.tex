@@ -1,13 +1,9 @@
 \chapter{Discussion}
 Discussion about the results produced by the thesis.
 
-\section{Problem/Research}
-%TODO: Återkoppla
-
 \section{Information retrieval}
-Printing to SYSLOG takes time and has an effect on the system that is being monitored.\\
-
-Timer used requires very little processor time, but still some. TOPPERS might have measured using less processor time.
+%Printing to SYSLOG takes time and has an effect on the system that is being monitored.\\
+The hardware timer used requires very little processor time, but still some. TOPPERS might have measured using less processor time.
 
 \section{Utilization}
 Deterministic system - work towards 100\%, anything under that: reduce clock frequency to reduce power consumption and reach 100\%.\\
@@ -18,6 +14,29 @@ Sporadic system - probably want to be around ~50\% utilization to maintain 100\%
 %TODO: expand
 Unregistered exception, accessing restricted AXI bus address. Should be avoided by accessing via OS instead of address. All address space should be handled by the OS/monitor, allowing or restricting access to certain address spaces. Probably not correctly setup.
 
-\section{Overhead resource loss vs resource gain}
-%TODO: expand
-Higher frequency leads to more overhead. At what point is it not worth it to have a non-critical system application on the same hardware?
+\section{Virtualization resource gain vs resource loss}
+%At what point is it not worth it to have a non-critical system application on the same hardware? 
+As described earlier, higher frequency leads to more overhead. Disregarding the maximum frequency of 1~kHz for tasks in FMP, the maximum frequency for the functions in the implemented system would be just under 40 kHz, leading to an overhead of 24\% for the hypervisor. This gives the GPOS no time at all for the case when every other task executes for its WCET. However, assuming every task executes for its median execution time, the GPOS can execute for 31\% of the time. This gives a very good combination of throughput for the entire system and real-time guarantees for the safety-critical tasks at the cost of a maximum overhead of 24\%. This is visualized in figure~\ref{fig:cpu_util}.
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[b]{0.49\textwidth}
+\includegraphics[width=\textwidth]{./img/discussion_util_wcet.eps}
+\caption{Worst case execution time}
+\end{subfigure}
+\begin{subfigure}[b]{0.49\textwidth}
+\includegraphics[width=\textwidth]{./img/discussion_util_med.eps}
+\caption{Median execution time}
+\end{subfigure}
+\caption{CPU utilization of monitor, RTOS and GPOS. Note that for the WCET of tasks, 100\% CPU utilization by the monitor and RTOS is reached just before 40 kHz.}
+\label{fig:cpu_util}
+\end{figure}
+
+\section{Conclusion}
+In the introduction of this thesis, the following research question was presented:
+
+\begin{itemize}
+\item Is virtualization an efficient approach when trying to reconcile the conflicting requirements of partitioning for safety assurance and sharing for efficient resource usage when implementing a safety-critical control system?
+\end{itemize}
+
+After the implementation, it can be clearly seen that virtualization can be a very efficient and secure approach for reconciling the conflicting requirements of partitioning and sharing. However, finding out if it is efficient in the industry as a whole requires additional research in technical aspects as well as other aspects such as management and financial related ones. These are presented in chapter~\ref{sec:future_work}.

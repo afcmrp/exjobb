@@ -1,4 +1,5 @@
 \chapter{State of the art}
+\label{sec:sota}
 This chapter will go through relevant articles and research on the subject of mixed criticality systems, vehicle platooning and safety standards in the automotive industry.
 
 \section{Mixed criticality systems}
@@ -69,12 +70,19 @@ For a more complete review of work done on MCSs with a shared processor, see the
 %http://pertsserver.cs.uiuc.edu/~mcaccamo/papers/euromicro12.pdf
 
 \subsubsection{Execution times}
-%TODO:
-A key concept when designing a real time system is the worst case execution time of each task, or WCET. This is the longest amount of time a task will take to execute on the specific hardware. The scheduling in a RTOS is designed so that every task is guaranteed to execute until it is finished. To be able to guarantee this, the WCET of each task must be known. There are two approaches to learn the WCET of a task, static and measurement-based methods~\cite{wcet}.\\
+A key concept when designing a real time system is the worst case execution time of each task, or WCET. This is the longest amount of time a task will take to execute on the specific hardware. Generally, it is very rare for a task to execute for its full WCET, but is typically executed for its median execution time, see figure~\ref{fig:wcet}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{./img/literature_wcet.png}
+\caption{WCET illustrated.~\cite{wcet}}\label{fig:wcet}
+\end{figure}
+
+In a GPOS, scheduling is optimized for throughput. This means that shorter and therefore sometimes missed deadlines are allowed in exchange for higher rate of tasks. The scheduling in a RTOS however is designed so that every task is guaranteed to execute until it is finished. To be able to guarantee this, the WCET of each task must be known. There are two approaches to learn the WCET of a task, static and dynamic methods~\cite{wcet}.\\
 
 Static based methods involve analysis of code, counting assembler instructions for each part of the code and combining these to get a maximum amount of instructions, where each instruction has  a known execution time~\cite{wcet}.\\
 
-Measurement based methods are a bit more straight-forward, you simply let the code execute many times and measure the time each execution of the code takes. This can be measured by for example setting a output pin high at the start of the task and then setting it low at the end, and have an external clock measure the time the pin is high~\cite{wcet}. 
+Dynamic based methods are a bit more straight-forward, you simply let the code execute many times and measure the time each execution of the code takes. This can be measured by for example setting an output pin high at the start of the task and then setting it low at the end, and have an external clock measure the time the pin is high~\cite{wcet}. The dynamic approach is the most common method in most parts of industry~\cite{wcet}.
 
 \section{Standards}
 %Different standards to regulate and ensure safety
@@ -85,7 +93,7 @@ To ensure safe and secure practices in industries, safety standards are becoming
 IEC 61508~\cite{IEC61508} is intended to be a basic functional safety standard for electrical and electronic systems applicable to all kinds of industry. It defines four different safety integrity levels, SIL~1 being the least dependable up to SIL~4 which is the most dependable level.
 
 \subsection{ISO 26262}
-ISO 26262~\cite{ISO26262} addresses the needs for an automotive-specific international standard that focuses on safety critical components. ISO 26262 is a derivative of IEC 61508.
+ISO 26262~\cite{ISO26262} is a functional safety standard derived from IEC 61508. It addresses the needs for an automotive-specific international standard that focuses on safety critical components. 
 
 \subsubsection{ASILs}
 %ASIL QM (quality management) relates to the lowest (no) hazard, and ASIL
@@ -211,7 +219,7 @@ Scheduling in seL4 is deliberately left underspecified. The present implementati
 \subsection{SICS Thin hypervisor}
 SICS Thin Hypervisor (STH) is a light-weight hypervisor designed for ARM-based devices~\cite{STH2013}. STH runs directly on top of the hardware (bare metal), and achieves system virtualization through paravirtualization. STH allows for more than two guests to run on top of the hypervisor. STH has no TrustZone support.\\
 
-The current version of STH supports ARMv5 (926EJ-S) and ARMv7 Cortex-A8 only, but due to its flexible nature and minimal layer of hardware abstraction it is easily migrated to other platform~\cite{STH2013}. There is no graphical support and all communication with the kernel is done through the UART.\\
+The current version of STH supports ARMv5 (926EJ-S) and ARMv7 Cortex-A8 only, but due to its flexible nature and minimal layer of hardware abstraction it is easily migrated to other platform~\cite{STH2013}. There is no graphical support and all communication with the kernel is done through the UART.
 
 \subsection{Sierra visor}
 SierraVisor is a bare metal universal hypervisor created by Sierraware~\cite{sierraware}. It supports paravirtualization, TrustZone virtualization, and hardware assisted virtualization. The SierraVisor Hypervisor supports any ARM11, Cortex-A9, or Cortex-A15 platform, but only Cortex-A15 supports the hardware assisted virtualization option. 

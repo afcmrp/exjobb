@@ -40,7 +40,13 @@ To read the speed of the vehicle, encoders need to be connected to the wheels. T
 To read the distance to the preceding vehicle, a LIDAR (LIght Detection And Ranging) will be used. The LIDAR communicates the distance it is reading via a PWM signal. A hardware function is needed to read the PWM pulse and convert it to a distance.
 
 \subsection{Communication}
-WiFi communication is used between the two vehicles in the platoon. To read packages, a WiFi module is used that communicates via UART with the Alten MCS. A MicroBlaze in the FPGA processes the packages and sends the parsed data to the OS via a mailbox. For more information, see the report by~\cite{lerander2017}.
+WiFi communication is used between the two vehicles in the platoon. To read packages, a WiFi module is used that communicates via UART with the Alten MCS. A MicroBlaze in the FPGA processes the packages and sends the parsed data to the OS via a mailbox. For more information, see the report by Lerander~\cite{lerander2017}.
+
+\subsection{Actuation}
+To actuate control signals and thereby control the speed of the motor and the position of the steering servo, Pulse Width Modulation (PWM) is used. Two hardware implemented PWM functions will be needed.
+
+\subsection{Raspberry Pi communication}
+To receive information from the Raspberry Pi, some form of communication interface needs to be used. One simple solution for this is UART (Universal Asynchronous Receiver Transmitter) serial communication. 
 
 \section{Overview design}
 An overview of the different functions to be implemented on the Zynq-7000 can be seen in figure~\ref{fig:overview}.
@@ -55,11 +61,9 @@ A sequence diagram of the various dependencies and flow of each function can be 
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth]{./img/design_sequence.png}
-\caption{Sequence diagram of the various hardware and software functions.}\label{fig:sequence}
+\includegraphics[width=\textwidth]{./img/design_sequence3.png}
+\caption{Sequence diagram of the various hardware and software functions, their dependencies and flow of information.}\label{fig:sequence}
 \end{figure}
-
-The Vivado block design can be seen in Appendix A.
 
 %\section{Car}
 %To demonstrate the system, the RC car UTOR 8E from BSD racing was chosen. It has a steering servo, brushless DC motor, TODO: etc

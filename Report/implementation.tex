@@ -2,29 +2,28 @@
 This chapter will describe the implementation of the entire system in the demonstrator.
 
 \section{Platform}
-To demonstrate the system, the RC car UTOR 8E from BSD racing was chosen. It has a steering servo, brushless DC motor, 
+To demonstrate the system, the RC car UTOR 8E from BSD racing was chosen. It has a steering servo, brushless DC motor, \\
 
-PWM signal to driver for motor and servo, 50Hz. The speed is controlled by the pulselength of the PWM signal. This was tested with the handcontroller to see what PWM signals were received at the end points. Maximum and minimum high time measured was 0.02 seconds and 0.01 seconds. Depending on how high frequencies the driver can handle, the frequency could be increased without changing the high time, potentially up until 0.02 seconds would correspond to a duty cycle of 100\%, see figure.
+For the demonstrator, both vehicles used the Zedboard for a number of reasons. 
+\begin{itemize}
+\item The power supply connector for the EMC\textsuperscript{2}DP would have to be remade to be used in the vehicle.
+\item Connections on the vehicles fitting the measurements of the Zedboard were made.
+\item Same BSP for both vehicles
+%\item The Zedboard was all around easier to work with
+\end{itemize}
+
+\subsection{Driver}
+The driver for the motor and steering servo is controlled by a PWM signal with a frequency of 50 Hz. The speed is controlled by the pulse length of the PWM signal. This was tested with the hand-controller to see what PWM signals were received at the end points. Maximum and minimum high time measured was 0.02 seconds and 0.01 seconds, which at 50 Hz corresponds to a duty cycle of 10 and 5 \%. Depending on how high frequencies the driver can handle, the frequency could be increased without changing the high time, potentially up until 0.02 seconds would correspond to a duty cycle of 100\%, see figure.
 
 %TODO: Latex plot
 
-This was tested, and gave expected results for frequencies up to 200 Hz. After this 
+This was tested, and gave somewhat expected results. The driver had some disturbances and gave maximum or minimum output sporadically when it shouldn't, with more disturbances at higher frequencies. It was decided that a frequency of 50 Hz would have to do.
 
 \section{Electrical schematics}
 Two 7.4V batteries in parallel. Voltage regulator to 5V for LIDAR, Raspberry Pi, encoders and WiFi module. Voltage regulator to DC input voltage for Zedboard.
 
-\section{Hardware functions}
-
-\subsection{Pulse Width Modulation}
-To control the speed of the motor and the position of the steering servo, Pulse Width Modulation (PWM) is used. Two hardware implemented PWM functions will be needed.
-
-\subsection{LIDAR}
-To read the distance to the preceding vehicle, the LIDAR Garmin LIDAR Lite v3 was used. Specs. The PWM interface was used. A hardware function was implemented on the FPGA to read the pulse width from the PWM signal. The length of the pulse width was counted and written on an AXI bus address, ready for the OS to be read and convert into a distance in cm. The hardware code was written in VHDL and can be seen in Appendix B.
-
-\subsection{Encoders/Decoders}
-To read the speed of each wheel, the encoders TODO were used. Specs. To convert the signals from each encoder, hardware implemented decoders were written. The decoders read A and B pulses from each encoder and counted the time between each pulse to calculate the rotational speed of the wheels. This value was written on an AXI bus address for the OS to read. The hardware code was written in VHDL and can be seen in Appendix B.
-
 \section{RTOS tasks}
+This section will describe the task implemented on the RTOS.
 
 \subsection{Longitudinal control}
 longitudinal\_control(), due to the limitations by the PWM, the control frequency was capped at 50 Hz, meaning a period of 20 ms. 
@@ -38,59 +37,70 @@ data\_aggregation(), this task needs to be activated with as high frequency as p
 \subsection{Communication}
 communication(), this task is bounded by the period of the larger communication loop, more than 20 ms, used 20 ms
 
-\section{Processor scheduling}
+\section{GPOS}
+Linux was run on the non-secure side. From the beginning there were ideas of hosting a video feed from the camera on the vehicle, but there was not nearly enough time to implement this. Instead, the Linux was running idle and was only used to navigate the file system to demonstrate that it was up and running. 
 
-\begin{RTGrid}{2}{20}
-	\multido{\n=0+4}{5}{
-		\TaskArrDead{1}{\n}{4}
-		\TaskExecDelta{1}{\n}{1}}
-	\multido{\n=0+6}{3}{
-	\TaskArrDead{2}{\n}{6}}
-	\TaskRespTime{2}{0}{4}   % draws the hatched rectangle in [0,4]
-	\TaskExecution{2}{1}{4}  % draws execution (over the previous rectangle)
-	\TaskRespTime{2}{6}{4}   % draws the hatched rectangle in [6,10]
-	\TaskExecution{2}{6}{8}  % draws execution
-	\TaskExecution{2}{9}{10} % draws execution
-	\TaskRespTime{2}{12}{4}   % draws the hatched rectangle in [12,16]
-	\TaskExecution{2}{13}{16} % draws execution
+\section{Processor scheduling}
+The above tasks with their required period and WCET as can be seen in chapter~\ref{sec:results} resulted in the processor scheduling seen in figure~\ref{fig:rtsched}.
+
+\begin{figure}[H]
+\centering
+\begin{RTGrid}[nonumbers=1]{6}{25}
+
+%Data aggregation
+\TaskNArrival{1}{0}{7}{4}
+\TaskNExecDelta{1}{0}{1}{7}{4}
+
+%Communication
+\TaskArrival{2}{0}
+\TaskRespTime{2}{0}{1}
+\TaskExecution{2}{1}{2}
+
+%Lateral control
+\TaskArrival{3}{0}
+\TaskRespTime{3}{0}{2}
+\TaskExecution{3}{2}{3}
+
+%Longitudinal control
+\TaskArrival{4}{0}
+\TaskRespTime{4}{0}{3}
+\TaskExecution{4}{3}{4}
+
+\TaskExecution{5}{4}{5}
+
+%OS switch
+\TaskNExecDelta{5}{6}{1}{7}{3}
+\TaskNExecDelta{5}{8}{1}{7}{3}
+
+%GPOS
+\TaskRespTime{6}{0}{25}
+\TaskExecution{6}{5}{6}
+\TaskNExecDelta{6}{9}{4}{7}{2}
+\TaskExecution{6}{23}{25}
+
 \end{RTGrid}
+\caption{Processor scheduling, not to scale.}\label{fig:rtsched}
+\begin{tabular}{r@{: }l r@{: }l r@{: }l}
+$\tau_1$ & Data aggregation & $\tau_2$ & Communication & $\tau_3$ & Lateral control\\
+$\tau_4$ & Longitudinal control & $\tau_5$ & OS switch & $\tau_6$ & GPOS
+\end{tabular}
+\end{figure}
+
+\section{Hardware functions}
+This section will describe the implementation of the hardware functions, or FPGA IPs. For the entire Vivado block design showing the FPGA IPs and their interconnect, see Appendix A.
+
+\subsection{Pulse Width Modulation}
+Two Timer Counter IPs were used to control the PWM signal to the motor and servo. Each Timer Counter has two internal timers, one timer setting the output high at the period specified, and one timer setting the output low after the start of the first timer. The resolution of the timers are 20 ns.
+
+\subsection{LIDAR}
+To read the distance to the preceding vehicle, the LIDAR Garmin LIDAR Lite v3 was used. TODO: Specs. The PWM interface was used. A hardware function was implemented on the FPGA to read the pulse width from the PWM signal. The length of the pulse width was counted and written on an AXI bus address, ready for the OS to be read and converted into a distance in cm. The hardware code was written in VHDL and can be seen in Appendix B.
+
+\subsection{Encoders/Decoders}
+To read the speed of each wheel, the encoders TODO were used. Specs. To convert the signals from each encoder, hardware implemented decoders were written. The decoders read A and B pulses from each encoder and counted the time between each pulse to calculate the rotational speed of the wheels. This value was written on an AXI bus address for the OS to read. The hardware code was written in VHDL and can be seen in Appendix B.
+
+\subsection{UART}
+To communicate with the Raspberry Pi, the UART interface was used. The IP UART Lite with a baudrate of 115200 was implemented on the FPGA.
 
 \section{System overview}
-
-
-%\begin{tikzpicture}
-
-%\draw (0,0) -- (14,0) -- (14,16) -- (0,16) -- (0,0);
-%\node [below, right] at (0,15.75) {Processing System};
-
-%\draw (1,7.25) -- (13,7.25) -- (13,15.5) -- (1,15.5) -- (1,7.25);
-%\node [below, right] at (1,15.25) {CPU};
-
-%\draw [rounded corners] (1.5,13) -- (1.5,7.5) -- (12.5,7.5) -- (12.5,15) -- (1.5,15) -- (1.5,13);
-%\node [below, right] at (1.5,14.75) {SafeG Hypervisor};
-
-%\draw [rounded corners] (2,13) -- (2,7.75) -- (6.5,7.75) -- (6.5,14.5) -- (2,14.5) -- (2,13);
-%\node [below, right] at (2,14.25) {Virtual CPU};
-
-%\draw [rounded corners] (7.5,13) -- (7.5,7.75) -- (12,7.75) -- (12,14.5) -- (7.5,14.5) -- (7.5,13);
-%\node [below, right] at (7.5,14.25) {Virtual CPU};
-
-%\draw [rounded corners] (2.25,13.5) -- (2.25,13) -- (6.25,13) -- (6.25,14) -- (2.25,14) -- (2.25,13.5);
-%\node [below, right] at (2.25,13.5) {Longitudinal control};
-
-%\draw [rounded corners] (2.25,12.5) -- (2.25,11.75) -- (6.25,11.75) -- (6.25,12.75) -- (2.25,12.75) -- (2.25,12.5);
-%\node [below, right] at (2.25,12.25) {Lateral control};
-
-%\draw [rounded corners] (2.25,11) -- (2.25,10.5) -- (6.25,10.5) -- (6.25,11.5) -- (2.25,11.5) -- (2.25,11);
-%\node [below, right] at (2.25,11) {Data aggregation};
-
-%\draw [rounded corners] (2.25,9.75) -- (2.25,9.25) -- (6.25,9.25) -- (6.25,10.25) -- (2.25,10.25) -- (2.25,9.75);
-%\node [below, right] at (2.25,9.75) {Communication};
-
-%\draw [rounded corners] (2.25,8.5) -- (2.25,8) -- (6.25,8) -- (6.25,9) -- (2.25,9) -- (2.25,8.5);
-%\node [below, right] at (2.25,8.5) {SafeG system switch};
-
-%\draw (0,6.75) -- (14,6.75);
-%\node [below, right] at (0,6.5) {Programmable Logic};
-
-%\end{tikzpicture}
+The entire system with platform, software and hardware can be seen in figure~\ref{fig:system_overview}.
+%TODO: bild

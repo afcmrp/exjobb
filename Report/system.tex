@@ -15,7 +15,7 @@ The Alten MCS (Alten Mixed Criticality System) is a Mixed Criticality System con
 \end{subfigure}
 \begin{subfigure}[b]{0.3\textwidth}
 \includegraphics[width=\textwidth]{./img/emc2dp.jpg}
-\caption{EMC2DP}
+\caption{EMC\textsuperscript{2}DP}
 \end{subfigure}
 \caption{}
 \label{fig:development_boards}
@@ -24,7 +24,7 @@ The Alten MCS (Alten Mixed Criticality System) is a Mixed Criticality System con
 \section{Hardware}
 The Zynq-7000 SoC has a Processing System (PS) consisting of a hardwired application processing unit, memory controller, and peripheral devices. The main processing unit is a dual-core Cortex-A9 ARM processor. Connected to the PS region is a Programmable Logic (PL) region. The PL is based on Xilinx’s 7-series FPGA technology.\\
 
-Both the PS and PL regions have support for ARM TrustZone~\cite{website:ARM}.\\
+Both the PS and PL regions have support for ARM TrustZone~\cite{website:ARM}.
 
 \section{Operative systems}
 The Alten MCS uses two Operative Systems (OS) to create temporal and spatial separation between safety-critical and non-critical applications using TrustZone. In its current setup the Real-Time Operative System (RTOS) FMP by TOPPERS~\cite{website:fmp} is used for safety-critical applications. This RTOS follows the uITRON4.0 specification~\cite{uitron}, which is a widely used RTOS specification for Japanese embedded systems. For non-critical applications, the General Purpose Operative System (GPOS) Linux kernel 4.4 is used. Instead of Linux another instance of FMP could be used for non-critical applications.\\
@@ -50,7 +50,9 @@ When executing the tasks via the hypervisor, all S\_OS tasks are executed accord
 
 The time it takes the hypervisor to switch processor state bounds the theoretical maximum frequency a cyclic task can have while the processor still manages to maintain its switching capabilities. The maximum frequency, $f_{max}$, can be calculated as
 
-$$f_{max} = \lim_{e_s, e_{ns} \to 0} \frac{1}{e_s+e_{ns}+2e_{switch}} = 250\textrm{ kHz}$$
+\begin{equation} \label{eq:max_frequency}
+f_{max} = \lim_{e_s, e_{ns} \to 0} \frac{1}{e_s+e_{ns}+2e_{switch}}
+\end{equation}
 
 where $e_s$ is the execution time of the tasks on the S\_OS, $e_{ns}$ is the execution time of the tasks on the NS\_OS and $e_{switch}$ is the time required for the mode-switch.\\
 
@@ -61,15 +63,14 @@ A basic overview of the hardware and the software of the system can be seen in F
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{./img/system_overview.png}
-\caption{Overview of the MCS in place.\cite{zaki2016}}\label{fig:system_overview}
+\caption{Overview of the Alten MCS.\cite{zaki2016}}\label{fig:system_overview}
 \end{figure}
 
 \section{Build procedure}
-The MCS is built from many different components. Hardware design,  applications, virtualization layer, operative systems, boot loaders etc. This section will describe the build procedure.\\ %TODO: Expand
+The MCS is built from many different components. Hardware design, applications, virtualization layer, operative systems, boot loaders etc. This section will describe the build procedure.\\ %TODO: Expand
 %The virtualization layer (SafeG) and the Secure OS (RTOS) remain the same, the software that runs in the normal region can be either RTOS, GPOS, or a bare metal application. Furthermore, other configurations, such as RTOS or GPOS only mode, do not include the VMM.
 
-Xilinx's software Vivado HLS~\cite{website:vivado} is used to design the FPGA of the Zynq-7000. In Vivado the different IPs, their interconnect and the Processing System is configured. This results in a bitstream file that is used in Xilinx SDK to generate a Board Support Package (BSP) and the First Stage Boot Loader (FSBL). The BSP contains libraries for functions and variables necessary for the IPs on the FPGA, and the FSBL configures the FPGA correctly. The FSBL is included in the boot file (BOOT.bin) generated in Xilinx SDK. The boot file also contains the Second Stage Boot Loader (SSBL), u-boot. U-boot is a program that can load executables and other system files from a remote server into the DDR3 memory. This is used to load relevant files for the OS into the Zynq, which brings us to the software part of the build procedure. The software is divided into three parts: RTOS, GPOS and monitor. The SafeG monitor is built and compiled using GCC (Gnu Compiler Collection), resulting in monitor.bin. The RTOS FMP is built and compiled from a .cfg file where tasks and handlers are created, a .c file where tasks and handlers are defined and a .h file containing declarations. This results in fmp.bin. For the non-secure side either Linux or another instance of FMP could be used. The process for FMP is the same as with the secure side. For Linux on the non-secure side, the Linux kernel needs to be modified to support SafeG. This results in the files zImage, devicetree.dtb. All of these files are created and stored on a server and are then loaded into the Zynq-7000 using u-boot.\\
-%, only using the declaration #ifdef TOPPERS_SAFEG_NONSECURE
+Xilinx's software Vivado HLS~\cite{website:vivado} is used to design the FPGA of the Zynq-7000. In Vivado the different IPs, their interconnect and the Processing System is configured. This results in a bitstream file that is used in Xilinx SDK to generate a Board Support Package (BSP) and the First Stage Boot Loader (FSBL). The BSP contains libraries for functions and variables necessary for the IPs on the FPGA, and the FSBL configures the FPGA correctly. The FSBL is included in a boot file (BOOT.bin) generated in Xilinx SDK. The boot file is loaded to an SD card that is inserted into the development board. When powered up, the Zynq-7000 boots from the SD card and configures the FPGA according to the FSBL and loads the Second Stage Boot Loader (SSBL), u-boot, which also is contained in the boot.bin file. U-boot is a program that can load executables and other system files from a remote server into the DDR3 memory. This is used to load relevant files for the OS into the Zynq, which brings us to the software part of the build procedure. The software is divided into three parts: RTOS, GPOS and monitor. The SafeG monitor is built and compiled using GCC (Gnu Compiler Collection), resulting in monitor.bin. The RTOS FMP is built and compiled from a .cfg file where tasks and handlers are created, a .c file where tasks and handlers are defined and a .h file containing declarations. This results in fmp.bin. For the non-secure side either Linux or another instance of FMP could be used. The process for FMP is the same as with the secure side. For Linux on the non-secure side, the Linux kernel needs to be modified to support SafeG. This results in the files zImage, devicetree.dtb. All of these files are created and stored on a server and are then loaded into the Zynq-7000 using u-boot.\\
 
 %Xilinx's software Vivado~\cite{website:vivado} is used to synthesize the hardware design (vhdl or verilog code) into a bitstream file (.bit) in order to configure the PL region of the Zynq. Vivado also produces a set of files that represent the designed hardware platform, which are used for software development. Xilinx SDK tool is used to create the Board Support Package (BSP) and the First Stage Boot Loader (FSBL) that correspond to the designed system. In general, after the FSBL initialization process completes, and depending on boot sequence, the CPU can do any of the following actions: configure the FPGA, initiate the Second Stage Boot Loader SSBL, or jumps to the first address of the main program. The SDK tool is also used to generate a boot file (BOOT.bin), which must at least contain the FSBL (fsbl.elf). In the implemented system, the BOOT.bin file also includes the bitstream file (system.bit) and the SSBL (uboot.elf * ). Once the system is initialized and the PL is configured, the system starts executing the u-boot instructions present in the BOOT.bin. U-boot is a full system on its own, and has many useful features. In particular, u-boot can be used to load executables and other system files from a remote server into the DDR3 memory using protocols such as Trivial File Transfer Protocol (TFTP), see Figure~\ref{fig:system_build}.\\
 

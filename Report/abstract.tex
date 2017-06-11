@@ -13,8 +13,8 @@
 { \footnotesize Approved:} & { \footnotesize Examiner:} & { \footnotesize Supervisor:}\\
 (datum) & Martin Törngren & Bengt Eriksson \\
 \hline
-& { \footnotesize Uppdragsgivare:} & { \footnotesize Kontaktperson:}\\
-& Alten & Detlef Scholle \\ \hline
+& { \footnotesize Commissioner:} & { \footnotesize Contact person:}\\
+& Alten Sverige AB & Detlef Scholle \\ \hline
 \end{tabular*}
 \end{tabular*}
 \textcolor{white}{.}\\[0.5cm]
@@ -24,8 +24,13 @@
 %TODO: Language
 %This section will be the abstract of the report in English.
 
-Modern automotive systems contain a large number of Electronic Control Units, each controlling a specific system of a specific criticality level. To increase efficiency it is desired to combine multiple applications into fewer ECUs, leading to mixed criticality embedded systems. The assurance of safety critical applications not being affected by non-critical applications on the same system is crucial. 
+Modern automotive systems contain a large number of Electronic Control Units, each controlling a specific system of a specific criticality level. To increase efficiency it is desired to combine multiple applications into fewer ECUs, leading to mixed criticality embedded systems. The assurance of safety critical applications not being affected by non-critical applications on the same system is crucial.\\
+
+A system for vehicle platooning is implemented on a platform hosting systems of mixed criticality where safety-critical systems are separated from non-critical systems via the hypervisor SafeG. The hypervisor added an overhead of 0.6\% and increased system utilization from 0.005\% to potentially 100\%.\\
+%and enabled 99,995\% of processor time
+
+The hypervisor showed good isolation properties and the non-critical systems could fail without affecting the safety-critical systems.
 
 \setcounter{page}{1}
 \vspace{0.25cm}
-%\keywords{mixed criticality systems, safety critical control, hypervisor}
+%\keywords{mixed criticality systems, safety critical control, hypervisor, platooning}
