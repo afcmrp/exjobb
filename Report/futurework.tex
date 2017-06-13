@@ -8,7 +8,7 @@ An interesting continuation on this thesis would be to facilitate for more than 
 Another interesting continuation would be to examine different scheduling methods, such as AMC described in chapter~\ref{sec:sota}.
 
 \section{MCS using other means of partitioning}
-The most explored area regarding mixed criticality research is sharing processor between different criticalities. Something that is not yet as explored is sharing other resources such as memory. It would be interesting to examine the limitations for other configurations of MCS, for example different CPUs for different criticality levels.
+The most explored area regarding mixed criticality research is sharing processor between different criticalities. Something that is not yet as explored is sharing other resources such as memory. It would be interesting to examine the limitations for other configurations of MCS. %for example different CPUs for different criticality levels.
 
 \section{Amount of criticality levels}
 Research should be done to investigate how many different levels of criticality, $n$, to facilitate for on MCS in different industries. In the automotive for example, $n$ should be between 1 and 5 since ISO26262 defines 5 different ASILs. If the applications in a car are spread uniformly across all criticality levels it might be of higher interest to have $n$ closer to 5. Similarly, if the applications are heavily concentrated on a certain criticality level, $n$ probably should be closer to 2.
@@ -20,15 +20,18 @@ It is not clear how much the potential economical benefit would be from pursuing
 %Implementing control algorithms on the FPGA.
 
 \section{Small fixes}
-This section will contain minor fixes that should be relatively easy to fix, but were omitted due to timing limitations.
+This section will contain fixes that should be relatively easy to complete, but were omitted due to timing limitations.
 %\subsection{Lateral control on the Zynq}
 
 \begin{itemize}
-\item Utilize dual core for RTOS \- In the demonstrator, the second core in the CPU was never utilized. Only the GPOS used both cores. Using the second core in the RTOS makes processor scheduling more complex.
+\item Utilize dual core for RTOS: In the demonstrator, the second core in the CPU was never utilized. Only the GPOS used both cores. Using the second core in the RTOS makes processor scheduling more complex.
 
-\item Data aggregation filtering in the FPGA \- Moving data aggregation filtering to the FPGA would mean that the monitor overhead would reduce by a factor of 20 (even though it already is very low).
+\item Data aggregation filtering in the FPGA: Moving data aggregation filtering to the FPGA would mean that the monitor overhead would reduce by a factor of 20 (even though it already is very low).
 
-\item Utilizing the GPOS for something useful \- As mentioned earlier, there were plans on hosting a video stream from the camera on the vehicle on the Linux. This was scrapped due to lack of time. It would serve great purpose for the demonstration of the system to have a visible application running on Linux.
+\item Electrical wiring: In the demonstrator there is currently no circuit board for the electronics. Implementing this would increase the physical robustness of the system greatly.
+
+\item Utilizing the GPOS for something useful: As mentioned earlier, there were plans on hosting a video stream from the camera on the vehicle on the Linux. This was scrapped due to lack of time. It would serve great purpose for the demonstration of the system to have a visible application running on Linux.
+
 
 %\item Lateral control on the RTOS - Currently in the demonstrator, the control signal for the steering is calculated on the Raspberry Pi, moving the calculation to the RTOS would give the Raspberry Pi slightly more time for image processing.
 

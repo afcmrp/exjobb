@@ -131,14 +131,11 @@ The measured execution times for the OS switch are also visualized in figure~\re
 \caption{Visualization of execution times for the OS switch. Note the logarithmic y-axis.}\label{fig:switch_et}
 \end{figure}
 
-This results in an overhead of 0.6\% for the entire system. Theoretically, if FMP would allow for shorter periods for a task, the maximum overhead for this system could be 24\%.
+This results in an overhead of 0.6\% for the entire system. The potential useful CPU utilization is 99.4\%, providing that the GPOS uses all of its allocated CPU time. Using only the RTOS without the hypervisor the CPU utilization would be 0.005\%.\\
 
-%\section{Task switch}
-%The task switch introduces extra 1.18 $\mu s$. Combined WCET: $4.24 \mu s$.
+Theoretically, if FMP would allow for shorter periods for a task, the maximum overhead for this system would be 24\%.
 
 \section{Hypervisor robustness}
-Unregistered exception was possible to create by accessing restricted AXI bus address, causing the processor to stop.\\
+To test the robustness of the hypervisor, a fork bomb was made on the GPOS. A fork bomb is a function that calls itself two times. This quickly depletes the system of its resources, causing it to crash eventually~\cite{forkbomb}. The test resulted in the GPOS crashing and becoming non-responsive while the RTOS managed to maintain all its functionality.\\
 
-Fork bomb
-
-
+%Unregistered exception for a processor core was possible to create by accessing restricted AXI bus address, causing the processor to stop.\\
