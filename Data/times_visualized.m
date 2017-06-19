@@ -103261,7 +103261,7 @@ grid on
 axis([0 40000 0 1.2])
 xlabel('Frequency [Hz]')
 ylabel('CPU utilization')
-legend('Monitor', 'RTOS', 'GPOS');
+legend('Hypervisor', 'RTOS', 'GPOS');
 
 figure(3)
 plot(frequencies,overhead_med);
@@ -103275,4 +103275,4 @@ grid on
 axis([0 40000 0 1.2])
 xlabel('Frequency [Hz]')
 ylabel('CPU utilization')
-legend('Monitor', 'RTOS', 'GPOS');
+legend('Hypervisor', 'RTOS', 'GPOS');
