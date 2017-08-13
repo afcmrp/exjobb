@@ -22,7 +22,13 @@
 \textcolor{white}{.}\\
 \label{sec:sammanfattning}
 
-Denna del kommer att inehålla en sammanfattning av arbetet på svenska.
+%Denna del kommer att inehålla en sammanfattning av arbetet på svenska.
+
+Dagens bilar har många små datorer som var och en kontrollerar enskilda delsystem av olika säkerhetskritiska nivåer. För att öka resurseffektiviteten är det önskvärt att kombinera de olika applikationerna på färre datorer, vilket skulle leda till blandkritiska inbyggda system. I blandkritiska system är det viktigt att icke-kritiska funktioner inte kan påverka säkerhetskritiska funktioner.\\
+
+I detta arbete utvecklas och implementeras ett system för kolonn-körning (platooning) på en plattform som huserar funktioner av olika säkerhetskritisk grad. De olika funktionerna separeras i en säkerhetskritisk och en icke-kritisk del via SafeG. SafeG introducerade en overhead på 0.6\% och ökade nyttiga utnyttjandegraden från 0.005\% till potentiellt 99.4\%.\\
+
+Isoleringsmekanismen visade goda isoleringsegenskaper och de icke-kritiska applikationerna kunde haverera utan att påverka de säkerhetskritiska applikationerna.
 
 \vspace{0.25cm}
 %\keywords{mixed criticality embedded systems, safety critical control}
