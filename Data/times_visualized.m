@@ -103221,10 +103221,10 @@ ylabel('Number of registered times')
 
 sw_wcet = 153;
 sw_med = 86;
-wcet = 2*153+200+316+219+230;
-median_et = 2*86+167+151+200+185;
-rtos_wcet = 200+316+219+230;
-rtos_med = 167+151+200+185;
+wcet = (2*153+200+316+219+230);
+median_et = (2*86+20*167+151+200+185);
+rtos_wcet = (200+316+219+230);
+rtos_med = (167+151+200+185);
 
 cpu_clk = 50000000;
 frequencies = [1:40000];
