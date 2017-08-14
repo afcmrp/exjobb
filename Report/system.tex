@@ -32,7 +32,6 @@ The Alten MCS uses two Operative Systems (OS) to create temporal and spatial sep
 Tasks in FMP are statically allocated to a processor core, defined in a .cfg file. Linux divides its workload across all available processor cores in SMP (Symmetric Multi-Processor) mode.
 
 \section{Hypervisor}
-%TODO: timings for switching
 %The hypervisor SafeG is used to alternate between the safety-critical (S\_OS) and non-critical (NS\_OS) OS. It switches processor state via a hardware switch. See figure~\ref{fig:modeswitch}. The switching takes ~2 $\mu s$.
 
 A hypervisor (also known as a Virtual Machine Monitor (VMM)) is used to alternate between the safety-critical (S\_OS) and non-critical (NS\_OS) OS. The hypervisor used is SafeG \cite{website:safeg}, also developed by TOPPERS. It switches processor state via a hardware switch. See figure~\ref{fig:modeswitch}. The switching takes roughly 2~$\mu s$~\cite{safegswitch}.
@@ -44,7 +43,6 @@ A hypervisor (also known as a Virtual Machine Monitor (VMM)) is used to alternat
 \caption{Flowchart of the boot sequence of the CPU. \cite{zaki2016}}\label{fig:modeswitch}
 \end{figure}
 
-%TODO: gör okefft
 %As far as the hypervisor is concerned, the GPOS is another task with lowest priority. \\
 When executing the tasks via the hypervisor, all S\_OS tasks are executed according to the scheduling. At the lowest priority is the task that switches processor state. As soon as an S\_OS task needs to execute, a FIQ is issued to interrupt the processor and switch mode back to the S\_OS. \\
 
@@ -67,8 +65,7 @@ A basic overview of the hardware and the software of the system can be seen in F
 \end{figure}
 
 \section{Build procedure}
-The MCS is built from many different components. Hardware design, applications, virtualization layer, operative systems, boot loaders etc. This section will describe the build procedure.\\ %TODO: Expand
-%The virtualization layer (SafeG) and the Secure OS (RTOS) remain the same, the software that runs in the normal region can be either RTOS, GPOS, or a bare metal application. Furthermore, other configurations, such as RTOS or GPOS only mode, do not include the VMM.
+The MCS is built from many different components. Hardware design, applications, virtualization layer, operative systems, boot loaders etc. This section will describe the build procedure.\\
 
 Xilinx's software Vivado HLS~\cite{website:vivado} is used to design the FPGA of the Zynq-7000. In Vivado the different IPs, their interconnect and the Processing System is configured. This results in a bitstream file that is used in Xilinx SDK to generate a Board Support Package (BSP) and the First Stage Boot Loader (FSBL). The BSP contains libraries for functions and variables necessary for the IPs on the FPGA, and the FSBL configures the FPGA correctly. The FSBL is included in a boot file (BOOT.bin) generated in Xilinx SDK. The boot file is loaded to an SD card that is inserted into the development board. When powered up, the Zynq-7000 boots from the SD card and configures the FPGA according to the FSBL and loads the Second Stage Boot Loader (SSBL), u-boot, which also is contained in the boot.bin file. U-boot is a program that can load executables and other system files from a remote server into the DDR3 memory. This is used to load relevant files for the OS into the Zynq, which brings us to the software part of the build procedure. The software is divided into three parts: RTOS, GPOS and monitor. The SafeG monitor is built and compiled using GCC (Gnu Compiler Collection), resulting in monitor.bin. The RTOS FMP is built and compiled from a .cfg file where tasks and handlers are created, a .c file where tasks and handlers are defined and a .h file containing declarations. This results in fmp.bin. For the non-secure side either Linux or another instance of FMP could be used. The process for FMP is the same as with the secure side. For Linux on the non-secure side, the Linux kernel needs to be modified to support SafeG. This results in the files zImage, devicetree.dtb. All of these files are created and stored on a server and are then loaded into the Zynq-7000 using u-boot.\\
 
@@ -86,5 +83,4 @@ Figure \ref{fig:system_build} provides a summary of the different dependencies f
 
 %For more information about the build and the system, see the report by Zaki~\cite{zaki2016}.
 
-This build procedure setup provides for easy modifications to a small part of the system without having to rebuild other parts, and the board to which the code should be loaded into only needs to be connected to a network socket and a laptop.
-%TODO: rephrase
+This build procedure setup provides for easy modifications to some small parts of the system without having to rebuild other parts, and the board to which the code should be loaded into only needs to be connected to a network socket and a laptop.

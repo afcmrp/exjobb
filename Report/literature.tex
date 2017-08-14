@@ -12,7 +12,7 @@ A MCS is achieved by letting applications of different criticality share resourc
 %Lower production cost, higher design cost?
 Potential benefits with pursuing MCS as opposed to distributed systems are reduced physical space required, reduced weight, reduced heat generation, reduced power consumption and reduced production costs~\cite{burns2016}. This would all ultimately lead to economical benefits.\\
 
-Potential downsides are increased complexity which could lead to higher system design costs. Building applications on the same platform to share resources could require engineering teams to work more closely together, potentially leading to administrative difficulties and costs. This needs to be investigated and could vary from industry to industry. To combat the potential downsides, the EMC\textsuperscript{2} project aims at creating platforms for easier development of MCS.\\ %TODO: källa eller ändra wording
+Potential downsides are increased complexity which could lead to higher system design costs. Building applications on the same platform to share resources could require engineering teams to work more closely together, potentially leading to administrative difficulties and costs. This needs to be investigated and could vary from industry to industry. To combat the potential downsides, the EMC\textsuperscript{2} project aims at creating platforms for easier development of MCS.\\
 
 The EMC\textsuperscript{2} project lists several goals \cite{website:emc2goals}:
 \begin{itemize}
@@ -27,7 +27,6 @@ Today, cars are increasingly becoming networked IT entities. With increased conn
 
 \subsection{Sharing processor}
 %A lot of work has been done regarding processor scheduling in MCS
-%TODO: Wording
 To deal with many different tasks needing processor time, different schedulers can be used to appropriately distribute processor time among the tasks.
 
 \subsubsection{Conventional scheduling}
@@ -48,7 +47,6 @@ The area of sharing the processor in MCS was first explored by Steve Vestal~\cit
 
 In 2008 Baruah and Vestal~\cite{baruah2008} showed that EDF (Earliest Deadline First) does not dominate FP when criticality levels are introduced, and that there are feasible systems that cannot be scheduled by EDF.\\
 
-%TODO: wording
 One MCS scheduling algorithm is Criticality Monotonic Priority Ordering (CrMPO). Tasks are assigned priorities first according to criticality (highest criticality first) and then according to deadline (shortest deadline first). Static Mixed Criticality with no run-time monitoring (SMC-NO) is the scheduler that was Vestal's original approach~\cite{vestal2007}. Another scheduler is SMC with run-time monitoring (abbreviated only as SMC). Yet another scheduling algorithm is Adaptive Mixed Criticality (AMC), described Baruah, Burns and Davis~\cite{baruah2011}.\\
 
 %"To summarise the main difference between SMC and AMC, in SMC any LO-critical task is descheduled if it executes for more than C(LO). While in AMC, all LO-critical tasks are descheduled if any job (from any task) executes for more than C(LO). If a HI-critical job executes for more than C(LO) (but no greater than C(HI)) then, under SMC, LO-critical tasks continue to execute but may miss their deadlines; but under AMC they stop executing."\\
@@ -86,8 +84,6 @@ Static based methods involve analysis of code, counting assembler instructions f
 Dynamic based methods are a bit more straight-forward, you simply let the code execute many times and measure the time each execution of the code takes. This can be measured by for example setting an output pin high at the start of the task and then setting it low at the end, and have an external clock measure the time the pin is high~\cite{wcet}. The dynamic approach is the most common method in most parts of industry~\cite{wcet}.
 
 \section{Standards}
-%Different standards to regulate and ensure safety
-Safety practices are becoming more regulated as industries adopt a standardized set of practices for designing and testing products. %TODO: expand, wording
 To ensure safe and secure practices in industries, safety standards are becoming more regulated. Different standards address different areas. Below, the two safety standards IEC~61508 and ISO~26262 will be described.
 
 \subsection{IEC 61508}
@@ -125,7 +121,7 @@ ISO 26262 describes five different Automotive Safety Integrity Levels (ASIL) rel
 
 The various integrity levels can be translated into integers (ASIL $QM = 0$; $A = 1$; $B = 2$; $C = 3$ and $D = 4$). If a hazard requires several components to fail, the added ASIL of these components is used to determine if there is an violation, assuming the components faults are statistically independent of each other. For example, a safety level ASIL B can be met by two independent components which each individually only meet ASIL A (and thus effectively $A + A = B$).~\cite{azevedo2014} \\ %TODO: semi Wording
 
-Developing functions to standards of different ASIL levels have different costs. The different ASILs can relate to cost according to various cost heuristics, see table~\ref{table:cost_heuritics}. %TODO: Expand, wording
+Developing functions to standards of different ASIL levels have different costs. The different ASILs can relate to cost according to various cost heuristics, see table~\ref{table:cost_heuritics}.
 
 \begin{table}[H]
 \centering
@@ -141,30 +137,12 @@ Experimental-II~\cite{azevedo2014} & 0 & 20 & 30 & 45 & 55 \\ \hline
 \label{table:cost_heuritics}
 \end{table}
 
-
-\subsubsection{Freedom from interference}
-%TODO: Källa, utveckla, wording
-In ISO 26262, Part 1, Definition 1.49, freedom from interference is defined as: Absence of cascading failures between two or more elements that could lead to the violation of a safety requirement. A cascading failure is defined as "failure of an element of an item causing another element or elements of the same item to fail" (ISO 26262, Part 1, Definition 1.13), and an element is defined as: "system or part of a system including components, hardware, software, hardware parts, and software units" (ISO 26262, Part 1, Definition 1.32)
-
 \subsection{AUTOSAR}
 %TODO: Wording
 AUTOSAR (AUTomotive Open System ARchitecture) is a partnership between several automotive interested parties. The partnership aims at establishing and standardizing the software architecture for automotive ECUs, excluding infotainment~\cite{website:autosar}. Contributors include BMW, Daimler, Ford, GM, Toyota and Volkswagen.
 
-%The AUTOSAR Architecture distinguishes on the highest abstraction level between three software layers: Application, Runtime Environment (RTE) and Basic Software (BSW) which run on a Microcontroller.~\cite{website:autosar} See figure \ref{fig:autosar}.
-%\begin{itemize}
-%\item The application software layer is mostly hardware independent.
-%\item The RTE represents the full interface for applications.
-%\item The BSW is divided in three major layers and Complex Drivers: Services, ECU Abstraction and Microcontroller Abstraction. Services are divided furthermore into functional groups representing the infrastructure for System, Memory and Communication Services.
-%\end{itemize}
-
-%\begin{figure}[H]
-%\centering
-%\includegraphics[width=\textwidth]{./img/literature_autosar.png}
-%\caption{AUTOSAR.~\cite{website:autosar}}\label{fig:autosar}
-%\end{figure}
-
 \section{Hypervisors}
-A hypervisor (or virtual machine monitor) is a piece of software capable of running several operating systems on the same hardware system. The hypervisor can be seen as an interface between the operative systems and the hardware of a system. In order to facilitate for multiple operative systems of different criticality an appropriate hypervisor should be used. A system will only be as secure as its hypervisor, so it is important that the hypervisor has been engineered to at least the same standards as the most critical functions that will be implemented on the system. Other things to consider is that some hypervisors can accommodate multiple instances of operative systems, and some only facilitate for two. A description of a few available open-source hypervisors will follow.
+A hypervisor (or virtual machine monitor) is a piece of software capable of running several operating systems on the same hardware system. The hypervisor can be seen as an interface between the operative systems and the hardware of a system. In order to facilitate for multiple operative systems of different criticality an appropriate hypervisor should be used. A system will only be as secure as its hypervisor, so it is important that the hypervisor has been engineered to at least the same standards as the most safetly-critical functions that will be implemented on the system. Other things to consider is that some hypervisors can accommodate multiple instances of operative systems, and some only facilitate for two. A description of a few available open-source hypervisors will follow.
 
 \subsection{SafeG}
 \label{sec:safeg}
@@ -234,7 +212,6 @@ SierraVisor is a bare metal universal hypervisor created by Sierraware~\cite{sie
 
 \section{Field Programmable Gate Array}
 %FPGA sota
-%TODO: some wording, probably longer
 A Field Programmable Gate Array (FPGA) is an array of logic gates with reconfigurable interconnects that can be connected to each other. As the name suggests, it is possible to reprogram the physical function of the FPGA "in the field". This is what distinguishes a FPGA from an Application Specific Integrated Circuit (ASIC), an ASIC can not be reprogrammed after manufacturing.\\ %Generally, ASICs have slightly higher performance and are cheaper to produce in higher quantities.
 
 To program the behavior of the FPGA, Hardware Descriptive Language (HDL) is used. The two most widely used HDLs are Verilog and VHDL (VHSIC Hardware Descriptive Language, where VHSIC is an acronym for Very High Speed Integrated Circuit). Verilog came to existence late 1983. The language was standardized as IEEE standard 1364-1995, and has since been revised and included in IEC/IEEE Behavioural Languages standard 61691~\cite{IEEEVerilog}. Work with VHDL formally began in 1981, and in 1987 it was standardized as IEEE-1076. The active standard for VHDL is also part of the IEC/IEEE Behavioural Languages standard 61691~\cite{IEEEVHDL}. Using Google Trends~\cite{googletrends} with the search terms "vhdl" and "verilog", one can see that Verilog seems to be the more popular language of the two in the USA, India and South Korea, while VHDL is more used in Europe and South America, see Figure~\ref{fig:vhdlverilog}.
@@ -250,11 +227,9 @@ A key difference between code running on a processor and code describing functio
 Some FPGA circuits have non-volatile memory from where the hardware descriptive language is loaded when the circuit is powered up, this means that its configuration is not lost if its power goes down.
 
 \section{Platooning}
-%TODO: wording
-Platooning, road trains or convoy driving is the concept of a chain of vehicles with no physical connection traveling at a given (short) intermediate distance in order to utilize the reduced air friction behind the vehicle in front. The primary objective for each vehicle with respect to safety is to maintain its distance to the preceding vehicle in the platoon.
+Platooning, road trains or convoy driving is the concept of a chain of vehicles with no physical connection travelling at a given (short) intermediate distance in order to utilize the reduced air friction behind the vehicle in front. The primary objective for each vehicle with respect to safety is to maintain its distance to the preceding vehicle in the platoon.
 
 \subsection{Benefits of platooning}
-%TODO: Expand, wording, source
 Potential benefits of vehicle platooning includes lower fuel consumption, less road space required and more efficient traffic flow.\\ 
 
 Using simulations of platooning, Alam, Gattami, and Johansson \cite{johansson2010} showed in 2010 that there is a \mbox{4.7--7.7\%} fuel reduction potential in heavy duty vehicle platooning at a set speed of 70 km/h with two identical trucks.\\
@@ -264,7 +239,6 @@ In 2014, Lammert et. al.~\cite{lammert2014} showed that platooning can result in
 Tests by truck manufacturer Scania have shown that platooning can reduce fuel consumption by up to 12\%~\cite{scania2015}.
 
 \subsection{Safety requirements for platooning}
-%TODO: more sources
 With shorter distance between vehicles, the margin of error also decreases. This puts high requirements on the systems controlling the speed of the vehicles in the platoon.\\
 
 In an article by Alam et al.~\cite{johansson2013}, safe sets for heavy duty vehicle platooning are computed to calculate minimum distance between the vehicles in a platoon without endangering safety. Varying parameters are concidered such as mass, air resistance and road gradient since these could cause a difference in braking capabilities between the vehicles. Alam et al.~\cite{johansson2013} show that if two identical vehicles in a platoon drive with a speed of 90~km/h and keep a minimum distance of 1.2~m, a collision can always be avoided. In the case of communication delays of up to 500~ms, a distance of at least 2~m should be kept. %If the follower vehicle has a higher braking capacity, it will be able to lie closer without endangering a collision. The minimum safe relative distance is therefore shorter compared to the case of two identical vehicles. Delays for the platoon control system commonly occur due to detection, transmission, computation, and producing the control command. Depending on the radar and the collision detection algorithm, a worst-case delay is approximately 500~ms for the considered vehicles~\cite{johansson2013}.  %Hence, the lead vehicle will be able to reduce the relative velocity by 3.25~m/s and the relative distance by 0.8~m if it is driving 25~m/s at normal mode. Thus if the follower vehicle maintains a distance of at least 2~m, a collision can always be avoided for two identical vehicles~\cite{johansson2013}.

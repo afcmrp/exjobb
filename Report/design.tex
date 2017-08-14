@@ -58,7 +58,7 @@ An overview of the different functions to be implemented on the Zynq-7000 can be
 \begin{figure}[H]
 \centering
 \includegraphics[width=\textwidth]{./img/design_overview.png}
-\caption{Overview of the different functions to be implemented.}\label{fig:overview}
+\caption{Overview of the different functions to be implemented. The arrows indicate information flow between the different functions.}\label{fig:overview}
 \end{figure}
 
 A sequence diagram of the various dependencies and flow of each function can be seen in figure~\ref{fig:sequence}.
@@ -68,11 +68,3 @@ A sequence diagram of the various dependencies and flow of each function can be 
 \includegraphics[width=\textwidth]{./img/design_sequence3.png}
 \caption{Sequence diagram of the various hardware and software functions, their dependencies and flow of information.}\label{fig:sequence}
 \end{figure}
-
-%\section{Car}
-%To demonstrate the system, the RC car UTOR 8E from BSD racing was chosen. It has a steering servo, brushless DC motor, TODO: etc
-
-%PWM signal to driver for motor and servo, 50 Hz
-
-%\section{Electrical design}
-%Two 7.4V batteries in parallel. Voltage regulator to 5V for LIDAR, Raspberry Pi, encoders and WiFi module. Voltage regulator to DC input voltage for Zedboard.
