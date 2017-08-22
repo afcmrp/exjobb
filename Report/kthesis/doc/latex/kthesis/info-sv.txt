@@ -1,0 +1,25 @@
+<li><a href="kthesis/kthesis.pdf">Mallar för KTH-avhandlingar</a>.
+    (På vissa institutioner tillverkas inlagans första sida
+    av tryckeriet och den kommer därför att ha ett annat utseende
+    i den färdiga avhandlingen än det som genereras av mallen för
+    KTH-avhandlingar.)
+<ul>
+<li>Doktors- och licentiatavhandligar; exempel på inlaga:
+    <a href="kthesis/kth-demo.tex">källkod</a>,
+    <a href="kthesis/kth-bibl.tex">bibliografiska data</a>,
+    <a href="kthesis/kth-abs.tex">sammanfattning</a>, och till sist
+    <a href="kthesis/kth-demo.pdf">resultatet</a>.
+<li>Doktors- och licentiatavhandligar; spikbladet:
+    <a href="kthesis/kth-spik.tex">källkod</a>,
+    <a href="kthesis/kth-bibl.tex">bibliografiska data</a>,
+    <a href="kthesis/kth-abs.tex">sammanfattning</a>, och till sist
+    <a href="kthesis/kth-spik.pdf">resultatet</a>.
+<li>Examensarbeten i A4-format:
+    <a href="kthesis/kth-ex1.tex">källkod</a>,
+    <a href="kthesis/kth-abs.tex">sammanfattning</a>, och till sist
+    <a href="kthesis/kth-ex1.pdf">resultatet</a>.
+<li>Examensarbeten i G5-format:
+    <a href="kthesis/kth-ex2.tex">källkod</a>,
+    <a href="kthesis/kth-abs.tex">sammanfattning</a>, och till sist
+    <a href="kthesis/kth-ex2.pdf">resultatet</a>.
+</ul>

@@ -22,12 +22,9 @@ The EMC\textsuperscript{2} project lists several goals \cite{website:emc2goals}:
 \item Achieve cross-sectorial reusability of Embedded Systems devices and architecture platforms that will be developed using the ARTEMIS JU results.
 \end{itemize}
 
-\subsection{Security concerns}
-Today, cars are increasingly becoming networked IT entities. With increased connection, security threats are also increasing, and the most visible gateway for hacking attempts in cars is through the infotainment systems. This gives additional incentive to ensure proper isolation in MCS.
-
 \subsection{Sharing processor}
 %A lot of work has been done regarding processor scheduling in MCS
-To deal with many different tasks needing processor time, different schedulers can be used to appropriately distribute processor time among the tasks.
+To deal with many different tasks needing processor time, different scheduling algorithms can be used to appropriately distribute processor time among the tasks.
 
 \subsubsection{Conventional scheduling}
 The simplest scheduling algorithm is First In First Out (FIFO). As the name suggests, the first task to enter the queue is also executed first, and executes until it is finished~\cite{remzi2015}.\\
@@ -43,9 +40,9 @@ Earliest Deadline First (EDF) is a dynamic scheduling algorithm that executes th
 Round Robin (RR) scheduling lets each task in the job queue execute for a predefined amount of time (called a time quanta), and if a task does not complete it is preempted and placed back in the queue waiting for its next time slot~\cite{kleinrock1964}.
 
 \subsubsection{Mixed criticality scheduling}
-The area of sharing the processor in MCS was first explored by Steve Vestal~\cite{vestal2007} in 2007. His paper showed that neither Rate Monotonic (RM) nor Deadline Monotonic (DM) priority assignment was optimal for MCS.% however Audsley’s optimal priority assignment algorithm \cite{audsley2001} was found to be applicable.\\ %TODO: Wording
+The area of sharing the processor in MCS was first explored by Steve Vestal~\cite{vestal2007} in a paper in 2007, where he showed that neither Rate Monotonic (RM) nor Deadline Monotonic (DM) was optimal for MCS. This paper was followed in 2008 by Sanjoy Baruah and Vestal where they showed that EDF does not outperform FP in MCS~\cite{baruah2008}. Furthermore they showed that there are feasible systems that cannot be scheduled by EDF.\\% however Audsley’s optimal priority assignment algorithm \cite{audsley2001} was found to be applicable.\\ %TODO: Wording
 
-In 2008 Baruah and Vestal~\cite{baruah2008} showed that EDF (Earliest Deadline First) does not dominate FP when criticality levels are introduced, and that there are feasible systems that cannot be scheduled by EDF.\\
+%In 2008 Baruah and Vestal~\cite{baruah2008} showed that EDF (Earliest Deadline First) does not dominate FP when criticality levels are introduced, and that there are feasible systems that cannot be scheduled by EDF.\\
 
 One MCS scheduling algorithm is Criticality Monotonic Priority Ordering (CrMPO). Tasks are assigned priorities first according to criticality (highest criticality first) and then according to deadline (shortest deadline first). Static Mixed Criticality with no run-time monitoring (SMC-NO) is the scheduler that was Vestal's original approach~\cite{vestal2007}. Another scheduler is SMC with run-time monitoring (abbreviated only as SMC). Yet another scheduling algorithm is Adaptive Mixed Criticality (AMC), described Baruah, Burns and Davis~\cite{baruah2011}.\\
 
@@ -212,7 +209,7 @@ SierraVisor is a bare metal universal hypervisor created by Sierraware~\cite{sie
 
 \section{Field Programmable Gate Array}
 %FPGA sota
-A Field Programmable Gate Array (FPGA) is an array of logic gates with reconfigurable interconnects that can be connected to each other. As the name suggests, it is possible to reprogram the physical function of the FPGA "in the field". This is what distinguishes a FPGA from an Application Specific Integrated Circuit (ASIC), an ASIC can not be reprogrammed after manufacturing.\\ %Generally, ASICs have slightly higher performance and are cheaper to produce in higher quantities.
+A Field Programmable Gate Array (FPGA) is an array of logic gates with reconfigurable interconnects that can be connected to each other. As the name suggests, it is possible to reprogram the physical function of the FPGA "in the field". This is what distinguishes a FPGA from an Application Specific Integrated Circuit (ASIC), an ASIC cannot be reprogrammed after manufacturing.\\ %Generally, ASICs have slightly higher performance and are cheaper to produce in higher quantities.
 
 To program the behavior of the FPGA, Hardware Descriptive Language (HDL) is used. The two most widely used HDLs are Verilog and VHDL (VHSIC Hardware Descriptive Language, where VHSIC is an acronym for Very High Speed Integrated Circuit). Verilog came to existence late 1983. The language was standardized as IEEE standard 1364-1995, and has since been revised and included in IEC/IEEE Behavioural Languages standard 61691~\cite{IEEEVerilog}. Work with VHDL formally began in 1981, and in 1987 it was standardized as IEEE-1076. The active standard for VHDL is also part of the IEC/IEEE Behavioural Languages standard 61691~\cite{IEEEVHDL}. Using Google Trends~\cite{googletrends} with the search terms "vhdl" and "verilog", one can see that Verilog seems to be the more popular language of the two in the USA, India and South Korea, while VHDL is more used in Europe and South America, see Figure~\ref{fig:vhdlverilog}.
 
@@ -232,11 +229,7 @@ Platooning, road trains or convoy driving is the concept of a chain of vehicles 
 \subsection{Benefits of platooning}
 Potential benefits of vehicle platooning includes lower fuel consumption, less road space required and more efficient traffic flow.\\ 
 
-Using simulations of platooning, Alam, Gattami, and Johansson \cite{johansson2010} showed in 2010 that there is a \mbox{4.7--7.7\%} fuel reduction potential in heavy duty vehicle platooning at a set speed of 70 km/h with two identical trucks.\\
-
-In 2014, Lammert et. al.~\cite{lammert2014} showed that platooning can result in reduced fuel consumption of up to 5.3\% for the lead vehicle and up to 9.7\% for following vehicles.\\
-
-Tests by truck manufacturer Scania have shown that platooning can reduce fuel consumption by up to 12\%~\cite{scania2015}.
+Using simulations of platooning, Alam, Gattami, and Johansson \cite{johansson2010} showed in 2010 that there is a \mbox{4.7--7.7\%} fuel reduction potential in heavy duty vehicle platooning at a set speed of 70 km/h with two identical trucks. In 2014, Lammert et. al.~\cite{lammert2014} showed that platooning can result in reduced fuel consumption of up to 5.3\% for the lead vehicle and up to 9.7\% for following vehicles. Tests by truck manufacturer Scania have shown that platooning can reduce fuel consumption by up to 12\%~\cite{scania2015}.
 
 \subsection{Safety requirements for platooning}
 With shorter distance between vehicles, the margin of error also decreases. This puts high requirements on the systems controlling the speed of the vehicles in the platoon.\\

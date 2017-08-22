@@ -4,7 +4,7 @@ This chapter will introduce the subject of mixed criticality embedded systems an
 
 \section{Background}
 %, around 100 electric motors and 2 km of wiring
-Today, modern automotive systems contain approximately 70-100 Electric Control Units (ECUs)~\cite{lemke2012}. Each ECU controls a subsystem of a specific criticality level such as safety-critical anti-lock brake system, or non-critical entertainment systems \cite{weber2015}. Having the ECUs isolated ensures that the numerous critical and non-critical applications do not interfere with each other, making it relatively easy to certify an individual ECU. However, this approach leads to an inefficient use of system resources and expensive system implementation \cite{burns2016}. In order to lower the cost of the collective system and increase system efficiency (utilization), applications of different criticality levels can be integrated into a single hardware platform, leading to a Mixed Criticality System (MCS). However, this approach increases system complexity, and hinders the certification of safety-critical systems \cite{zaki2016}. To enable design, test, and certification of MCS, spatial and temporal partitioning can be used in the architecture of the system.\\
+Today, modern automotive systems contain approximately 70-100 Electric Control Units (ECUs)~\cite{lemke2012}. Each ECU controls a subsystem of a specific criticality level such as safety-critical anti-lock brake system, or non-critical entertainment systems \cite{weber2015}. Having the ECUs isolated ensures that the numerous critical and non-critical applications do not interfere with each other, making it relatively easy to certify an individual ECU. However, this approach leads to an inefficient use of system resources and expensive system implementation \cite{burns2016}. In order to lower the cost of the collective system and increase system efficiency (utilization), applications of different safety-criticality levels can be integrated into a single hardware platform, leading to a Mixed Criticality System (MCS). However, this approach increases system complexity, and hinders the certification of safety-critical systems \cite{zaki2016}. To enable design, test, and certification of MCS, spatial and temporal partitioning can be used in the architecture of the system.\\
 
 Protecting the integrity of a component from the faults of another is desired in all systems hosting multiple applications. However, it is of higher significance if the different applications have different criticality levels. Without such protection all components on the same system would need to be engineered to the standards of the highest criticality level, potentially massively increasing development costs \cite{burns2016}.\\
 
@@ -29,7 +29,7 @@ The number of criticality levels in the implementation part of this thesis will 
 
 \subsection{Alten Mixed Criticality System}
 \label{sec:mces}
-As a part of the EMC\textsuperscript{2} project, Alten has developed a system for handling applications of mixed criticality on the same piece of hardware, Alten MCS. The MCS developed at Alten has been implemented on two development boards, the Zedboard (Zynq Evaluation and Development board) and the EMC\textsuperscript{2} Development Platform, or EMC\textsuperscript{2}DP. Both boards have a Xilinx Zynq-7000 SoC~\cite{website:xilinx}. Alten MCS employs two operating systems to handle applications of different criticality. A General Purpose Operating System (GPOS) for non-critical applications and a Real-Time Operating System (RTOS) for safety-critical applications. A hypervisor is used to alternate between the two. For more information, see chapter \ref{sec:lit_emc2mcs}.
+As a part of the EMC\textsuperscript{2} project, Alten has developed a platform for handling applications of mixed criticality on the same piece of hardware, Alten MCS. The MCS developed at Alten has been implemented on two development boards, the Zedboard (Zynq Evaluation and Development board) and the EMC\textsuperscript{2} Development Platform, or EMC\textsuperscript{2}DP. Both boards have a Xilinx Zynq-7000 SoC~\cite{website:xilinx}. Alten MCS employs two operating systems to handle applications of different criticality. A General Purpose Operating System (GPOS) for non-critical applications and a Real-Time Operating System (RTOS) for safety-critical applications. A hypervisor is used to alternate between the two. For more information, see chapter \ref{sec:lit_emc2mcs}.
 
 \subsection{Platooning}
 \label{sec:platooning}
@@ -52,7 +52,7 @@ This problem leads to the research question:
 \item Is virtualization an efficient approach when trying to reconcile the conflicting requirements of partitioning for safety assurance and sharing for efficient resource usage when implementing a safety-critical control system?
 \end{itemize}
 
-This thesis will attempt at answering this question by doing a state of the art study in the research topic, implement a safety-critical system on a mixed criticality platform and evaluate the results. 
+This thesis will attempt to answer this question by doing a state of the art study in the research topic, implement a safety-critical system on a mixed criticality platform and evaluate the results. 
 
 \section{Purpose}
 Reducing the amount of computers in automotive systems would have many effects. Manufacturing costs would decrease and with fewer physical components maintenance costs would also decrease. However, the system complexity would increase and thereby increasing time and cost to design the system. \\
@@ -85,7 +85,7 @@ The embedded computer is constrained to the Xilinx Zynq-7000 SoC \cite{website:x
 \label{sec:research}
 %TODO: verify source
 %Deductive approach
-The plan is to conduct a confirmatory investigation using quantitative data/operations with a deductive approach. This is a quantitative research method. \cite{hakansson2013}.\\ % where data is gathered during experiments and from simulations of the environment %Gather data from simulations and from real tests, iterated many times.
+The plan is to conduct a confirmatory investigation using quantitative data with a deductive approach. This is a quantitative research method. \cite{hakansson2013}.\\ % where data is gathered during experiments and from simulations of the environment %Gather data from simulations and from real tests, iterated many times.
 
 %TODO: Kanske bättre i en annan del?
 %The position of the demonstrator will be read by a separate sensor of the same type as the one on the demonstrator. The performance of the control system and the embedded controller will be measured and compared with the same system without any non-critical computational load. This will also be done for a simulation of the system. The measures regarding control system performance will consist of 
@@ -103,6 +103,9 @@ The plan is to conduct a confirmatory investigation using quantitative data/oper
 
 \section{Ethical considerations}
 When designing a MCS it is crucial to ensure that errors made by a lower criticality application cannot propagate to higher criticality applications, as this could have catastrophic consequences. Because of this the requirement of partitioning must have higher priority than the need of sharing resources.
+
+\newpage
+\mbox{}
 
 %\section{Thesis structure}
 %This thesis is divided into seven chapters. Chapter 1 gives an introduction and background to the area of MCS and the goal of the thesis. Chapter two reviews the state of the art on the area. Chapter three explains the system on which the implementation will be built. Chapter four describes the design of the system and chapter five shows the implementation 

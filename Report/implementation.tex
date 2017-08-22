@@ -7,7 +7,7 @@ To demonstrate the system, the RC car UTOR 8E from BSD racing was chosen. It is 
 For the demonstrator, it was decided to use the Zedboard on both vehicles for a number of reasons:
 \begin{itemize}
 \item The power supply connector for the EMC\textsuperscript{2}DP would have to be remade to be used in the vehicle.
-\item Connections on the vehicles fitting the measurements of the Zedboard were made.
+\item Connections on the vehicles fitting the measurements of the Zedboard were already made.
 \item Same BSP for both vehicles.
 %\item The Zedboard was all around easier to work with
 \end{itemize}
@@ -45,13 +45,13 @@ The WiFi module was put separately from the other 5V output since it draws too m
 This section will describe the task implemented on the RTOS.
 
 \subsection{Data aggregation}
-The task \texttt{data\_aggregation()} is the task with the highest frequency in the system. It executes with a period of 1 ms, which the shortest period allowed in FMP. It reads the speed from each wheel as measured by the decoder, and analyses if the road conditions are unsafe for platooning. It also filters speed and distance measurements through a low-pass filter to produce reliable data for the other tasks to use.
+The task \texttt{data\_aggregation()} is the task with the highest frequency in the system. It executes with a period of 1 ms, which the shortest period allowed in FMP. It reads the speed from each wheel as measured by the decoder, and determines if the road conditions are unsafe for platooning. It also filters speed and distance measurements through a low-pass filter to produce reliable data for the other tasks to use.
 
 \subsection{Communication}
-The task \texttt{communication()} reads V2V and I2V messages stored in a buffer on the FPGA. The messages are unpacked and forwarded to their intended destination task. Information from the other tasks are sent the to the FPGA. The task \texttt{communication()} is bounded by the period of the larger communication loop and the period of \texttt{lateral\_control()} and \texttt{longitudinal\_control()}. It can only send messages with a period of 800 ms. Since the received messages are stored in a buffer on the FPGA, the task only needs to execute before every execution of \texttt{lateral\_control()} and \texttt{longitudinal\_control()}. This puts its period at 20~ms.
+The task \texttt{communication()} reads V2V and I2V messages stored in a buffer on the FPGA. The messages are unpacked and forwarded to their intended destination task. Information from the other tasks are sent to the FPGA. The task \texttt{communication()} is bounded by the period of the larger communication loop and the period of \texttt{lateral\_control()} and \texttt{longitudinal\_control()}. It can only send messages with a period of 800 ms. Since the received messages are stored in a buffer on the FPGA, the task only needs to execute before every execution of \texttt{lateral\_control()} and \texttt{longitudinal\_control()}. This puts its period at 20~ms.
 
 \subsection{Lateral control}
-The task \texttt{lateral\_control()} receives angle and positional error of the vehicle in relation to the detected lane and computed a control signal via a PID controller. The task also sends lane detection status to \texttt{longitudinal\_control()}. Due to the limitations by the PWM described earlier the control frequency was capped at 50 Hz, meaning a period of 20 ms.
+The task \texttt{lateral\_control()} receives angle and positional error of the vehicle in relation to the detected lane and computes a control signal via a PID controller. It also sends lane detection status to \texttt{longitudinal\_control()}. Due to the limitations by the PWM described earlier the control frequency was capped at 50 Hz, meaning a period of 20 ms.
 
 \subsection{Longitudinal control}
 Just like \texttt{lateral\_control()}, the period of \texttt{longitudinal\_control()} is 20 ms. The task consists of two PID controllers, one for CC and one for ACC (as described in chapter~\ref{sec:system_design}). The controller adds the control signal from the preceding vehicle to its own control signal if secure communication is established and the vehicles are in platoon/CACC mode. It also sends its control signal to the \texttt{communication()} task. If the lane detection status received from \texttt{lateral\_control()} indicates that no lane is detected, \texttt{longitudinal\_control()} stops the vehicle.
@@ -60,7 +60,7 @@ Just like \texttt{lateral\_control()}, the period of \texttt{longitudinal\_contr
 Linux was run on the non-secure side. From the beginning there were ideas of hosting a video feed from the camera on the vehicle, but there was not nearly enough time to implement this. Instead, the Linux was running idle and was only used to navigate the file system to demonstrate that it was in fact up and running. 
 
 \section{Processor scheduling}
-The above tasks with their required period and WCET as can be seen in chapter~\ref{sec:results} resulted in the processor scheduling seen in figure~\ref{fig:rtsched}.
+The above tasks with their required frequencies resulted in the processor scheduling seen in figure~\ref{fig:rtsched}.
 
 \begin{figure}[H]
 \centering

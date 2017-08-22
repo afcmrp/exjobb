@@ -1,0 +1,25 @@
+<li><a href="kthesis/kthesis.pdf">Classes for KTH theses</a>.
+    (At some departments, page 1 of the insert is produced
+    by the printing house. At such departments, the final appearence
+    of this particular page is therefore different from what this document
+    class generates.)
+<ul>
+<li>The insert for Doctoral and Licentiate theses:
+    <a href="kthesis/kth-demo.tex">source code</a>,
+    <a href="kthesis/kth-bibl.tex">bibliographic data</a>,
+    <a href="kthesis/kth-abs.tex">abstract</a>, and finally
+    <a href="kthesis/kth-demo.pdf">the resultat</a>.
+<li>The announcement sheet for Doctoral and Licentiate theses:
+    <a href="kthesis/kth-spik.tex">source code</a>,
+    <a href="kthesis/kth-bibl.tex">bibliographic data</a>,
+    <a href="kthesis/kth-abs.tex">abstract</a>, and finally
+    <a href="kthesis/kth-spik.pdf">the result</a>.
+<li>Master's thesis in A4 format:
+    <a href="kthesis/kth-ex1.tex">source code</a>,
+    <a href="kthesis/kth-abs.tex">abstract</a>, and finally
+    <a href="kthesis/kth-ex1.pdf">the result</a>.
+<li>Master's thesis in G5 format:
+    <a href="kthesis/kth-ex2.tex">source code</a>,
+    <a href="kthesis/kth-abs.tex">abstract</a>, and finally
+    <a href="kthesis/kth-ex2.pdf">the result</a>.
+</ul>
