@@ -30,7 +30,7 @@ This function will read wheel sensor data and calculate if the road conditions a
 The function will also serve as a filter for distance measurements and speed measurements for other tasks to use.
 
 \subsection{Communication}
-To maintain secure communication between the two vehicles in the platoon a communication protocol will be developed. For more information, see the report by~\cite{lerander2017}.% WiFi will be used to communicate wirelessly, and  WiFi messages will be parsed in a MicroBlaze processor in the FPGA and sent to the OS. 
+To maintain secure communication between the two vehicles in the platoon a communication protocol will be developed. For more information, see the report by Lerander~\cite{lerander2017}.% WiFi will be used to communicate wirelessly, and  WiFi messages will be parsed in a MicroBlaze processor in the FPGA and sent to the OS. 
 
 %A WiFi module receives data and sends it via UART to a MicroBlaze processor on the FPGA where data is parsed and sent up to the OS via a mailbox. In the OS the mailbox is emptied and data is sent to where it is needed. The communication task then sends the data it should sent to the MicroBlaze where the data is packaged properly and sent as an UDP packet via the WiFi module. 
 
