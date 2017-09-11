@@ -106,7 +106,7 @@ $\tau_4$ & Longitudinal control & $\tau_5$ & OS switch & $\tau_6$ & GPOS
 \end{figure}
 
 \section{Hardware functions}
-This section will describe the implementation of the hardware functions, or FPGA IPs. For the entire Vivado block design showing the FPGA IPs and their interconnect, see Appendix~A.
+This section will describe the implementation of the hardware functions, or FPGA IPs. For the entire Vivado block design showing the FPGA IPs and their interconnect, see Appendix.
 
 \subsection{Pulse Width Modulation}
 Two AXI Timer IPs were used to control the PWM signal to the motor and servo. Each AXI Timer has two internal timers, one timer setting the output high at the period specified, and one timer setting the output low after the start of the first timer, effectively creating a PWM signal. The resolution of the timers are 20 ns.

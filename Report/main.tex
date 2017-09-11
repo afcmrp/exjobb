@@ -1,6 +1,5 @@
-\documentclass[a4paper, 12pt]{report}
-%\documentclass{kthesis}
-%\usepackage[margin=1in]{geometry}
+\documentclass[12pt,a4paper,twoside,openright]{book}
+%\documentclass[12pt,a4paper]{report}
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{multirow}
@@ -22,28 +21,29 @@
 \usepackage{mathtools}
 \usepackage{mdwlist}
 \usepackage{wrapfig}
-%\usepackage[inline]{enumitem}
 \usepackage{paralist}
 \usepackage{algpseudocode}
 \usepackage{subcaption}
 \usepackage{rtsched}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\usepackage{cite}
+\usepackage[toc,page]{appendix}
+
+\bibliographystyle{plain}
+
+\newcommand{\stoptocwriting}{%
+  \addtocontents{toc}{\protect\setcounter{tocdepth}{-5}}}
+\newcommand{\resumetocwriting}{%
+  \addtocontents{toc}{\protect\setcounter{tocdepth}{\arabic{tocdepth}}}}
 
 \setcounter{secnumdepth}{5}
 \setcounter{tocdepth}{5}
-
-\usepackage{cite}
-%\usepackage[numbers]{natbib}
-\bibliographystyle{plain}
-
 \setlength\parindent{0pt}
 
 \title{\includegraphics[width=0.3\textwidth]{./img/KTH_Logotyp_RGB_2013.jpg}\\~\\\huge{Safety-critical Control in Mixed Criticality Embedded Systems}\\\large{~\\A Study on Mixed Criticality in the Automotive Industry\\~\\Master Thesis\\Royal Institute of Technology\\Stockholm, Sweden}\\}
 
-%A Study on Mixed Criticality in the Automotive Industry
-
 %Implementation and evaluation of the Alten MCS used in vehicle platooning\\
-
-%Implementation and evaluation of vehicle platooing using the EMC\textsuperscript{2} development platform
 
 \author{
 \begin{tabular}{c}
@@ -55,8 +55,13 @@ Emil Hjelm\\
 \date{\today}
 
 \begin{document}
-\pagenumbering{roman}
+\begingroup
+\let\cleardoublepage\relax
+\includepdf[pages=-]{front_page.pdf}
 \maketitle
+\endgroup
+\thispagestyle{empty}
+\frontmatter
 \selectlanguage{english}
 \include{abstract}
 \include{sammanfattning}
@@ -64,9 +69,8 @@ Emil Hjelm\\
 \tableofcontents
 \listoffigures
 \listoftables
-%\listoflistings
 \include{abbreviations}
-\pagenumbering{arabic}
+\mainmatter
 \include{introduction}
 \include{literature}
 \include{system}
@@ -76,6 +80,6 @@ Emil Hjelm\\
 \include{discussion}
 \include{futurework}
 \bibliography{bib}
-\appendix
 \include{appendix}
+\includepdf[pages=-]{back_page.pdf}
 \end{document}
